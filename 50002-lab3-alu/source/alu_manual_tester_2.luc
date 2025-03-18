@@ -1,0 +1,111 @@
+module alu_manual_tester_2#(
+    CLK_FREQ ~ 1000 : CLK_FREQ > 0) 
+(
+    input clk,  // clock
+    input rst,  // reset
+    input io_button[5], // L=4, T=0, R=3, B=2, MIDDLE=1
+    input io_dip[3][8],
+    output io_led[3][8],
+    output io_segment[8], 
+    output io_select[4]
+    
+) {
+   
+    alu alu
+    enum States {
+        IDLE,
+        O1, // MSB 16bits
+        O2 // LSB 16bits
+    }
+    
+    const CLK_FREQ = $is_sim() ? 1000 : 100000000 // put 1000 only for sim, 100M on hardware
+
+    .clk(clk) {
+        edge_detector io_button_edge[5](#RISE(5x{{1}}), #FALL(5x{{0}}))
+        button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQ}})) 
+        
+        .rst(rst){
+           dff states[$width(States)](#INIT(States.IDLE))
+           dff a[32](#INIT(0))
+           dff b[32](#INIT(0))
+        }
+    }
+  
+    always {
+        io_segment = 0
+        io_select = 4hF
+        io_led[2] = 0
+        io_led[1] = 0
+        io_led[0] = 0
+
+        // Condition the buttons, then take rising edges only
+        io_button_cond.in = io_button
+        io_button_edge.in = io_button_cond.out
+        
+        // Connect dffs
+        states.d = states.q
+        a.d = a.q
+        b.d = b.q
+        
+        // Connect alu to dff
+        // alu.a = 32h00000001
+        // alu.b = 32h00000001
+        alu.a = a.q
+        alu.b = b.q
+        alu.alufn_signal = 6b000000
+        //alu.alufn_signal = io_dip[2][5:0] //also alufn sig is 6bit signal 
+
+        // Inputs
+        // io_led[0] = alu.alu_out[7:0]
+        // io_led[1] = alu.alu_out[15:8]
+        case (c{io_dip[2][7], io_dip[2][6]}){
+          2b00: // MSB A
+                a.d[31:24] = io_dip[1]
+                a.d[23:16] = io_dip[0]
+            
+          2b01: // LSB A
+                a.d[15:8] = io_dip[1]
+                a.d[7:0] = io_dip[0]
+            
+          2b11: // MSB B
+                b.d[31:24] = io_dip[1]
+                b.d[23:16] = io_dip[0]
+            
+          2b10: // LSB B
+                b.d[15:8] = io_dip[1]
+                b.d[7:0] = io_dip[0]
+            
+          default:
+                a.d[31:24] = 8hff
+                a.d[23:16] = 8hff
+        }
+        
+        
+        // Output
+        case(States.O1){
+            States.IDLE:
+                io_led[1] = 8h00
+                io_led[0] =8h00
+                if(io_button_edge.out[1])
+                    states.d = States.O1
+
+            States.O1:
+                //io_led[1] = 8hff
+                //io_led[0] =8hff
+                io_led[1] = alu.alu_out[31:24]
+                io_led[0] = alu.alu_out[23:16]
+                if(io_button_edge.out[1])
+                    states.d = States.O2
+            
+            States.O2:
+                io_led[1] = alu.alu_out[15:8]
+                io_led[0] = alu.alu_out[7:0]
+                if(io_button_edge.out[1])
+                    states.d = States.IDLE
+      
+            default:
+                states.d = States.IDLE
+        }
+        
+    }
+}

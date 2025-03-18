@@ -1,0 +1,62 @@
+testbench test_compare {
+    sig clk
+
+    fun tick_clock() {
+        clk = 1
+        $silent_tick() // tick without capturing signals
+        clk = 0
+        $tick()
+    }
+    
+    adder adder(#SIZE(32))
+    compare compare_eq(#SIZE(32))
+    compare compare_lt(#SIZE(32))
+    compare compare_le(#SIZE(32))
+
+    test myTest {
+        clk = 0 // initialize the value
+        $tick() // capture initial state
+
+        // Setting adder for compare CMPEQ ==
+        adder.a = 32h0000ffff
+        adder.b = 32h0000ffff
+        adder.alufn_signal = 6b000001 // Subtract mode
+        compare_eq.z = adder.z
+        compare_eq.v = adder.v
+        compare_eq.n = adder.n
+        compare_eq.alufn_signal = 6b000010 // CMPEQ ==
+        $print(adder.alu_out)
+        $print(adder.z)
+        $print(adder.v)
+        $print(adder.n)
+        $print(compare_eq.cmp)
+        
+        // Setting adder for compare CMPLT <
+        adder.a = 32h00000fff
+        adder.b = 32h00000fff
+        adder.alufn_signal = 6b000001 // Subtract mode
+        compare_lt.z = adder.z
+        compare_lt.v = adder.v
+        compare_lt.n = adder.n
+        compare_lt.alufn_signal = 6b000100 // CMPLT <
+        $print(adder.alu_out)
+        $print(adder.z)
+        $print(adder.v)
+        $print(adder.n)
+        $print(compare_lt.cmp)
+        
+        // Setting adder for compare CMPLE <=
+        adder.a = 32h00000fff
+        adder.b = 32h00000fff
+        adder.alufn_signal = 6b000001 // Subtract mode
+        compare_le.z = adder.z
+        compare_le.v = adder.v
+        compare_le.n = adder.n
+        compare_le.alufn_signal = 6b000110 // CMPLE <=
+        $print(adder.alu_out)
+        $print(adder.z)
+        $print(adder.v)
+        $print(adder.n)
+        $print(compare_le.cmp)
+    }
+}

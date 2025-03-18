@@ -1,0 +1,64 @@
+testbench test_adder {
+    sig clk
+
+    fun tick_clock() {
+        clk = 1
+        $silent_tick() // tick without capturing signals
+        clk = 0
+        $tick()
+    }
+    sig rst                 // reset signal
+    sig io_button
+    sig io_dip[3][8]
+    
+    const CLK_FREQ = $is_sim() ? 1000 : 10000000 // put 1000 for sim, 10000000 otherwise in hardware
+    
+    fa fa
+    rca rca(#SIZE(32))
+    adder adder(#SIZE(32))
+    alu alu
+    alu_manual_tester alu_manual(.clk(clk), .rst(rst), .io_button(io_button), .io_dip(io_dip), #CLK_FREQ(CLK_FREQ)) 
+
+    test myTest {
+        rst = 1
+        io_button = 1
+        
+        clk = 0 // initialize the value
+        $tick() // capture initial state
+        
+        // Test FA
+        fa.a = 1
+        fa.b = 1
+        fa.cin = 1
+        $print(fa.cout)
+        $print(fa.s)
+        
+        // Test RCA
+        rca.a = 32hffffffff
+        rca.b = 32hffffffff
+        rca.cin = 0
+        $print(rca.s)
+        
+        // Test adder
+        adder.a = 32h7fffffff // + 2^32-1 (Biggest positive number)
+        adder.b = 32h00000001 // + 1
+        adder.alufn_signal = 6b000000
+        $print(adder.alu_out)
+        $print(adder.z)
+        $print(adder.v)
+        $print(adder.n)
+        
+        // Test alu
+        alu.a = 32h7fffffff // + 2^32-1 (Biggest positive number)
+        alu.b = 32h00000001 // + 1
+        alu.alufn_signal = 6b000000
+        $print(alu.alu_out)
+        $print(alu.z)
+        $print(alu.v)
+        $print(alu.n)
+        
+        // Test alu manual
+        io_dip = 3x{{8hfe}}
+        $print(alu_manual.io_led)
+    }
+}

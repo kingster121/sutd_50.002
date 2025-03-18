@@ -1,0 +1,42 @@
+// A ripple-carry-adder combinational logic unit
+// rca.luc
+module rca #(
+    SIZE ~ 32 : SIZE > 1
+)(
+    input a[32],
+    input b[32],
+    input cin,
+    output s[32]
+  ) {
+
+  fa fa[SIZE];
+
+  always {
+    // Remember that fa is 32 of a RCA. 
+    // So fa.a=a actually assigns each of the bit of a to one RCA
+    fa.a = a
+    fa.b = b
+    fa.cin = 0; // Assign all carry to 0
+    
+    // i starts at 0 and end at SIZE-1
+    repeat(i, SIZE){       
+        if (i == 0)
+            fa.cin[0] = cin
+        else
+            fa.cin[i] = fa.cout[i-1]
+     }
+        
+    // set the inputs to the first unit (LSB) of the RCA 
+    // fa.a[0] = a[0];
+    // fa.b[0] = b[0];
+    // fa.cin[0] = cin;
+    //
+    // repeat(i, SIZE-1, 1, 1){ // define the connections for the other 31 units of fa 
+    //  fa.a[i] = a[i];
+    //  fa.b[i] = b[i];
+    // fa.cin[i] = fa.cout[i-1];
+    //}
+      
+    s = fa.s; // connect the output bits
+  }
+}

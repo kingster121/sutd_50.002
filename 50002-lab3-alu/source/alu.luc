@@ -1,0 +1,63 @@
+module alu (
+    input a[32],
+    input b[32],
+    input alufn_signal[6],
+    output alu_out[32],
+    output z,
+    output v,
+    output n
+) {
+    // mux for choosing the alufn 
+    mux_2 mux_2_32[32] // For addition, subtraction and multiplication
+    mux_4 mux_4_32[32] // For choosing which general FN to go into
+    sig cmp[32] // Store the result of comparison as 31b0 + 1bX compairons bit
+    
+    // ALUFN
+    adder adder(#SIZE(32))
+    boolean boolean(#SIZE(32))
+    shifter shifter(#SIZE(32))
+    compare compare(#SIZE(32))
+    multiplier multiplier(#SIZE(32))
+    
+    always {
+        // Implement ALUFN logic
+        adder.a = a
+        adder.b = b
+        adder.alufn_signal = alufn_signal;
+        
+        multiplier.a = a
+        multiplier.b = b
+        
+        boolean.a = a
+        boolean.b = b
+        boolean.alufn_signal = alufn_signal
+        
+        shifter.a = a;
+        shifter.b = b[4:0];
+        shifter.alufn_signal = alufn_signal;
+      
+        compare.z = adder.z;
+        compare.v = adder.v;
+        compare.n = adder.n;
+        compare.alufn_signal = alufn_signal;
+        cmp = c{31x{b0}, compare.cmp};
+        
+        repeat(i, 32){
+            mux_2_32.in[i][0] = adder.alu_out[i]
+            mux_2_32.in[i][1] = multiplier.mul[i]
+            mux_2_32.s0[i] = alufn_signal[1]
+            
+            mux_4_32.in[i][0] = mux_2_32.out[i]
+            mux_4_32.in[i][1] = boolean.bool[i]
+            mux_4_32.in[i][2] = shifter.shift[i]
+            mux_4_32.in[i][3] = cmp[i]
+            mux_4_32.s1[i] = alufn_signal[5]
+            mux_4_32.s0[i] = alufn_signal[4]
+        }
+        
+        alu_out = mux_4_32.out
+        z = adder.z
+        v = adder.v
+        n = adder.n
+    }
+}

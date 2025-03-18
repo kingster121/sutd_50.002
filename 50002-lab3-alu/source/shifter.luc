@@ -1,0 +1,59 @@
+module shifter #(
+    SIZE ~ 32 : SIZE > 1
+)(
+    input a[32], // data to be shifted
+    input b[5], // decides from 0 to 31 bits of shift
+    input alufn_signal[6],
+    output shift[32]
+) {
+    // The 32 mux on each layer that will be running the shifting.
+    // There is 32 mux in charge of shifting the 32 bits by x bits
+    mux_2 mux_2_32[32]
+    
+    // If you want to assign different parameter to each instance, 
+    // then you need to create an array of N by M, where M is the
+    // number of bits required to set VALUE for each instance. 
+    // For example, we can instantiate 10 my_module with parameter of 8 bits each as follows:
+    // --------------------------------------------------------------------------------
+    // module_type my_module[10](#PARAM_NAME({8d0, 8d1, 8d2, 8d3, 8d4, 8d5, 8d6, 8d7}
+    //variable bit left shifter (up till 32 bits)
+    
+    
+    // Shift the bit by based on the .shift -> If shift(0) means don't shift. If shift(1), then shift based on the #SHIFT parameter
+    // If the first bit of the input is 1, and it is supposed to shift by 12.
+    // The first bit will shifter8L, then the output will be fed to shifter4R's .a
+    // Cascade the shifting
+    
+    // Left shifter
+    .pad(1b0) {
+        x_bit_left_shifter shifter16L(#SHIFT(16), .a(a), .shift(b[4]))
+        x_bit_left_shifter shifter8L(#SHIFT(8), .a(shifter16L.out), .shift(b[3]))
+        x_bit_left_shifter shifter4L(#SHIFT(4), .a(shifter8L.out), .shift(b[2]))
+        x_bit_left_shifter shifter2L(#SHIFT(2), .a(shifter4L.out), .shift(b[1]))    
+        x_bit_left_shifter shifter1L(#SHIFT(1), .a(shifter2L.out), .shift(b[0]))
+    }
+    
+    
+    // Right shifter
+    // Pad with A[31] only if it is a SRA
+    // SRA is denoted by alufn_signal[1]
+    .pad(alufn_signal[1] & a[31]){
+        x_bit_right_shifter shifter16R(#SHIFT(16), .a(a),.shift(b[4]))
+        x_bit_right_shifter shifter8R(#SHIFT(8), .a(shifter16R.out), .shift(b[3]))
+        x_bit_right_shifter shifter4R(#SHIFT(4), .a(shifter8R.out), .shift(b[2]))
+        x_bit_right_shifter shifter2R(#SHIFT(2), .a(shifter4R.out), .shift(b[1]))    
+        x_bit_right_shifter shifter1R(#SHIFT(1), .a(shifter2R.out), .shift(b[0]))
+    }
+    
+    always {
+        // Setting up the final mux_2_32 (32 2-bit mux)
+        // select 0 -> left shift
+        // select 1 -> right shift
+        repeat(i, 32){
+            mux_2_32.in[i][0] = shifter1L.out[i]
+            mux_2_32.in[i][1] = shifter1R.out[i]
+        }
+        mux_2_32.s0 = 32x{alufn_signal[0]}
+        shift = mux_2_32.out
+    } 
+}
