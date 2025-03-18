@@ -154,18 +154,6 @@
                     "type": "Component",
                     "path": "Pulses/edge_detector.luc"
                 }
-            },
-            {
-                "file": {
-                    "type": "DiskFile",
-                    "path": "source/alu_adder.luc"
-                }
-            },
-            {
-                "file": {
-                    "type": "DiskFile",
-                    "path": "source/alu_manual_tester_2.luc"
-                }
             }
         ],
         "constraintFiles": [
