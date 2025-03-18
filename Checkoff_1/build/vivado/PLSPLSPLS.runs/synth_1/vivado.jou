@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2023.2.2 (64-bit)
+# SW Build 4126759 on Thu Feb  8 23:52:05 MST 2024
+# IP Build 4126054 on Fri Feb  9 11:39:09 MST 2024
+# SharedData Build 4115275 on Tue Jan 30 00:40:57 MST 2024
+# Start of session at: Wed Mar 19 03:37:59 2025
+# Process ID: 71104
+# Current directory: /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/PLSPLSPLS/build/vivado/PLSPLSPLS.runs/synth_1
+# Command line: vivado -log alchitry_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source alchitry_top.tcl
+# Log file: /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/PLSPLSPLS/build/vivado/PLSPLSPLS.runs/synth_1/alchitry_top.vds
+# Journal file: /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/PLSPLSPLS/build/vivado/PLSPLSPLS.runs/synth_1/vivado.jou
+# Running On: fedora, OS: Linux, CPU Frequency: 4000.000 MHz, CPU Physical cores: 4, Host memory: 16487 MB
+#-----------------------------------------------------------
+source alchitry_top.tcl -notrace
