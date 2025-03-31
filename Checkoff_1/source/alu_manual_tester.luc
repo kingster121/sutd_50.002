@@ -33,6 +33,7 @@ module alu_manual_tester(
     }
   
     always {
+        //$print(io_segment)
         io_segment = 0
         io_select = 4hF
         io_led[2] = 0

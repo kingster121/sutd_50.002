@@ -1,0 +1,70 @@
+module alchitry_top (
+    input clk,              // 100MHz clock
+    input rst_n,            // reset button (active low)
+    output led[8],          // 8 user controllable LEDs
+    input usb_rx,           // USB->Serial input
+    output usb_tx,          // USB->Serial output
+    output io_led[3][8],    // LEDs on IO Shield
+    output io_segment[8],   // 7-segment LEDs on IO Shield
+    output io_select[4],    // Digit select on IO Shield
+    input io_button[5],     // 5 buttons on IO Shield
+    input io_dip[3][8]      // DIP switches on IO Shield
+) {
+    sig rst                 // reset signal
+    const CLK_FREQ = $is_sim() ? 1000 : 100000000
+    
+    .clk(clk) {
+        // The reset conditioner is used to synchronize the reset signal to the FPGA
+        // clock. This ensures the entire FPGA comes out of reset at the same time.
+        reset_conditioner reset_cond
+        
+        // Button edge detector and conditioner
+        edge_detector io_button_edge[5](#RISE(5x{{1}}), #FALL(5x{{0}}))
+        button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQ}})) 
+        
+        .rst(rst) {
+            // The duty cycle is: TOP / value. I think the code in the pwm module should be value/TOP instead
+            // The period is: TOP / (CLK_FREQ / 2^DIV)
+            pwm pwm(#WIDTH(9), #TOP(381), #DIV(18))
+            
+            // dff value to store the value to pass into pwm.value
+            dff value[9](#INIT(190))
+        }
+    }
+
+    always {
+        reset_cond.in = ~rst_n  // input raw inverted reset signal
+        rst = reset_cond.out    // conditioned reset
+        
+        led = 8h00              // turn LEDs off
+        io_led = 3x{{8h00}}
+        io_segment = 0
+        io_select = 0
+        
+        usb_tx = usb_rx         // loop serial port
+        
+        // Connect button conditioner to edge detector
+        io_button_cond.in = io_button
+        io_button_edge.in = io_button_cond.out
+        
+        // Connect dffs out to in
+        value.d = value.q
+        
+        // Connect pwm value to dff value
+        pwm.value = value.q
+        
+        // Set value that is used in PWM duty cycle calculation
+        
+        pwm.update = 1
+        
+        // Condition to increase and decrease the blinking ratee
+        if (io_button_edge.out[0])
+            value.d = value.q + 10
+        if (io_button_edge.out[2])
+            value.d = value.q - 10
+        
+        // Connect counter to servo controller
+        io_led[0][0] = pwm.pulse
+        
+    }
+}
