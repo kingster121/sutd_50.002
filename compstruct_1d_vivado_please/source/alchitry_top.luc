@@ -1,0 +1,99 @@
+module alchitry_top (
+    input clk,              // 100MHz clock
+    input rst_n,            // reset button (active low)
+    output led[8],          // 8 user controllable LEDs
+    input usb_rx,           // USB->Serial input
+    output usb_tx,          // USB->Serial output
+    output io_led[3][8],    // LEDs on IO Shield
+    output io_segment[8],   // 7-segment LEDs on IO Shield
+    output io_select[4],    // Digit select on IO Shield
+    input io_button[5],     // 5 buttons on IO Shield
+    input io_dip[3][8]      // DIP switches on IO Shield
+) {
+    sig rst                 // reset signal
+    const CLOCK_DIVIDER = $is_sim() ? 11 : 26
+    const CLK_FREQ = $is_sim() ? 1000 : 100000000
+    const SEG_REFRESH = $is_sim() ? 2 : 10
+    
+    .clk(clk) {
+        // The reset conditioner is used to synchronize the reset signal to the FPGA
+        // clock. This ensures the entire FPGA comes out of reset at the same time.
+        reset_conditioner reset_cond
+        
+        // Creating button conditioner and edge detector
+        edge_detector io_button_edge[5](#RISE(5x{{1}}), #FALL(5x{{0}}))
+        button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQ}})) 
+        
+        .rst(rst){
+             dff seg_multiplex[2](#INIT(0))
+             counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER))
+             counter seg_clk(#SIZE(1), #DIV(SEG_REFRESH))
+            
+            // Directly connect motor speed and direction to them dff upon instantiation
+            dff motor_speed[3](#INIT(0))
+            dff motor_direction(#INIT(0))
+            motor motor(.motor_speed(motor_speed.q), .motor_direction(motor_direction.q))
+        }
+        edge_detector seg_clk_edge(#RISE(1), #FALL(0), .in(seg_clk.value))
+    }
+    
+    always {
+        reset_cond.in = ~rst_n  // input raw inverted reset signal
+        rst = reset_cond.out    // conditioned reset
+        
+        // Default outputs
+        led = 8h00              // turn LEDs off
+        io_led[2:0] = 3x{{8h00}}
+        io_segment = 8h00
+        io_select = 4h0
+        usb_tx = usb_rx         // loop serial port
+        
+        // Connecting dffs
+        seg_multiplex.d = seg_multiplex.q
+        
+        // Connect button conditioner to edge detector
+        io_button_cond.in = io_button
+        io_button_edge.in = io_button_cond.out
+        
+        // Test motor on io_led
+        // ##### CHANGE THIS CONNECTION TO THE motor driver! #####
+        io_led[0][0] = motor.in1
+        io_led[0][1] = motor.in2
+        
+        // Player Buttons
+        // P0B0 - 27
+        // P0B1 - 28
+        // P1B0 - 24
+        // P1B1 - 23
+        if (io_button_edge.out[0]) {
+            motor_speed.d = motor_speed.q + 1
+            motor_direction.d = 0
+        }
+        if (io_button_edge.out[2]) {
+            motor_speed.d = motor_speed.q + 1
+            motor_direction.d = 1
+        }
+        
+        // Invert motor direction when CENTER button is pressed
+        // if (io_button_edge.out[1])
+        //    motor_direction.d = ~motor_direction.q
+        
+        // Increase motor speed 
+        // if (io_button_edge.out[0])
+        // {
+        //    if (motor_speed.q == 7)
+        //        motor_speed.d = motor_speed.q
+        //    else
+        //        motor_speed.d = motor_speed.q + 1
+        // }
+        
+        // Decrease motor speed
+        // if (io_button_edge.out[2])
+        // {
+        //    if (motor_speed.q == 0)
+        //        motor_speed.d = motor_speed.q
+        //    else
+        //        motor_speed.d = motor_speed.q - 1
+        // }
+    }
+}

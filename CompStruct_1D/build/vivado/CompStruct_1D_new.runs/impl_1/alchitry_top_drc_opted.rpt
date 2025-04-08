@@ -1,7 +1,7 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2023.2.2 (lin64) Build 4126759 Thu Feb  8 23:52:05 MST 2024
-| Date         : Tue Mar 25 15:36:12 2025
+| Tool Version : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
+| Date         : Tue Apr  8 16:16:17 2025
 | Host         : fedora running 64-bit unknown
 | Command      : report_drc -file alchitry_top_drc_opted.rpt -pb alchitry_top_drc_opted.pb -rpx alchitry_top_drc_opted.rpx
 | Design       : alchitry_top
@@ -23,13 +23,24 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
            Ruledeck: default
-             Max violations: <unlimited>
-             Violations found: 0
-+------+----------+-------------+------------+
-| Rule | Severity | Description | Violations |
-+------+----------+-------------+------------+
-+------+----------+-------------+------------+
+             Max checks: <unlimited>
+             Checks found: 2
++--------+----------+------------------------------------------------+--------+
+| Rule   | Severity | Description                                    | Checks |
++--------+----------+------------------------------------------------+--------+
+| PLIO-3 | Warning  | Placement Constraints Check for IO constraints | 2      |
++--------+----------+------------------------------------------------+--------+
 
 2. REPORT DETAILS
 -----------------
+PLIO-3#1 Warning
+Placement Constraints Check for IO constraints  
+Partially locked IO Bus is found. Following components of the IO Bus io_dip[1][7:0] are not locked:  io_dip[1][7] io_dip[1][6]
+Related violations: <none>
+
+PLIO-3#2 Warning
+Placement Constraints Check for IO constraints  
+Partially locked IO Bus is found. Following components of the IO Bus io_dip[2][7:0] are not locked:  io_dip[2][1] io_dip[2][0]
+Related violations: <none>
+
 

@@ -74,19 +74,19 @@
             {
                 "file": {
                     "type": "Component",
-                    "path": "Controllers/servo.luc"
-                }
-            },
-            {
-                "file": {
-                    "type": "Component",
                     "path": "LED Effects/pwm.luc"
                 }
             },
             {
                 "file": {
                     "type": "DiskFile",
-                    "path": "source/test_motor.luc"
+                    "path": "source/motor.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/game_cu.luc"
                 }
             }
         ],
@@ -99,8 +99,8 @@
             },
             {
                 "file": {
-                    "type": "Component",
-                    "path": "Constraints/io_v1_pulldown.acf"
+                    "type": "DiskFile",
+                    "path": "constraint/io_v1_pulldown.acf"
                 }
             }
         ],

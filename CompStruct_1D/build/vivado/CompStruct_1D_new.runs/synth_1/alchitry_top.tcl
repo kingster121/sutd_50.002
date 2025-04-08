@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.runs/synth_1/alchitry_top.tcl"
+  variable script "/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.runs/synth_1/alchitry_top.tcl"
   variable category "vivado_synth"
 }
 
@@ -55,20 +55,6 @@ if {$::dispatch::connected} {
   }
 }
 
-proc create_report { reportName command } {
-  set status "."
-  append status $reportName ".fail"
-  if { [file exists $status] } {
-    eval file delete [glob $status]
-  }
-  send_msg_id runtcl-4 info "Executing : $command"
-  set retval [eval catch { $command } msg]
-  if { $retval != 0 } {
-    set fp [open $status w]
-    close $fp
-    send_msg_id runtcl-5 warning "$msg"
-  }
-}
 OPTRACE "synth_1" START { ROLLUP_AUTO }
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tftg256-1
@@ -76,27 +62,22 @@ create_project -in_memory -part xc7a35tftg256-1
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.cache/wt [current_project]
-set_property parent.project_path /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.xpr [current_project]
+set_property webtalk.parent_dir /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.cache/wt [current_project]
+set_property parent.project_path /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib -sv {
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/bin_to_dec.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/button_conditioner.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/counter.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/decoder.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/edge_detector.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pipeline.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pn_gen.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pwm.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/random_number_generator.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/reset_conditioner.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/seven_segment_encoder.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/test_motor.sv
-  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/alchitry_top.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/button_conditioner.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/counter.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/edge_detector.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/motor.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pipeline.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pwm.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/reset_conditioner.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/alchitry_top.sv
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -107,11 +88,11 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/constraint/alchitry.xdc
-set_property used_in_implementation false [get_files /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/constraint/alchitry.xdc]
+read_xdc /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/constraint/alchitry.xdc
+set_property used_in_implementation false [get_files /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/constraint/alchitry.xdc]
 
-read_xdc /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/constraint/au_props.xdc
-set_property used_in_implementation false [get_files /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/CompStruct_1D_new/build/constraint/au_props.xdc]
+read_xdc /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/constraint/au_props.xdc
+set_property used_in_implementation false [get_files /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/constraint/au_props.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]
@@ -130,7 +111,7 @@ set_param constraints.enableBinaryConstraints false
 write_checkpoint -force -noxdef alchitry_top.dcp
 OPTRACE "write_checkpoint" END { }
 OPTRACE "synth reports" START { REPORT }
-create_report "synth_1_synth_report_utilization_0" "report_utilization -file alchitry_top_utilization_synth.rpt -pb alchitry_top_utilization_synth.pb"
+generate_parallel_reports -reports { "report_utilization -file alchitry_top_utilization_synth.rpt -pb alchitry_top_utilization_synth.pb"  } 
 OPTRACE "synth reports" END { }
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]

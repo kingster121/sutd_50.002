@@ -4,7 +4,7 @@
     This is a temporary file and any changes made to it will be destroyed.
 */
 
-module test_motor (
+module motor (
         input wire clk,
         input wire rst,
         input wire [2:0] motor_speed,
@@ -12,21 +12,21 @@ module test_motor (
         output reg in1,
         output reg in2
     );
-    logic value;
-    localparam _MP_WIDTH_451732700 = 4'h8;
-    localparam _MP_TOP_451732700 = 9'h100;
-    localparam _MP_DIV_451732700 = 5'h15;
+    localparam _MP_WIDTH_1752529022 = 4'h9;
+    localparam _MP_TOP_1752529022 = 9'h17d;
+    localparam _MP_DIV_1752529022 = 5'h12;
+    logic [8:0] M_pwm_value;
     logic M_pwm_pulse;
     
     pwm #(
-        .WIDTH(_MP_WIDTH_451732700),
-        .TOP(_MP_TOP_451732700),
-        .DIV(_MP_DIV_451732700)
+        .WIDTH(_MP_WIDTH_1752529022),
+        .TOP(_MP_TOP_1752529022),
+        .DIV(_MP_DIV_1752529022)
     ) pwm (
-        .value(value),
         .update(1'h1),
         .clk(clk),
         .rst(rst),
+        .value(M_pwm_value),
         .pulse(M_pwm_pulse)
     );
     
@@ -34,7 +34,7 @@ module test_motor (
     always @* begin
         in1 = 1'h0;
         in2 = 1'h0;
-        value = motor_speed / 4'h8 * 9'h100;
+        M_pwm_value = motor_speed * 6'h36;
         if (motor_direction == 1'h1) begin
             in1 = M_pwm_pulse;
             in2 = 1'h0;

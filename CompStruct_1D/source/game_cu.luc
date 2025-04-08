@@ -1,0 +1,36 @@
+module game_cu (
+    input clk,  // clock
+    input rst,  // reset
+    input counter_clk,
+    input regfile_rd2[32],
+
+    input p0b0,
+    input p0b1,
+    input p1b0,
+    input p1b1,
+    input p0wall,
+    input p1wall,
+    
+    output alufn[6],
+    output asel[3],
+    output bsel[3],
+    output alu_out_sel[2],
+    output regfile_wa[3],
+    output regfile_ra1[3],
+    output regfile_ra2[3],
+    output regfile_we,
+    output debug[4]
+) {
+    always {
+        alufn = 0
+        asel = 0
+        bsel = 0
+        alu_out_sel = 0
+        regfile_wa = 0
+        regfile_wa = 0
+        regfile_ra1 = 0
+        regfile_ra2 = 0
+        regfile_we = 0
+        debug = 0
+    }
+}

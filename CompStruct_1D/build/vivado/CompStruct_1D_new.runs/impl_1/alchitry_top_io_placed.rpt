@@ -1,7 +1,7 @@
-Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version              : Vivado v.2023.2.2 (lin64) Build 4126759 Thu Feb  8 23:52:05 MST 2024
-| Date                      : Tue Mar 25 15:36:15 2025
+| Tool Version              : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
+| Date                      : Tue Apr  8 16:16:19 2025
 | Host                      : fedora running 64-bit unknown
 | Command                   : report_io -file alchitry_top_io_placed.rpt
 | Design                    : alchitry_top
@@ -25,7 +25,7 @@ Table of Contents
 +---------------+
 | Total User IO |
 +---------------+
-|            77 |
+|            81 |
 +---------------+
 
 
@@ -150,8 +150,8 @@ Table of Contents
 | H1         | io_led[2][3]  | High Range | IO_L20N_T3_35                | OUTPUT      | LVCMOS33    |      35 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | H2         | io_led[2][2]  | High Range | IO_L20P_T3_35                | OUTPUT      | LVCMOS33    |      35 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | H3         | io_dip[2][3]  | High Range | IO_L21N_T3_DQS_35            | INPUT       | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
-| H4         | io_dip[2][1]  | High Range | IO_L18N_T2_35                | INPUT       | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
-| H5         | io_dip[2][0]  | High Range | IO_L18P_T2_35                | INPUT       | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
+| H4         | p1l1          | High Range | IO_L18N_T2_35                | OUTPUT      | LVCMOS33    |      35 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
+| H5         | p1l0          | High Range | IO_L18P_T2_35                | OUTPUT      | LVCMOS33    |      35 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | H6         |               |            | GND                          | GND         |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
 | H7         |               | Dedicated  | VREFN_0                      | XADC        |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | H8         |               | Dedicated  | VP_0                         | XADC        |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
@@ -216,7 +216,7 @@ Table of Contents
 | M3         |               | High Range | VCCO_34                      | VCCO        |             |      34 |            |      |                     |                      |   any** |            |           |          |      |                  |              |                   |              |
 | M4         |               | High Range | IO_L1N_T0_34                 | User IO     |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | M5         |               | High Range | IO_L6P_T0_34                 | User IO     |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
-| M6         | io_dip[1][6]  | High Range | IO_L19P_T3_A10_D26_14        | INPUT       | LVCMOS33    |      14 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
+| M6         | p0l0          | High Range | IO_L19P_T3_A10_D26_14        | OUTPUT      | LVCMOS33    |      14 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | M7         |               | Dedicated  | TMS_0                        | Config      |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | M8         |               |            | GND                          | GND         |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
 | M9         |               | Dedicated  | M0_0                         | Config      |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
@@ -232,7 +232,7 @@ Table of Contents
 | N3         |               | High Range | IO_L3P_T0_DQS_34             | User IO     |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | N4         |               | High Range | IO_L6N_T0_VREF_34            | User IO     |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | N5         |               |            | GND                          | GND         |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
-| N6         | io_dip[1][7]  | High Range | IO_L19N_T3_A09_D25_VREF_14   | INPUT       | LVCMOS33    |      14 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
+| N6         | p0l1          | High Range | IO_L19N_T3_A09_D25_VREF_14   | OUTPUT      | LVCMOS33    |      14 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | N7         |               | Dedicated  | TDI_0                        | Config      |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | N8         |               | Dedicated  | TDO_0                        | Config      |             |       0 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | N9         | io_select[2]  | High Range | IO_L18P_T2_A12_D28_14        | OUTPUT      | LVCMOS33    |      14 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
