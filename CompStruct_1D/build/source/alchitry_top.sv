@@ -10,11 +10,12 @@ module alchitry_top (
         output reg [7:0] led,
         input wire usb_rx,
         output reg usb_tx,
-        output reg [2:0][7:0] io_led,
         output reg [7:0] io_segment,
         output reg [3:0] io_select,
-        input wire [4:0] io_button,
-        input wire [2:0][7:0] io_dip,
+        input wire [2:0] p0_button,
+        input wire [2:0] p1_button,
+        output reg motorIN1,
+        output reg motorIN2,
         output reg p0l0,
         output reg p0l1,
         output reg p1l0,
@@ -24,12 +25,12 @@ module alchitry_top (
     localparam CLOCK_DIVIDER = 5'h1a;
     localparam CLK_FREQ = 27'h5f5e100;
     localparam SEG_REFRESH = 4'ha;
-    localparam _MP_STAGES_1096590319 = 3'h4;
+    localparam _MP_STAGES_1133807220 = 3'h4;
     logic M_reset_cond_in;
     logic M_reset_cond_out;
     
     reset_conditioner #(
-        .STAGES(_MP_STAGES_1096590319)
+        .STAGES(_MP_STAGES_1133807220)
     ) reset_cond (
         .clk(clk),
         .in(M_reset_cond_in),
@@ -37,62 +38,106 @@ module alchitry_top (
     );
     
     
-    localparam logic [4:0][0:0] _MP_RISE_766992168 = {{1'h1, 1'h1, 1'h1, 1'h1, 1'h1}};
-    localparam logic [4:0][0:0] _MP_FALL_766992168 = {{1'h0, 1'h0, 1'h0, 1'h0, 1'h0}};
-    logic [4:0] M_io_button_edge_in;
-    logic [4:0] M_io_button_edge_out;
+    localparam logic [2:0][0:0] _MP_RISE_1377965399 = {{1'h1, 1'h1, 1'h1}};
+    localparam logic [2:0][0:0] _MP_FALL_1377965399 = {{1'h0, 1'h0, 1'h0}};
+    logic [2:0] M_p0_button_edge_in;
+    logic [2:0] M_p0_button_edge_out;
     
-    genvar idx_0_766992168;
+    genvar idx_0_1377965399;
     
     generate
-        for (idx_0_766992168 = 0; idx_0_766992168 < 5; idx_0_766992168 = idx_0_766992168 + 1) begin: forLoop_idx_0_766992168
+        for (idx_0_1377965399 = 0; idx_0_1377965399 < 3; idx_0_1377965399 = idx_0_1377965399 + 1) begin: forLoop_idx_0_1377965399
             edge_detector #(
-                .RISE(_MP_RISE_766992168[idx_0_766992168]),
-                .FALL(_MP_FALL_766992168[idx_0_766992168])
-            ) io_button_edge (
+                .RISE(_MP_RISE_1377965399[idx_0_1377965399]),
+                .FALL(_MP_FALL_1377965399[idx_0_1377965399])
+            ) p0_button_edge (
                 .clk(clk),
-                .in(M_io_button_edge_in[idx_0_766992168]),
-                .out(M_io_button_edge_out[idx_0_766992168])
+                .in(M_p0_button_edge_in[idx_0_1377965399]),
+                .out(M_p0_button_edge_out[idx_0_1377965399])
             );
         end
     endgenerate
     
     
-    localparam logic [4:0][26:0] _MP_CLK_FREQ_972742522 = {{27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100}};
-    localparam _MP_MIN_DELAY_972742522 = 5'h14;
-    localparam _MP_NUM_SYNC_972742522 = 2'h2;
-    logic [4:0] M_io_button_cond_in;
-    logic [4:0] M_io_button_cond_out;
+    localparam logic [2:0][0:0] _MP_RISE_1658713108 = {{1'h1, 1'h1, 1'h1}};
+    localparam logic [2:0][0:0] _MP_FALL_1658713108 = {{1'h0, 1'h0, 1'h0}};
+    logic [2:0] M_p1_button_edge_in;
+    logic [2:0] M_p1_button_edge_out;
     
-    genvar idx_0_972742522;
+    genvar idx_0_1658713108;
     
     generate
-        for (idx_0_972742522 = 0; idx_0_972742522 < 5; idx_0_972742522 = idx_0_972742522 + 1) begin: forLoop_idx_0_972742522
-            button_conditioner #(
-                .CLK_FREQ(_MP_CLK_FREQ_972742522[idx_0_972742522]),
-                .MIN_DELAY(_MP_MIN_DELAY_972742522),
-                .NUM_SYNC(_MP_NUM_SYNC_972742522)
-            ) io_button_cond (
+        for (idx_0_1658713108 = 0; idx_0_1658713108 < 3; idx_0_1658713108 = idx_0_1658713108 + 1) begin: forLoop_idx_0_1658713108
+            edge_detector #(
+                .RISE(_MP_RISE_1658713108[idx_0_1658713108]),
+                .FALL(_MP_FALL_1658713108[idx_0_1658713108])
+            ) p1_button_edge (
                 .clk(clk),
-                .in(M_io_button_cond_in[idx_0_972742522]),
-                .out(M_io_button_cond_out[idx_0_972742522])
+                .in(M_p1_button_edge_in[idx_0_1658713108]),
+                .out(M_p1_button_edge_out[idx_0_1658713108])
+            );
+        end
+    endgenerate
+    
+    
+    localparam logic [2:0][26:0] _MP_CLK_FREQ_1662385581 = {{27'h5f5e100, 27'h5f5e100, 27'h5f5e100}};
+    localparam _MP_MIN_DELAY_1662385581 = 5'h14;
+    localparam _MP_NUM_SYNC_1662385581 = 2'h2;
+    logic [2:0] M_p0_button_cond_in;
+    logic [2:0] M_p0_button_cond_out;
+    
+    genvar idx_0_1662385581;
+    
+    generate
+        for (idx_0_1662385581 = 0; idx_0_1662385581 < 3; idx_0_1662385581 = idx_0_1662385581 + 1) begin: forLoop_idx_0_1662385581
+            button_conditioner #(
+                .CLK_FREQ(_MP_CLK_FREQ_1662385581[idx_0_1662385581]),
+                .MIN_DELAY(_MP_MIN_DELAY_1662385581),
+                .NUM_SYNC(_MP_NUM_SYNC_1662385581)
+            ) p0_button_cond (
+                .clk(clk),
+                .in(M_p0_button_cond_in[idx_0_1662385581]),
+                .out(M_p0_button_cond_out[idx_0_1662385581])
+            );
+        end
+    endgenerate
+    
+    
+    localparam logic [2:0][26:0] _MP_CLK_FREQ_88424610 = {{27'h5f5e100, 27'h5f5e100, 27'h5f5e100}};
+    localparam _MP_MIN_DELAY_88424610 = 5'h14;
+    localparam _MP_NUM_SYNC_88424610 = 2'h2;
+    logic [2:0] M_p1_button_cond_in;
+    logic [2:0] M_p1_button_cond_out;
+    
+    genvar idx_0_88424610;
+    
+    generate
+        for (idx_0_88424610 = 0; idx_0_88424610 < 3; idx_0_88424610 = idx_0_88424610 + 1) begin: forLoop_idx_0_88424610
+            button_conditioner #(
+                .CLK_FREQ(_MP_CLK_FREQ_88424610[idx_0_88424610]),
+                .MIN_DELAY(_MP_MIN_DELAY_88424610),
+                .NUM_SYNC(_MP_NUM_SYNC_88424610)
+            ) p1_button_cond (
+                .clk(clk),
+                .in(M_p1_button_cond_in[idx_0_88424610]),
+                .out(M_p1_button_cond_out[idx_0_88424610])
             );
         end
     endgenerate
     
     
     logic [1:0] D_seg_multiplex_d, D_seg_multiplex_q = 1'h0;
-    localparam _MP_SIZE_132365479 = 1'h1;
-    localparam _MP_DIV_132365479 = 5'h1a;
-    localparam _MP_TOP_132365479 = 1'h0;
-    localparam _MP_UP_132365479 = 1'h1;
+    localparam _MP_SIZE_1652583637 = 1'h1;
+    localparam _MP_DIV_1652583637 = 5'h1a;
+    localparam _MP_TOP_1652583637 = 1'h0;
+    localparam _MP_UP_1652583637 = 1'h1;
     logic [0:0] M_slow_clk_value;
     
     counter #(
-        .SIZE(_MP_SIZE_132365479),
-        .DIV(_MP_DIV_132365479),
-        .TOP(_MP_TOP_132365479),
-        .UP(_MP_UP_132365479)
+        .SIZE(_MP_SIZE_1652583637),
+        .DIV(_MP_DIV_1652583637),
+        .TOP(_MP_TOP_1652583637),
+        .UP(_MP_UP_1652583637)
     ) slow_clk (
         .clk(clk),
         .rst(rst),
@@ -100,17 +145,17 @@ module alchitry_top (
     );
     
     
-    localparam _MP_SIZE_835784005 = 1'h1;
-    localparam _MP_DIV_835784005 = 4'ha;
-    localparam _MP_TOP_835784005 = 1'h0;
-    localparam _MP_UP_835784005 = 1'h1;
+    localparam _MP_SIZE_136810409 = 1'h1;
+    localparam _MP_DIV_136810409 = 4'ha;
+    localparam _MP_TOP_136810409 = 1'h0;
+    localparam _MP_UP_136810409 = 1'h1;
     logic [0:0] M_seg_clk_value;
     
     counter #(
-        .SIZE(_MP_SIZE_835784005),
-        .DIV(_MP_DIV_835784005),
-        .TOP(_MP_TOP_835784005),
-        .UP(_MP_UP_835784005)
+        .SIZE(_MP_SIZE_136810409),
+        .DIV(_MP_DIV_136810409),
+        .TOP(_MP_TOP_136810409),
+        .UP(_MP_UP_136810409)
     ) seg_clk (
         .clk(clk),
         .rst(rst),
@@ -133,13 +178,13 @@ module alchitry_top (
     );
     
     
-    localparam _MP_RISE_703520510 = 1'h1;
-    localparam _MP_FALL_703520510 = 1'h0;
+    localparam _MP_RISE_13107465 = 1'h1;
+    localparam _MP_FALL_13107465 = 1'h0;
     logic M_seg_clk_edge_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_703520510),
-        .FALL(_MP_FALL_703520510)
+        .RISE(_MP_RISE_13107465),
+        .FALL(_MP_FALL_13107465)
     ) seg_clk_edge (
         .in(M_seg_clk_value),
         .clk(clk),
@@ -155,24 +200,25 @@ module alchitry_top (
         M_reset_cond_in = ~rst_n;
         rst = M_reset_cond_out;
         led = 8'h0;
-        io_led[2'h2:1'h0] = {{8'h0, 8'h0, 8'h0}};
         io_segment = 8'h0;
         io_select = 4'h0;
         usb_tx = usb_rx;
-        p0l0 = 1'h0;
-        p0l1 = 1'h0;
-        p1l0 = 1'h0;
-        p1l1 = 1'h0;
+        p0l0 = 1'h1;
+        p0l1 = 1'h1;
+        p1l0 = 1'h1;
+        p1l1 = 1'h1;
         D_seg_multiplex_d = D_seg_multiplex_q;
-        M_io_button_cond_in = io_button;
-        M_io_button_edge_in = M_io_button_cond_out;
-        io_led[1'h0][1'h0] = M_motor_in1;
-        io_led[1'h0][1'h1] = M_motor_in2;
-        if (M_io_button_edge_out[1'h0]) begin
+        M_p0_button_cond_in = p0_button;
+        M_p1_button_cond_in = p1_button;
+        M_p0_button_edge_in = M_p0_button_cond_out;
+        M_p1_button_edge_in = M_p1_button_cond_out;
+        motorIN1 = M_motor_in1;
+        motorIN2 = M_motor_in2;
+        if (M_p0_button_edge_out[1'h0]) begin
             D_motor_speed_d = D_motor_speed_q + 1'h1;
             D_motor_direction_d = 1'h0;
         end
-        if (M_io_button_edge_out[2'h2]) begin
+        if (M_p1_button_edge_out[1'h0]) begin
             D_motor_speed_d = D_motor_speed_q + 1'h1;
             D_motor_direction_d = 1'h1;
         end

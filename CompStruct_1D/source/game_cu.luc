@@ -1,9 +1,10 @@
 module game_cu (
     input clk,  // clock
     input rst,  // reset
-    input counter_clk,
+    // input counter_clk, // Shouldnt need this, since counter will be counted internally to the 100MHz clock
     input regfile_rd2[32],
 
+    // Button inputs
     input p0b0,
     input p0b1,
     input p1b0,
@@ -21,16 +22,126 @@ module game_cu (
     output regfile_we,
     output debug[4]
 ) {
+    
+    enum GameStates {
+        IDLE,
+        
+        // Motor states
+        P0B0_UPDATE_MOTOR,
+        P0B1_UPDATE_MOTOR,
+        P1B0_UPDATE_MOTOR,
+        P1B1_UPDATE_MOTOR,
+        INCREASE_MOTOR_SPEED,
+        
+        // Score states
+        P0_INCREASE_SCORES,
+        P0_CHECK_SCORES, 
+        P0_WALL_BRANCH,
+        P0_WIN,
+        P0_HAVENT_WIN,
+        P1_INCREASE_SCORES,
+        P1_CHECK_SCORES, 
+        P1_WALL_BRANCH,
+        P1_WIN,
+        P1_HAVENT_WIN,
+        GAMEOVER,
+        
+        // START/RESET
+        START,
+        SET_MAX_COUNTER,
+        INCREASE_COUNTER,
+        CHECK_COUNTER,
+        BRANCH_COUNTER,
+        
+        // Set correct buttons
+        SET_CORRECT_BUTTON,
+        CHECK_CORRECT_BUTTON,
+        BRANCH_CORRECT_BUTTON,
+        SET_0_CORRECT_BUTTON,
+        SET_1_CORRECT_BUTTON
+    }
+    
+    dff game_fsm[$width(GameStates)](#INIT(GameStates.START), .clk(clk), .rst(rst))
+    
     always {
         alufn = 0
         asel = 0
         bsel = 0
         alu_out_sel = 0
-        regfile_wa = 0
+        regfile_we = 0
         regfile_wa = 0
         regfile_ra1 = 0
         regfile_ra2 = 0
-        regfile_we = 0
         debug = 0
+        
+        debug = b0000
+        
+        if (rst) {
+            game_fsm.d = game_fsm.q
+        }
+        
+        else {
+            case (game_fsm.q) {
+                GameStates.IDLE:
+                    alufn = 0
+                    asel = 0
+                    bsel = 0
+                    regfile_we = 0
+                    regfile_wa = 0
+                    regfile_ra1 = 0
+                    regfile_ra2 = 0
+                    alu_out_sel = 0
+                
+                GameStates.P0B0_UPDATE_MOTOR:
+                    alufn = 6h38 
+                    asel = d4
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d1 // motor direction
+                    regfile_ra1 = 0
+                    regfile_ra2 = d5
+                    alu_out_sel = d0
+                
+                 GameStates.P0B1_UPDATE_MOTOR:
+                    alufn = 6h38 
+                    asel = d3
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d1 // motor direction
+                    regfile_ra1 = 0
+                    regfile_ra2 = d5
+                    alu_out_sel = d0
+                
+                GameStates.P1B0_UPDATE_MOTOR:
+                    alufn = 6h39 
+                    asel = d2
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d1 // motor direction
+                    regfile_ra1 = 0
+                    regfile_ra2 = d5
+                    alu_out_sel = d0
+                
+                 GameStates.P1B1_UPDATE_MOTOR:
+                    alufn = 6h39 
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d1 // motor direction
+                    regfile_ra1 = 0
+                    regfile_ra2 = d5
+                    alu_out_sel = d0
+                
+                GameStates.INCREASE_MOTOR_SPEED:
+                    alufn = 6h00
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d2 // motor speed
+                    regfile_ra1 = 0
+                    regfile_ra2 = d2
+                    alu_out_sel = d0
+            }
+        }
     }
 }

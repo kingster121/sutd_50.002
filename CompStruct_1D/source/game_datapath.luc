@@ -1,0 +1,91 @@
+module game_datapath (
+    input clk,  // clock
+    input rst,  // reset
+    
+    
+    
+    // Inputs
+    input p0b0,
+    input p0b1,
+    input p1b0,
+    input p1b1,
+    input p0wall,
+    input p1wall,
+    
+    // Outputs
+    output correct_button,
+    output motor_direction,
+    output motor_speed,
+    output p0_score,
+    output p1_score,
+    output correct_button_compare,
+    output counter,
+    output temp
+) {
+    
+    sig input_alu_a[32]
+    sig input_alu_b[32]
+    
+    alu game_alu
+    
+    .clk(clk) {
+        .rst(rst) {
+            
+            game_cu game_cu(
+                .p0b0(p0b0),
+                .p0b1(p0b1),
+                .p1b0(p1b0),
+                .p1b1(p1b1),
+                .p0wall(p0wall),
+                .p1wall(p1wall)
+            )
+            
+            game_regfiles game_regfiles(
+                .we(game_cu.regfile_we), 
+                .wa(game_cu.regfile_wa), 
+                .ra1(game_cu.regfile_ra1), 
+                .ra2(game_cu.regfile_ra2)
+            )
+        }
+    }
+    
+    always {
+        // bootstrap rd2 output to CU for convenient branching conditions
+        game_cu.regfile_rd2 = game_regfiles.rd2
+        
+        //asel mux
+        case (game_cu.asel) {
+            d0: input_alu_a = game_regfiles.rd1
+            d1: input_alu_a = 32b0001
+            d2: input_alu_a = 32b0010
+            d3: input_alu_a =32b100
+            d4: input_alu_a =32b1000
+            default : //b10 unused
+                input_alu_a = 0
+        }
+        
+        // bsel mux
+        case (game_cu.bsel) {
+            d0: input_alu_b = game_regfiles.rd2
+            d1: input_alu_b = 32b1010
+            d2: input_alu_b = 32b0101
+            d3: input_alu_b = 32d3
+            default: //necessary to init
+                input_alu_b = 0
+        }
+        
+        // alu
+        game_alu.a = input_alu_a
+        game_alu.b = input_alu_b
+        game_alu.alufn = game_cu.alufn
+        
+        // wdsel mux
+        case (game_cu.alu_out_sel){
+            b00: game_regfiles.data = game_alu.out
+            b01 : game_regfiles.data = rng_1
+            b10 : game_regfiles.data = rng_2000
+            default : 
+                game_regfiles.data = game_alu.out
+        }
+    }
+}

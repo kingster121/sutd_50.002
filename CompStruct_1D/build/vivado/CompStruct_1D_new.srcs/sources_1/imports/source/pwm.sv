@@ -15,17 +15,17 @@ module pwm #(
         input wire update,
         output reg pulse
     );
-    localparam _MP_SIZE_189161467 = WIDTH;
-    localparam _MP_DIV_189161467 = DIV;
-    localparam _MP_TOP_189161467 = TOP;
-    localparam _MP_UP_189161467 = 1'h1;
-    logic [(_MP_SIZE_189161467)-1:0] M_ctr_value;
+    localparam _MP_SIZE_903084584 = WIDTH;
+    localparam _MP_DIV_903084584 = DIV;
+    localparam _MP_TOP_903084584 = TOP;
+    localparam _MP_UP_903084584 = 1'h1;
+    logic [(_MP_SIZE_903084584)-1:0] M_ctr_value;
     
     counter #(
-        .SIZE(_MP_SIZE_189161467),
-        .DIV(_MP_DIV_189161467),
-        .TOP(_MP_TOP_189161467),
-        .UP(_MP_UP_189161467)
+        .SIZE(_MP_SIZE_903084584),
+        .DIV(_MP_DIV_903084584),
+        .TOP(_MP_TOP_903084584),
+        .UP(_MP_UP_903084584)
     ) ctr (
         .clk(clk),
         .rst(rst),

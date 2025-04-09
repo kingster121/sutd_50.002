@@ -4,12 +4,23 @@ module alchitry_top (
     output led[8],          // 8 user controllable LEDs
     input usb_rx,           // USB->Serial input
     output usb_tx,          // USB->Serial output
-    output io_led[3][8],    // LEDs on IO Shield
     output io_segment[8],   // 7-segment LEDs on IO Shield
     output io_select[4],    // Digit select on IO Shield
-    input io_button[5],     // 5 buttons on IO Shield
-    input io_dip[3][8],      // DIP switches on IO Shield
+    // input io_button[5],     // 5 buttons on IO Shield
+    // input io_dip[3][8],      // DIP switches on IO Shield
     
+    // Player button inputs
+    // 0 - Button 0
+    // 1 - Button 1
+    // 2 - Wall
+    input p0_button[3],
+    input p1_button[3],
+    
+    // Motor IN1 and IN2
+    output motorIN1,
+    output motorIN2,
+    
+    // Player LEDs
     output p0l0,
     output p0l1,
     output p1l0,
@@ -26,13 +37,19 @@ module alchitry_top (
         reset_conditioner reset_cond
         
         // Creating button conditioner and edge detector
-        edge_detector io_button_edge[5](#RISE(5x{{1}}), #FALL(5x{{0}}))
-        button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQ}})) 
+        // edge_detector io_button_edge[5](#RISE(5x{{1}}), #FALL(5x{{0}}))
+        // button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQ}})) 
+        
+        // P0 and P1 button conditioner and edge detector
+        edge_detector p0_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
+        edge_detector p1_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
+        button_conditioner p0_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
+        button_conditioner p1_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
         
         .rst(rst){
-             dff seg_multiplex[2](#INIT(0))
-             counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER))
-             counter seg_clk(#SIZE(1), #DIV(SEG_REFRESH))
+            dff seg_multiplex[2](#INIT(0))
+            counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER))
+            counter seg_clk(#SIZE(1), #DIV(SEG_REFRESH))
             
             // Directly connect motor speed and direction to them dff upon instantiation
             dff motor_speed[3](#INIT(0))
@@ -48,37 +65,43 @@ module alchitry_top (
         
         // Default outputs
         led = 8h00              // turn LEDs off
-        io_led[2:0] = 3x{{8h00}}
         io_segment = 8h00
         io_select = 4h0
         usb_tx = usb_rx         // loop serial port
-        p0l0 = 0
-        p0l1 = 0
-        p1l0 = 0
-        p1l1 = 0
+        p0l0 = 1
+        p0l1 = 1
+        p1l0 = 1
+        p1l1 = 1
         
         // Connecting dffs
         seg_multiplex.d = seg_multiplex.q
         
-        // Connect button conditioner to edge detector
-        io_button_cond.in = io_button
-        io_button_edge.in = io_button_cond.out
+        // Connect player 0 and player 1 button conditioner to edge detector
+        p0_button_cond.in = p0_button
+        p1_button_cond.in = p1_button
+        p0_button_edge.in = p0_button_cond.out
+        p1_button_edge.in = p1_button_cond.out
         
         // Test motor on io_led
         // ##### CHANGE THIS CONNECTION TO THE motor driver! #####
-        io_led[0][0] = motor.in1
-        io_led[0][1] = motor.in2
+        motorIN1 = motor.in1
+        motorIN2 = motor.in2
         
         // Player Buttons - Motor Actuation
-        // P0B0 - 27
-        // P0B1 - 28
-        // P1B0 - 24
-        // P1B1 - 23
-        if (io_button_edge.out[0]) {
+        // if (io_button_edge.out[0]) {
+        //     motor_speed.d = motor_speed.q + 1
+        //     motor_direction.d = 0
+        // }
+        // if (io_button_edge.out[2]) {
+        //     motor_speed.d = motor_speed.q + 1
+        //     motor_direction.d = 1
+        // }
+        
+        if (p0_button_edge.out[0]) {
             motor_speed.d = motor_speed.q + 1
             motor_direction.d = 0
         }
-        if (io_button_edge.out[2]) {
+        if (p1_button_edge.out[0]) {
             motor_speed.d = motor_speed.q + 1
             motor_direction.d = 1
         }

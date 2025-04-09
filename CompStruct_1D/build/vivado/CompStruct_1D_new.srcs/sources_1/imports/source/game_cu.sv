@@ -25,18 +25,82 @@ module game_cu (
         output reg regfile_we,
         output reg [3:0] debug
     );
+    localparam E_GameStates_IDLE = 5'h0;
+    localparam E_GameStates_P0B0_UPDATE_MOTOR = 5'h1;
+    localparam E_GameStates_P0B1_UPDATE_MOTOR = 5'h2;
+    localparam E_GameStates_P1B0_UPDATE_MOTOR = 5'h3;
+    localparam E_GameStates_P1B1_UPDATE_MOTOR = 5'h4;
+    localparam E_GameStates_INCREASE_MOTOR_SPEED = 5'h5;
+    localparam E_GameStates_P0_INCREASE_SCORES = 5'h6;
+    localparam E_GameStates_P0_CHECK_SCORES = 5'h7;
+    localparam E_GameStates_P0_WALL_BRANCH = 5'h8;
+    localparam E_GameStates_P0_WIN = 5'h9;
+    localparam E_GameStates_P0_HAVENT_WIN = 5'ha;
+    localparam E_GameStates_P1_INCREASE_SCORES = 5'hb;
+    localparam E_GameStates_P1_CHECK_SCORES = 5'hc;
+    localparam E_GameStates_P1_WALL_BRANCH = 5'hd;
+    localparam E_GameStates_P1_WIN = 5'he;
+    localparam E_GameStates_P1_HAVENT_WIN = 5'hf;
+    localparam E_GameStates_GAMEOVER = 5'h10;
+    localparam E_GameStates_START = 5'h11;
+    localparam E_GameStates_SET_MAX_COUNTER = 5'h12;
+    localparam E_GameStates_INCREASE_COUNTER = 5'h13;
+    localparam E_GameStates_CHECK_COUNTER = 5'h14;
+    localparam E_GameStates_BRANCH_COUNTER = 5'h15;
+    localparam E_GameStates_SET_CORRECT_BUTTON = 5'h16;
+    localparam E_GameStates_CHECK_CORRECT_BUTTON = 5'h17;
+    localparam E_GameStates_BRANCH_CORRECT_BUTTON = 5'h18;
+    localparam E_GameStates_SET_0_CORRECT_BUTTON = 5'h19;
+    localparam E_GameStates_SET_1_CORRECT_BUTTON = 5'h1a;
+    logic [4:0] D_game_fsm_d, D_game_fsm_q = 5'h11;
     always @* begin
+        D_game_fsm_d = D_game_fsm_q;
+        
         alufn = 1'h0;
         asel = 1'h0;
         bsel = 1'h0;
         alu_out_sel = 1'h0;
-        regfile_wa = 1'h0;
+        regfile_we = 1'h0;
         regfile_wa = 1'h0;
         regfile_ra1 = 1'h0;
         regfile_ra2 = 1'h0;
-        regfile_we = 1'h0;
         debug = 1'h0;
+        debug = 4'h0;
+        if (rst) begin
+            D_game_fsm_d = D_game_fsm_q;
+        end else begin
+            
+            case (D_game_fsm_q)
+                5'h0: begin
+                    alufn = 1'h0;
+                    asel = 1'h0;
+                    bsel = 1'h0;
+                    regfile_we = 1'h0;
+                    regfile_wa = 1'h0;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 1'h0;
+                    alu_out_sel = 1'h0;
+                end
+                5'h1: begin
+                    alufn = 1'h0;
+                    asel = 1'h0;
+                    bsel = 1'h0;
+                    regfile_we = 1'h0;
+                    regfile_wa = 1'h0;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 1'h0;
+                    alu_out_sel = 1'h0;
+                end
+            endcase
+        end
     end
     
     
+    always @(posedge (clk)) begin
+        if ((rst) == 1'b1) begin
+            D_game_fsm_q <= 5'h11;
+        end else begin
+            D_game_fsm_q <= D_game_fsm_d;
+        end
+    end
 endmodule
