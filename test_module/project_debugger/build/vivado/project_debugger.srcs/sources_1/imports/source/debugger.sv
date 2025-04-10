@@ -12,53 +12,123 @@ module debugger (
         output reg new_tx,
         output reg [7:0] tx_data,
         input wire tx_busy,
-        input wire [31:0] correct_button
+        input wire [31:0] correct_button,
+        input wire [31:0] motor_direction,
+        input wire [31:0] motor_speed,
+        input wire [31:0] p0_score,
+        input wire [31:0] p1_score,
+        input wire [31:0] correct_button_compare,
+        input wire [31:0] counter,
+        input wire [31:0] temp
     );
-    localparam E_States_IDLE = 2'h0;
-    localparam E_States_LOAD_DFF = 2'h1;
-    localparam E_States_SEND_CORRECT_BUTTON_PREFIX = 2'h2;
-    localparam E_States_SEND_CORRECT_BUTTON = 2'h3;
+    localparam E_States_IDLE = 5'h0;
+    localparam E_States_LOAD_DFF = 5'h1;
+    localparam E_States_SEND_CORRECT_BUTTON_PREFIX = 5'h2;
+    localparam E_States_SEND_CORRECT_BUTTON = 5'h3;
+    localparam E_States_SEND_MOTOR_DIRECTION_PREFIX = 5'h4;
+    localparam E_States_SEND_MOTOR_DIRECTION = 5'h5;
+    localparam E_States_SEND_MOTOR_SPEED_PREFIX = 5'h6;
+    localparam E_States_SEND_MOTOR_SPEED = 5'h7;
+    localparam E_States_SEND_P0_SCORE_PREFIX = 5'h8;
+    localparam E_States_SEND_P0_SCORE = 5'h9;
+    localparam E_States_SEND_P1_SCORE_PREFIX = 5'ha;
+    localparam E_States_SEND_P1_SCORE = 5'hb;
+    localparam E_States_SEND_CORRECT_BUTTON_COMPARE_PREFIX = 5'hc;
+    localparam E_States_SEND_CORRECT_BUTTON_COMPARE = 5'hd;
+    localparam E_States_SEND_COUNTER_PREFIX = 5'he;
+    localparam E_States_SEND_COUNTER = 5'hf;
+    localparam E_States_SEND_TEMP_PREFIX = 5'h10;
+    localparam E_States_SEND_TEMP = 5'h11;
     localparam logic [16:0][7:0] TEXT_CORRECT_BUTTON = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h74, 8'h74, 8'h75, 8'h42, 8'h20, 8'h74, 8'h63, 8'h65, 8'h72, 8'h72, 8'h6f, 8'h43, 8'ha}};
+    localparam logic [17:0][7:0] TEXT_MOTOR_DIRECTION = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h69, 8'h74, 8'h63, 8'h65, 8'h72, 8'h69, 8'h44, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
+    localparam logic [13:0][7:0] TEXT_MOTOR_SPEED = {{8'h20, 8'h3a, 8'h64, 8'h65, 8'h65, 8'h70, 8'h53, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
+    localparam logic [15:0][7:0] TEXT_P0_SCORE = {{8'h20, 8'h3a, 8'h65, 8'h72, 8'h6f, 8'h63, 8'h53, 8'h20, 8'h30, 8'h72, 8'h65, 8'h79, 8'h61, 8'h6c, 8'h50, 8'ha}};
+    localparam logic [15:0][7:0] TEXT_P1_SCORE = {{8'h20, 8'h3a, 8'h65, 8'h72, 8'h6f, 8'h63, 8'h53, 8'h20, 8'h31, 8'h72, 8'h65, 8'h79, 8'h61, 8'h6c, 8'h50, 8'ha}};
+    localparam logic [24:0][7:0] TEXT_CORRECT_BUTTON_COMPARE = {{8'h20, 8'h3a, 8'h65, 8'h72, 8'h61, 8'h70, 8'h6d, 8'h6f, 8'h43, 8'h20, 8'h6e, 8'h6f, 8'h74, 8'h74, 8'h75, 8'h42, 8'h20, 8'h74, 8'h63, 8'h65, 8'h72, 8'h72, 8'h6f, 8'h43, 8'ha}};
+    localparam logic [9:0][7:0] TEXT_COUNTER = {{8'h20, 8'h3a, 8'h72, 8'h65, 8'h74, 8'h6e, 8'h75, 8'h6f, 8'h43, 8'ha}};
+    localparam logic [6:0][7:0] TEXT_TEMP = {{8'h20, 8'h3a, 8'h70, 8'h6d, 8'h65, 8'h54, 8'ha}};
     localparam BIT_0 = 8'h30;
     localparam BIT_1 = 8'h31;
-    logic [1:0] D_state_d, D_state_q = 2'h0;
+    logic [4:0] D_state_d, D_state_q = 5'h0;
     logic [5:0] D_bit_32_count_d, D_bit_32_count_q = 1'h0;
     logic [4:0] D_correct_button_count_d, D_correct_button_count_q = 0;
+    logic [4:0] D_motor_direction_count_d, D_motor_direction_count_q = 0;
+    logic [3:0] D_motor_speed_count_d, D_motor_speed_count_q = 0;
+    logic [3:0] D_p0_score_count_d, D_p0_score_count_q = 0;
+    logic [3:0] D_p1_score_count_d, D_p1_score_count_q = 0;
+    logic [4:0] D_correct_button_compare_count_d, D_correct_button_compare_count_q = 0;
+    logic [3:0] D_counter_count_d, D_counter_count_q = 0;
+    logic [2:0] D_temp_count_d, D_temp_count_q = 0;
     logic [31:0] D_correct_button_dff_d, D_correct_button_dff_q = 1'h0;
+    logic [31:0] D_motor_direction_dff_d, D_motor_direction_dff_q = 1'h0;
+    logic [31:0] D_motor_speed_dff_d, D_motor_speed_dff_q = 1'h0;
+    logic [31:0] D_p0_score_dff_d, D_p0_score_dff_q = 1'h0;
+    logic [31:0] D_p1_score_dff_d, D_p1_score_dff_q = 1'h0;
+    logic [31:0] D_correct_button_compare_dff_d, D_correct_button_compare_dff_q = 1'h0;
+    logic [31:0] D_counter_dff_d, D_counter_dff_q = 1'h0;
+    logic [31:0] D_temp_dff_d, D_temp_dff_q = 1'h0;
     logic send_trigger;
     always @* begin
         D_bit_32_count_d = D_bit_32_count_q;
         D_correct_button_count_d = D_correct_button_count_q;
+        D_motor_direction_count_d = D_motor_direction_count_q;
+        D_motor_speed_count_d = D_motor_speed_count_q;
+        D_p0_score_count_d = D_p0_score_count_q;
+        D_p1_score_count_d = D_p1_score_count_q;
+        D_correct_button_compare_count_d = D_correct_button_compare_count_q;
+        D_counter_count_d = D_counter_count_q;
+        D_temp_count_d = D_temp_count_q;
         D_state_d = D_state_q;
         D_correct_button_dff_d = D_correct_button_dff_q;
+        D_motor_direction_dff_d = D_motor_direction_dff_q;
+        D_motor_speed_dff_d = D_motor_speed_dff_q;
+        D_p0_score_dff_d = D_p0_score_dff_q;
+        D_p1_score_dff_d = D_p1_score_dff_q;
+        D_correct_button_compare_dff_d = D_correct_button_compare_dff_q;
+        D_counter_dff_d = D_counter_dff_q;
+        D_temp_dff_d = D_temp_dff_q;
         
         new_tx = 1'h0;
         tx_data = 8'bxxxxxxxx;
         send_trigger = new_rx & (rx_data == 8'h68);
         
         case (D_state_q)
-            2'h0: begin
+            5'h0: begin
                 if (send_trigger & !tx_busy) begin
                     D_bit_32_count_d = 1'h0;
                     D_correct_button_count_d = 1'h0;
-                    D_state_d = 2'h1;
+                    D_motor_direction_count_d = 1'h0;
+                    D_motor_speed_count_d = 1'h0;
+                    D_p0_score_count_d = 1'h0;
+                    D_p1_score_count_d = 1'h0;
+                    D_correct_button_compare_count_d = 1'h0;
+                    D_counter_count_d = 1'h0;
+                    D_temp_count_d = 1'h0;
+                    D_state_d = 5'h1;
                 end
             end
-            2'h1: begin
+            5'h1: begin
                 D_correct_button_dff_d = correct_button;
-                D_state_d = 2'h2;
+                D_motor_direction_dff_d = motor_direction;
+                D_motor_speed_dff_d = motor_speed;
+                D_p0_score_dff_d = p0_score;
+                D_p1_score_dff_d = p1_score;
+                D_correct_button_compare_dff_d = correct_button_compare;
+                D_counter_dff_d = counter;
+                D_temp_dff_d = temp;
+                D_state_d = 5'h2;
             end
-            2'h2: begin
+            5'h2: begin
                 if (!tx_busy) begin
                     D_correct_button_count_d = D_correct_button_count_q + 1'h1;
                     new_tx = 1'h1;
                     tx_data = TEXT_CORRECT_BUTTON[D_correct_button_count_q];
                     if (D_correct_button_count_q == 6'h10) begin
-                        D_state_d = 2'h3;
+                        D_state_d = 5'h3;
                     end
                 end
             end
-            2'h3: begin
+            5'h3: begin
                 if (!tx_busy) begin
                     D_bit_32_count_d = D_bit_32_count_q + 1'h1;
                     new_tx = 1'h1;
@@ -69,12 +139,37 @@ module debugger (
                     end
                     if (D_bit_32_count_q == 5'h1f) begin
                         D_bit_32_count_d = 1'h0;
-                        D_state_d = 2'h0;
+                        D_state_d = 5'h4;
+                    end
+                end
+            end
+            5'h4: begin
+                if (!tx_busy) begin
+                    D_motor_direction_count_d = D_motor_direction_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_MOTOR_DIRECTION[D_motor_direction_count_q];
+                    if (D_motor_direction_count_q == 6'h11) begin
+                        D_state_d = 5'h5;
+                    end
+                end
+            end
+            5'h5: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    if (D_motor_direction_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 5'h1f) begin
+                        D_bit_32_count_d = 1'h0;
+                        D_state_d = 5'h6;
                     end
                 end
             end
             default: begin
-                D_state_d = 2'h0;
+                D_state_d = 5'h0;
             end
         endcase
     end
@@ -82,15 +177,43 @@ module debugger (
     
     always @(posedge (clk)) begin
         if ((rst) == 1'b1) begin
-            D_state_q <= 2'h0;
+            D_state_q <= 5'h0;
             D_bit_32_count_q <= 1'h0;
             D_correct_button_count_q <= 0;
+            D_motor_direction_count_q <= 0;
+            D_motor_speed_count_q <= 0;
+            D_p0_score_count_q <= 0;
+            D_p1_score_count_q <= 0;
+            D_correct_button_compare_count_q <= 0;
+            D_counter_count_q <= 0;
+            D_temp_count_q <= 0;
             D_correct_button_dff_q <= 1'h0;
+            D_motor_direction_dff_q <= 1'h0;
+            D_motor_speed_dff_q <= 1'h0;
+            D_p0_score_dff_q <= 1'h0;
+            D_p1_score_dff_q <= 1'h0;
+            D_correct_button_compare_dff_q <= 1'h0;
+            D_counter_dff_q <= 1'h0;
+            D_temp_dff_q <= 1'h0;
         end else begin
             D_state_q <= D_state_d;
             D_bit_32_count_q <= D_bit_32_count_d;
             D_correct_button_count_q <= D_correct_button_count_d;
+            D_motor_direction_count_q <= D_motor_direction_count_d;
+            D_motor_speed_count_q <= D_motor_speed_count_d;
+            D_p0_score_count_q <= D_p0_score_count_d;
+            D_p1_score_count_q <= D_p1_score_count_d;
+            D_correct_button_compare_count_q <= D_correct_button_compare_count_d;
+            D_counter_count_q <= D_counter_count_d;
+            D_temp_count_q <= D_temp_count_d;
             D_correct_button_dff_q <= D_correct_button_dff_d;
+            D_motor_direction_dff_q <= D_motor_direction_dff_d;
+            D_motor_speed_dff_q <= D_motor_speed_dff_d;
+            D_p0_score_dff_q <= D_p0_score_dff_d;
+            D_p1_score_dff_q <= D_p1_score_dff_d;
+            D_correct_button_compare_dff_q <= D_correct_button_compare_dff_d;
+            D_counter_dff_q <= D_counter_dff_d;
+            D_temp_dff_q <= D_temp_dff_d;
         end
     end
 endmodule

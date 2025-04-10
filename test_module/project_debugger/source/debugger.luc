@@ -8,17 +8,46 @@ module debugger (
     input tx_busy,      // TX is busy flag
     
     // Register
-    input correct_button[32]
+    input correct_button[32],
+    input motor_direction[32],
+    input motor_speed[32],
+    input p0_score[32],
+    input p1_score[32],
+    input correct_button_compare[32],
+    input counter[32],
+    input temp[32]
 ) {
     
     enum States {
         IDLE, 
         LOAD_DFF,
         SEND_CORRECT_BUTTON_PREFIX,
-        SEND_CORRECT_BUTTON
+        SEND_CORRECT_BUTTON,
+        SEND_MOTOR_DIRECTION_PREFIX,
+        SEND_MOTOR_DIRECTION,
+        SEND_MOTOR_SPEED_PREFIX,
+        SEND_MOTOR_SPEED,
+        SEND_P0_SCORE_PREFIX,
+        SEND_P0_SCORE,
+        SEND_P1_SCORE_PREFIX,
+        SEND_P1_SCORE,
+        SEND_CORRECT_BUTTON_COMPARE_PREFIX,
+        SEND_CORRECT_BUTTON_COMPARE,
+        SEND_COUNTER_PREFIX,
+        SEND_COUNTER,
+        SEND_TEMP_PREFIX,
+        SEND_TEMP
     }
     
     const TEXT_CORRECT_BUTTON = $reverse("\nCorrect Button: ")
+    const TEXT_MOTOR_DIRECTION = $reverse("\nMotor Direction: ")
+    const TEXT_MOTOR_SPEED = $reverse("\nMotor Speed: ")
+    const TEXT_P0_SCORE = $reverse("\nPlayer0 Score: ")
+    const TEXT_P1_SCORE = $reverse("\nPlayer1 Score: ")
+    const TEXT_CORRECT_BUTTON_COMPARE = $reverse("\nCorrect Button Compare: ")
+    const TEXT_COUNTER = $reverse("\nCounter: ")
+    const TEXT_TEMP = $reverse("\nTemp: ")
+    
     const BIT_0 = "0"
     const BIT_1 = "1"
     
@@ -27,9 +56,23 @@ module debugger (
             dff state[$width(States)](#INIT(States.IDLE))
             dff bit_32_count[6](#INIT(0))
             dff correct_button_count[$clog2($width(TEXT_CORRECT_BUTTON, 0))]
+            dff motor_direction_count[$clog2($width(TEXT_MOTOR_DIRECTION, 0))]
+            dff motor_speed_count[$clog2($width(TEXT_MOTOR_SPEED, 0))]
+            dff p0_score_count[$clog2($width(TEXT_P0_SCORE, 0))]
+            dff p1_score_count[$clog2($width(TEXT_P1_SCORE, 0))]
+            dff correct_button_compare_count[$clog2($width(TEXT_CORRECT_BUTTON_COMPARE, 0))]
+            dff counter_count[$clog2($width(TEXT_COUNTER, 0))]
+            dff temp_count[$clog2($width(TEXT_TEMP, 0))]
             
             // Register dff
             dff correct_button_dff[32](#INIT(0))
+            dff motor_direction_dff[32](#INIT(0))
+            dff motor_speed_dff[32](#INIT(0))
+            dff p0_score_dff[32](#INIT(0))
+            dff p1_score_dff[32](#INIT(0))
+            dff correct_button_compare_dff[32](#INIT(0))
+            dff counter_dff[32](#INIT(0))
+            dff temp_dff[32](#INIT(0))
         }
     }
     
@@ -46,11 +89,25 @@ module debugger (
                 if (send_trigger & !tx_busy) {
                     bit_32_count.d = 0
                     correct_button_count.d = 0
+                    motor_direction_count.d = 0
+                    motor_speed_count.d = 0
+                    p0_score_count.d = 0
+                    p1_score_count.d = 0
+                    correct_button_compare_count.d = 0
+                    counter_count.d = 0
+                    temp_count.d = 0
                     state.d = States.LOAD_DFF
                 }
             
             States.LOAD_DFF:
                 correct_button_dff.d = correct_button
+                motor_direction_dff.d = motor_direction
+                motor_speed_dff.d = motor_speed
+                p0_score_dff.d = p0_score
+                p1_score_dff.d = p1_score
+                correct_button_compare_dff.d = correct_button_compare
+                counter_dff.d = counter
+                temp_dff.d = temp
                 state.d = States.SEND_CORRECT_BUTTON_PREFIX
             
             States.SEND_CORRECT_BUTTON_PREFIX:
@@ -66,8 +123,34 @@ module debugger (
                 if (!tx_busy) {
                     bit_32_count.d = bit_32_count.q + 1   // move to the next letter
                     new_tx = 1                            // send data  
-                        
+                    
                     if (correct_button_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 31) { 
+                        bit_32_count.d = 0
+                        state.d = States.SEND_MOTOR_DIRECTION_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_MOTOR_DIRECTION_PREFIX:
+                if (!tx_busy) {
+                    motor_direction_count.d = motor_direction_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_MOTOR_DIRECTION[motor_direction_count.q] // send letter from PROMPT_TEXT
+                    if (motor_direction_count.q == $width(TEXT_MOTOR_DIRECTION, 0) - 1) // no more letters
+                        state.d = States.SEND_MOTOR_DIRECTION           // change states
+                }
+            
+            States.SEND_MOTOR_DIRECTION:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (motor_direction_dff.q[bit_32_count.q] == 1) 
                         tx_data = BIT_1
                     else
                         tx_data = BIT_0
@@ -78,7 +161,7 @@ module debugger (
                         state.d = States.IDLE           // change states
                     }
                 }
-
+            
             default:
                 state.d = States.IDLE
         }

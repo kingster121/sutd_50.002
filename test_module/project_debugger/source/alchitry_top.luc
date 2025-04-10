@@ -36,13 +36,13 @@ module alchitry_top (
         debugger.new_rx = rx.new_data
         debugger.rx_data = rx.data
         debugger.correct_button = 32b00000000000000000000000000000000
-        // debugger.motor_direction = 32b00000000000000000000000000000001
-        // debugger.motor_speed = 32b00000000000000000000000000000011
-        // debugger.p0_score = 00000000000000000000000000000111
-        // debugger.p1_score = 32b00000000000000000000000000001111
-        // debugger.correct_button_compare = 32b00000000000000000000000000011111
-        // debugger.counter = 32b00000000000000000000000000111111
-        // debugger.temp = 32b00000000000000000000000001111111
+        debugger.motor_direction = 32b00000000000000000000000000000001
+        debugger.motor_speed = 32b00000000000000000000000000000011
+        debugger.p0_score = 00000000000000000000000000000111
+        debugger.p1_score = 32b00000000000000000000000000001111
+        debugger.correct_button_compare = 32b00000000000000000000000000011111
+        debugger.counter = 32b00000000000000000000000000111111
+        debugger.temp = 32b00000000000000000000000001111111
 
         tx.new_data = debugger.new_tx
         tx.data = debugger.tx_data

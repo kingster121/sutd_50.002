@@ -7,7 +7,7 @@
   **** SW Build 6060944 on Thu Mar 06 19:10:09 MST 2025
   **** IP Build 6050500 on Thu Mar  6 23:33:39 MST 2025
   **** SharedData Build 6060542 on Thu Mar 06 10:31:07 MST 2025
-  **** Start of session at: Fri Apr 11 03:01:25 2025
+  **** Start of session at: Fri Apr 11 03:25:18 2025
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
     ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 
@@ -19,9 +19,9 @@ INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t
 INFO: [Device 21-403] Loading part xc7a35tftg256-1
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 84736
+INFO: [Synth 8-7075] Helper process launched with PID 90450
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 2044.164 ; gain = 354.855 ; free physical = 1387 ; free virtual = 16402
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 2043.160 ; gain = 353.855 ; free physical = 967 ; free virtual = 16376
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'alchitry_top' [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/alchitry_top.sv:7]
 INFO: [Synth 8-6157] synthesizing module 'reset_conditioner' [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/reset_conditioner.sv:7]
@@ -38,9 +38,20 @@ INFO: [Synth 8-6157] synthesizing module 'uart_tx' [/home/wata/Desktop/school/te
 INFO: [Synth 8-226] default block is never used [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/uart_tx.sv:43]
 INFO: [Synth 8-6155] done synthesizing module 'uart_tx' (0#1) [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/uart_tx.sv:7]
 INFO: [Synth 8-6157] synthesizing module 'debugger' [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:7]
-INFO: [Synth 8-226] default block is never used [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:39]
 INFO: [Synth 8-6155] done synthesizing module 'debugger' (0#1) [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:7]
 INFO: [Synth 8-6155] done synthesizing module 'alchitry_top' (0#1) [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/alchitry_top.sv:7]
+WARNING: [Synth 8-6014] Unused sequential element D_motor_speed_count_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:184]
+WARNING: [Synth 8-6014] Unused sequential element D_p0_score_count_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:185]
+WARNING: [Synth 8-6014] Unused sequential element D_p1_score_count_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:186]
+WARNING: [Synth 8-6014] Unused sequential element D_correct_button_compare_count_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:187]
+WARNING: [Synth 8-6014] Unused sequential element D_counter_count_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:188]
+WARNING: [Synth 8-6014] Unused sequential element D_temp_count_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:189]
+WARNING: [Synth 8-6014] Unused sequential element D_motor_speed_dff_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:192]
+WARNING: [Synth 8-6014] Unused sequential element D_p0_score_dff_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:193]
+WARNING: [Synth 8-6014] Unused sequential element D_p1_score_dff_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:194]
+WARNING: [Synth 8-6014] Unused sequential element D_correct_button_compare_dff_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:195]
+WARNING: [Synth 8-6014] Unused sequential element D_counter_dff_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:196]
+WARNING: [Synth 8-6014] Unused sequential element D_temp_dff_q_reg was removed.  [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.srcs/sources_1/imports/source/debugger.sv:197]
 WARNING: [Synth 8-3917] design alchitry_top has port led[7] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[6] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[5] driven by constant 0
@@ -49,19 +60,120 @@ WARNING: [Synth 8-3917] design alchitry_top has port led[3] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[2] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[1] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[0] driven by constant 0
+WARNING: [Synth 8-7129] Port motor_speed[31] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[30] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[29] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[28] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[27] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[26] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[25] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[24] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[23] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[22] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[21] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[20] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[19] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[18] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[17] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[16] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[15] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[14] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[13] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[12] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[11] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[10] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[9] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[8] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[7] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[6] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[5] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[4] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[3] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[2] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[1] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port motor_speed[0] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[31] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[30] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[29] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[28] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[27] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[26] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[25] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[24] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[23] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[22] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[21] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[20] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[19] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[18] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[17] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[16] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[15] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[14] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[13] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[12] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[11] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[10] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[9] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[8] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[7] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[6] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[5] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[4] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[3] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[2] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[1] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p0_score[0] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[31] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[30] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[29] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[28] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[27] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[26] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[25] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[24] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[23] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[22] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[21] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[20] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[19] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[18] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[17] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[16] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[15] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[14] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[13] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[12] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[11] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[10] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[9] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[8] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[7] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[6] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[5] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[4] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[3] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[2] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[1] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port p1_score[0] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port correct_button_compare[31] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port correct_button_compare[30] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port correct_button_compare[29] in module debugger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port correct_button_compare[28] in module debugger is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 2116.133 ; gain = 426.824 ; free physical = 1294 ; free virtual = 16310
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 2117.129 ; gain = 427.824 ; free physical = 883 ; free virtual = 16292
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 2130.977 ; gain = 441.668 ; free physical = 1290 ; free virtual = 16306
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 2131.973 ; gain = 442.668 ; free physical = 879 ; free virtual = 16288
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 2130.977 ; gain = 441.668 ; free physical = 1290 ; free virtual = 16306
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 2131.973 ; gain = 442.668 ; free physical = 879 ; free virtual = 16288
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2130.977 ; gain = 0.000 ; free physical = 1290 ; free virtual = 16306
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2131.973 ; gain = 0.000 ; free physical = 879 ; free virtual = 16288
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
@@ -74,26 +186,26 @@ Parsing XDC File [/home/wata/Desktop/school/term4/50.002_Computer_Structures/wor
 Finished Parsing XDC File [/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/constraint/au_props.xdc]
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2280.727 ; gain = 0.000 ; free physical = 1268 ; free virtual = 16284
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2283.723 ; gain = 0.000 ; free physical = 863 ; free virtual = 16273
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2280.727 ; gain = 0.000 ; free physical = 1268 ; free virtual = 16284
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2283.723 ; gain = 0.000 ; free physical = 863 ; free virtual = 16273
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 2280.727 ; gain = 591.418 ; free physical = 1280 ; free virtual = 16296
+Finished Constraint Validation : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 2283.723 ; gain = 594.418 ; free physical = 823 ; free virtual = 16232
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a35tftg256-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 2288.730 ; gain = 599.422 ; free physical = 1280 ; free virtual = 16296
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 2291.727 ; gain = 602.422 ; free physical = 823 ; free virtual = 16232
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 2288.730 ; gain = 599.422 ; free physical = 1280 ; free virtual = 16296
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 2291.727 ; gain = 602.422 ; free physical = 827 ; free virtual = 16236
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'D_state_q_reg' in module 'uart_rx'
 INFO: [Synth 8-802] inferred FSM for state register 'D_state_q_reg' in module 'uart_tx'
@@ -119,14 +231,18 @@ INFO: [Synth 8-3354] encoded FSM with state register 'D_state_q_reg' using encod
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
 ---------------------------------------------------------------------------------------------------
-                 iSTATE2 |                               00 |                               00
-                  iSTATE |                               01 |                               01
-                 iSTATE0 |                               10 |                               10
-                 iSTATE1 |                               11 |                               11
+                 iSTATE0 |                          0000001 |                            00000
+                 iSTATE1 |                          0000010 |                            00001
+                 iSTATE2 |                          0000100 |                            00010
+                 iSTATE3 |                          0001000 |                            00011
+                 iSTATE4 |                          0010000 |                            00100
+                 iSTATE5 |                          0100000 |                            00101
+                  iSTATE |                          1000000 |                            00110
+*
 ---------------------------------------------------------------------------------------------------
-INFO: [Synth 8-3354] encoded FSM with state register 'D_state_q_reg' using encoding 'sequential' in module 'debugger'
+INFO: [Synth 8-3354] encoded FSM with state register 'D_state_q_reg' using encoding 'one-hot' in module 'debugger'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 2288.730 ; gain = 599.422 ; free physical = 1282 ; free virtual = 16300
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 2291.727 ; gain = 602.422 ; free physical = 826 ; free virtual = 16237
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
@@ -135,27 +251,28 @@ Detailed RTL Component Info :
 +---Adders : 
 	   2 Input    7 Bit       Adders := 2     
 	   2 Input    6 Bit       Adders := 1     
-	   2 Input    5 Bit       Adders := 1     
+	   2 Input    5 Bit       Adders := 2     
 	   2 Input    3 Bit       Adders := 2     
 +---Registers : 
-	               32 Bit    Registers := 1     
+	               32 Bit    Registers := 2     
 	                8 Bit    Registers := 2     
 	                7 Bit    Registers := 2     
 	                6 Bit    Registers := 1     
-	                5 Bit    Registers := 1     
+	                5 Bit    Registers := 2     
 	                4 Bit    Registers := 1     
 	                3 Bit    Registers := 2     
 	                1 Bit    Registers := 4     
 +---Muxes : 
-	   4 Input    8 Bit        Muxes := 1     
+	   7 Input    8 Bit        Muxes := 1     
 	   4 Input    7 Bit        Muxes := 2     
-	   4 Input    6 Bit        Muxes := 1     
-	   4 Input    5 Bit        Muxes := 1     
+	   7 Input    7 Bit        Muxes := 1     
+	   7 Input    6 Bit        Muxes := 1     
+	   7 Input    5 Bit        Muxes := 2     
 	   4 Input    3 Bit        Muxes := 2     
-	   4 Input    2 Bit        Muxes := 3     
-	   2 Input    2 Bit        Muxes := 1     
-	   2 Input    1 Bit        Muxes := 4     
-	   4 Input    1 Bit        Muxes := 16    
+	   4 Input    2 Bit        Muxes := 2     
+	   2 Input    1 Bit        Muxes := 5     
+	   4 Input    1 Bit        Muxes := 11    
+	   7 Input    1 Bit        Muxes := 5     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -180,20 +297,23 @@ WARNING: [Synth 8-3917] design alchitry_top has port led[3] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[2] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[1] driven by constant 0
 WARNING: [Synth 8-3917] design alchitry_top has port led[0] driven by constant 0
+WARNING: [Synth 8-3332] Sequential element (debugger/FSM_onehot_D_state_q_reg[6]) is unused and will be removed from module alchitry_top.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 2288.730 ; gain = 599.422 ; free physical = 1256 ; free virtual = 16278
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 2291.727 ; gain = 602.422 ; free physical = 828 ; free virtual = 16243
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
 ROM: Preliminary Mapping Report
-+-------------+------------------------------+---------------+----------------+
-|Module Name  | RTL Object                   | Depth x Width | Implemented As | 
-+-------------+------------------------------+---------------+----------------+
-|debugger     | TEXT_CORRECT_BUTTON          | 32x7          | LUT            | 
-|alchitry_top | debugger/TEXT_CORRECT_BUTTON | 32x7          | LUT            | 
-+-------------+------------------------------+---------------+----------------+
++-------------+-------------------------------+---------------+----------------+
+|Module Name  | RTL Object                    | Depth x Width | Implemented As | 
++-------------+-------------------------------+---------------+----------------+
+|debugger     | TEXT_CORRECT_BUTTON           | 32x7          | LUT            | 
+|debugger     | TEXT_MOTOR_DIRECTION          | 32x7          | LUT            | 
+|alchitry_top | debugger/TEXT_CORRECT_BUTTON  | 32x7          | LUT            | 
+|alchitry_top | debugger/TEXT_MOTOR_DIRECTION | 32x7          | LUT            | 
++-------------+-------------------------------+---------------+----------------+
 
 ---------------------------------------------------------------------------------
 Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -202,19 +322,19 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 2310.730 ; gain = 621.422 ; free physical = 1219 ; free virtual = 16241
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 2309.727 ; gain = 620.422 ; free physical = 762 ; free virtual = 16179
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 2340.777 ; gain = 651.469 ; free physical = 1188 ; free virtual = 16209
+Finished Timing Optimization : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 2340.773 ; gain = 651.469 ; free physical = 738 ; free virtual = 16156
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 2341.785 ; gain = 652.477 ; free physical = 1188 ; free virtual = 16209
+Finished Technology Mapping : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2348.781 ; gain = 659.477 ; free physical = 723 ; free virtual = 16140
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -232,37 +352,37 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.598 ; gain = 794.289 ; free physical = 1078 ; free virtual = 16100
+Finished IO Insertion : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.594 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.598 ; gain = 794.289 ; free physical = 1078 ; free virtual = 16100
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.594 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.598 ; gain = 794.289 ; free physical = 1078 ; free virtual = 16101
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.594 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.598 ; gain = 794.289 ; free physical = 1078 ; free virtual = 16101
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.594 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.598 ; gain = 794.289 ; free physical = 1078 ; free virtual = 16101
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.594 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.598 ; gain = 794.289 ; free physical = 1078 ; free virtual = 16101
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.594 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -280,38 +400,38 @@ Report Cell Usage:
 +------+-----+------+
 |1     |BUFG |     1|
 |2     |LUT1 |     1|
-|3     |LUT2 |     8|
-|4     |LUT3 |     9|
-|5     |LUT4 |    12|
-|6     |LUT5 |    19|
-|7     |LUT6 |    28|
-|8     |FDRE |    54|
-|9     |FDSE |     4|
+|3     |LUT2 |     9|
+|4     |LUT3 |    11|
+|5     |LUT4 |    21|
+|6     |LUT5 |    30|
+|7     |LUT6 |    31|
+|8     |FDRE |    64|
+|9     |FDSE |     5|
 |10    |IBUF |     3|
 |11    |OBUF |     9|
 +------+-----+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.598 ; gain = 794.289 ; free physical = 1078 ; free virtual = 16101
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.594 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 9 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 2483.598 ; gain = 644.539 ; free physical = 1082 ; free virtual = 16104
-Synthesis Optimization Complete : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2483.605 ; gain = 794.289 ; free physical = 1082 ; free virtual = 16104
+Synthesis finished with 0 errors, 0 critical warnings and 10 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 2483.594 ; gain = 642.539 ; free physical = 619 ; free virtual = 16036
+Synthesis Optimization Complete : Time (s): cpu = 00:00:20 ; elapsed = 00:00:21 . Memory (MB): peak = 2483.602 ; gain = 794.289 ; free physical = 619 ; free virtual = 16036
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2483.605 ; gain = 0.000 ; free physical = 1079 ; free virtual = 16101
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2483.602 ; gain = 0.000 ; free physical = 619 ; free virtual = 16037
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2539.625 ; gain = 0.000 ; free physical = 1253 ; free virtual = 16278
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2539.621 ; gain = 0.000 ; free physical = 769 ; free virtual = 16186
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Synth Design complete | Checksum: ac6ebb8
+Synth Design complete | Checksum: 5f42ed13
 INFO: [Common 17-83] Releasing license: Synthesis
-32 Infos, 17 Warnings, 0 Critical Warnings and 0 Errors encountered.
+32 Infos, 130 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:25 ; elapsed = 00:00:22 . Memory (MB): peak = 2539.625 ; gain = 850.324 ; free physical = 1253 ; free virtual = 16278
-INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1488.427; main = 1488.427; forked = 269.533
-INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 3853.758; main = 2539.629; forked = 1565.023
-Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2563.637 ; gain = 0.000 ; free physical = 1253 ; free virtual = 16278
+synth_design: Time (s): cpu = 00:00:29 ; elapsed = 00:00:25 . Memory (MB): peak = 2539.621 ; gain = 850.324 ; free physical = 769 ; free virtual = 16187
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1676.590; main = 1488.271; forked = 269.605
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 3998.809; main = 2539.625; forked = 1565.023
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2563.633 ; gain = 0.000 ; free physical = 769 ; free virtual = 16187
 INFO: [Common 17-1381] The checkpoint '/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/project_debugger/build/vivado/project_debugger.runs/synth_1/alchitry_top.dcp' has been generated.
 INFO: [Vivado 12-24828] Executing command : report_utilization -file alchitry_top_utilization_synth.rpt -pb alchitry_top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Fri Apr 11 03:01:49 2025...
+INFO: [Common 17-206] Exiting Vivado at Fri Apr 11 03:25:46 2025...
