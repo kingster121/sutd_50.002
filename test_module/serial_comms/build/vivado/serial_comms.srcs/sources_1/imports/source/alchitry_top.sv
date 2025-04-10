@@ -12,12 +12,12 @@ module alchitry_top (
         output reg usb_tx
     );
     logic rst;
-    localparam _MP_STAGES_229052657 = 3'h4;
+    localparam _MP_STAGES_840260276 = 3'h4;
     logic M_reset_cond_in;
     logic M_reset_cond_out;
     
     reset_conditioner #(
-        .STAGES(_MP_STAGES_229052657)
+        .STAGES(_MP_STAGES_840260276)
     ) reset_cond (
         .clk(clk),
         .in(M_reset_cond_in),
@@ -25,15 +25,15 @@ module alchitry_top (
     );
     
     
-    localparam _MP_CLK_FREQ_918066998 = 27'h5f5e100;
-    localparam _MP_BAUD_918066998 = 20'hf4240;
+    localparam _MP_CLK_FREQ_369547969 = 27'h5f5e100;
+    localparam _MP_BAUD_369547969 = 20'hf4240;
     logic M_rx_rx;
     logic [7:0] M_rx_data;
     logic M_rx_new_data;
     
     uart_rx #(
-        .CLK_FREQ(_MP_CLK_FREQ_918066998),
-        .BAUD(_MP_BAUD_918066998)
+        .CLK_FREQ(_MP_CLK_FREQ_369547969),
+        .BAUD(_MP_BAUD_369547969)
     ) rx (
         .clk(clk),
         .rst(rst),
@@ -43,8 +43,8 @@ module alchitry_top (
     );
     
     
-    localparam _MP_CLK_FREQ_1495514959 = 27'h5f5e100;
-    localparam _MP_BAUD_1495514959 = 20'hf4240;
+    localparam _MP_CLK_FREQ_1126250080 = 27'h5f5e100;
+    localparam _MP_BAUD_1126250080 = 20'hf4240;
     logic M_tx_tx;
     logic M_tx_block;
     logic M_tx_busy;
@@ -52,8 +52,8 @@ module alchitry_top (
     logic M_tx_new_data;
     
     uart_tx #(
-        .CLK_FREQ(_MP_CLK_FREQ_1495514959),
-        .BAUD(_MP_BAUD_1495514959)
+        .CLK_FREQ(_MP_CLK_FREQ_1126250080),
+        .BAUD(_MP_BAUD_1126250080)
     ) tx (
         .clk(clk),
         .rst(rst),

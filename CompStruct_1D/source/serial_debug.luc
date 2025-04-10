@@ -1,0 +1,47 @@
+module serial_debug (
+    input clk,         // clock
+    input rst,         // reset
+    input new_rx,      // new RX flag
+    input rx_data[8],  // RX data
+    output new_tx,     // new TX flag
+    output tx_data[8], // TX data
+    input tx_busy,      // TX is busy flag
+    
+    // Registers state
+    input correct_button[32]
+    // input motor_direction[32],
+    // input motor_speed[32],
+    // input p0_score[32],
+    // input p1_score[32],
+    // input correct_button_compare[32],
+    // input counter[32],
+    // input temp[32]
+) {
+    
+    enum States {
+        IDLE,
+        LISTEN,
+        PRINT
+    }
+    
+    .clk(clk) {
+        dff state[$width(States)]
+        dff correct_button_dff[32]
+    }
+    
+    always {
+        
+        case(state.q) {
+            States.IDLE:
+                if (new_rx && rx_data == "h")
+                    state.d = States.LISTEN
+
+            // Listening means to store the inputs into dff since printing might take multiple cycles. Take a snapshot of them
+            States.LISTEN:
+                correct_button_dff.d = correct_button
+
+            States.PRINT:
+            if (!tx_busy)
+        }
+    }
+}
