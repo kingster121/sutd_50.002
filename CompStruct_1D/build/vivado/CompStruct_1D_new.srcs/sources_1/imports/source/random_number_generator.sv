@@ -13,13 +13,13 @@ module random_number_generator #(
         output reg [(SIZE)-1:0] out
     );
     logic [31:0] D_seed_d, D_seed_q = 1'h0;
-    localparam _MP_SEED_827732377 = 33'h19430f418;
+    localparam _MP_SEED_1296504757 = 33'h19430f418;
     logic M_pn_gen_rst;
     logic M_pn_gen_next;
     logic [31:0] M_pn_gen_num;
     
     pn_gen #(
-        .SEED(_MP_SEED_827732377)
+        .SEED(_MP_SEED_1296504757)
     ) pn_gen (
         .clk(clk),
         .seed(D_seed_q),
@@ -29,13 +29,13 @@ module random_number_generator #(
     );
     
     
-    localparam _MP_RISE_928544434 = 1'h1;
-    localparam _MP_FALL_928544434 = 1'h1;
+    localparam _MP_RISE_2085662574 = 1'h1;
+    localparam _MP_FALL_2085662574 = 1'h1;
     logic M_edge_detector_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_928544434),
-        .FALL(_MP_FALL_928544434)
+        .RISE(_MP_RISE_2085662574),
+        .FALL(_MP_FALL_2085662574)
     ) edge_detector (
         .clk(clk),
         .in(slow_clk),

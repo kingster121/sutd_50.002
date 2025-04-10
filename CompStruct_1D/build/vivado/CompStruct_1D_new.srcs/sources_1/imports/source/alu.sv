@@ -65,6 +65,12 @@ module alu (
             6'h37: begin
                 out_sig = a <= b;
             end
+            6'h38: begin
+                out_sig = (a & b) && 1'h0;
+            end
+            6'h39: begin
+                out_sig = ~((a & b) && 1'h0);
+            end
             default: begin
                 out_sig = 1'h0;
             end

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-| Date         : Thu Apr 10 00:33:01 2025
+| Date         : Thu Apr 10 03:51:01 2025
 | Host         : fedora running 64-bit unknown
 | Command      : report_control_sets -verbose -file alchitry_top_control_sets_placed.rpt
 | Design       : alchitry_top
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |     7 |
-|    Minimum number of control sets                        |     7 |
+| Total control sets                                       |     9 |
+|    Minimum number of control sets                        |     9 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    34 |
+| Unused register locations in slices containing registers |    54 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,7 +39,7 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |     7 |
+| Total control sets |     9 |
 | >= 0 to < 4        |     0 |
 | >= 4 to < 6        |     2 |
 | >= 6 to < 8        |     0 |
@@ -47,7 +47,7 @@ Table of Contents
 | >= 10 to < 12      |     1 |
 | >= 12 to < 14      |     0 |
 | >= 14 to < 16      |     0 |
-| >= 16              |     3 |
+| >= 16              |     5 |
 +--------------------+-------+
 * Control sets can be remapped at either synth_design or opt_design
 
@@ -58,28 +58,30 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              16 |            7 |
+| No           | No                    | No                     |              26 |           13 |
 | No           | No                    | Yes                    |               0 |            0 |
 | No           | Yes                   | No                     |              15 |            4 |
 | Yes          | No                    | No                     |               0 |            0 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |              47 |           14 |
+| Yes          | Yes                   | No                     |              81 |           24 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
 4. Detailed Control Set Information
 -----------------------------------
 
-+----------------+----------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+--------------+
-|  Clock Signal  |                          Enable Signal                         |                          Set/Reset Signal                         | Slice Load Count | Bel Load Count | Bels / Slice |
-+----------------+----------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+--------------+
-|  clk_IBUF_BUFG |                                                                | reset_cond/M_reset_cond_in                                        |                1 |              4 |         4.00 |
-|  clk_IBUF_BUFG | forLoop_idx_0_1658713108[0].p1_button_edge/E[0]                | reset_cond/Q[0]                                                   |                2 |              4 |         2.00 |
-|  clk_IBUF_BUFG | motor/pwm/ctr/E[0]                                             | reset_cond/Q[0]                                                   |                2 |              9 |         4.50 |
-|  clk_IBUF_BUFG |                                                                | motor/pwm/ctr/D_ctr_q[0]_i_1__1_n_0                               |                3 |             11 |         3.67 |
-|  clk_IBUF_BUFG |                                                                |                                                                   |                7 |             16 |         2.29 |
-|  clk_IBUF_BUFG | forLoop_idx_0_88424610[0].p1_button_cond/D_ctr_q[0]_i_2__0_n_0 | forLoop_idx_0_88424610[0].p1_button_cond/sync/D_pipe_q_reg[1]_0   |                5 |             17 |         3.40 |
-|  clk_IBUF_BUFG | forLoop_idx_0_1662385581[0].p0_button_cond/D_ctr_q[0]_i_2_n_0  | forLoop_idx_0_1662385581[0].p0_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
-+----------------+----------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+--------------+
++----------------+-----------------------------------------------------------------+------------------------------------------------------------------+------------------+----------------+--------------+
+|  Clock Signal  |                          Enable Signal                          |                         Set/Reset Signal                         | Slice Load Count | Bel Load Count | Bels / Slice |
++----------------+-----------------------------------------------------------------+------------------------------------------------------------------+------------------+----------------+--------------+
+|  clk_IBUF_BUFG |                                                                 | reset_cond/M_reset_cond_in                                       |                1 |              4 |         4.00 |
+|  clk_IBUF_BUFG | forLoop_idx_0_945004243[1].p1_button_cond/E[0]                  | reset_cond/Q[0]                                                  |                1 |              4 |         4.00 |
+|  clk_IBUF_BUFG | motor/pwm/ctr/E[0]                                              | reset_cond/Q[0]                                                  |                3 |              9 |         3.00 |
+|  clk_IBUF_BUFG |                                                                 | motor/pwm/ctr/D_ctr_q[0]_i_1__3_n_0                              |                3 |             11 |         3.67 |
+|  clk_IBUF_BUFG | forLoop_idx_0_945004243[1].p1_button_cond/D_ctr_q[0]_i_2__2_n_0 | forLoop_idx_0_945004243[1].p1_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG | forLoop_idx_0_945004243[0].p1_button_cond/D_ctr_q[0]_i_2__1_n_0 | forLoop_idx_0_945004243[0].p1_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG | forLoop_idx_0_233786878[1].p0_button_cond/D_ctr_q[0]_i_2_n_0    | forLoop_idx_0_233786878[1].p0_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG | forLoop_idx_0_233786878[0].p0_button_cond/D_ctr_q[0]_i_2__0_n_0 | forLoop_idx_0_233786878[0].p0_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG |                                                                 |                                                                  |               13 |             26 |         2.00 |
++----------------+-----------------------------------------------------------------+------------------------------------------------------------------+------------------+----------------+--------------+
 
 

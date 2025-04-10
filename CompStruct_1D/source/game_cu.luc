@@ -92,6 +92,15 @@ module game_cu (
                     regfile_ra2 = 0
                     alu_out_sel = 0
                 
+                    if (p0b0)
+                        game_fsm.d = GameStates.P0B0_UPDATE_MOTOR
+                    if (p0b1)
+                        game_fsm.d = GameStates.P0B1_UPDATE_MOTOR
+                    if (p1b0)
+                        game_fsm.d = GameStates.P1B0_UPDATE_MOTOR
+                    if (p1b1)
+                        game_fsm.d = GameStates.P1B1_UPDATE_MOTOR
+                
                 GameStates.P0B0_UPDATE_MOTOR:
                     alufn = 6h38 
                     asel = d4

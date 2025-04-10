@@ -36,27 +36,33 @@ module alchitry_top (
         // clock. This ensures the entire FPGA comes out of reset at the same time.
         reset_conditioner reset_cond
         
-        // Creating button conditioner and edge detector
-        // edge_detector io_button_edge[5](#RISE(5x{{1}}), #FALL(5x{{0}}))
-        // button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQ}})) 
-        
         // P0 and P1 button conditioner and edge detector
+        // B0, B1, wall
         edge_detector p0_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
         edge_detector p1_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
         button_conditioner p0_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
         button_conditioner p1_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
         
+        // edge_detector seg_clk_edge(#RISE(1), #FALL(0), .in(seg_clk.value))
+        
         .rst(rst){
-            dff seg_multiplex[2](#INIT(0))
+            // dff seg_multiplex[2](#INIT(0))
             counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER))
-            counter seg_clk(#SIZE(1), #DIV(SEG_REFRESH))
+            // counter seg_clk(#SIZE(1), #DIV(SEG_REFRESH))
             
             // Directly connect motor speed and direction to them dff upon instantiation
-            dff motor_speed[3](#INIT(0))
-            dff motor_direction(#INIT(0))
-            motor motor(.motor_speed(motor_speed.q), .motor_direction(motor_direction.q))
+            // dff motor_speed[3](#INIT(0))
+            // dff motor_direction(#INIT(0))
+            // motor motor(.motor_speed(motor_speed.q), .motor_direction(motor_direction.q))
+            
+            game_datapath game_datapath
+            
+            // Directly connect motor to the datapath
+            motor motor(.motor_speed(game_datapath.motor_speed), .motor_direction(game_datapath.motor_direction))
         }
-        edge_detector seg_clk_edge(#RISE(1), #FALL(0), .in(seg_clk.value))
+        
+        random_number_generator rng_1(#SIZE(1), .slow_clk(slow_clk.value), .refresh(0))
+        random_number_generator rng_2000(#SIZE(11), .slow_clk(slow_clk.value), .refresh(0))
     }
     
     always {
@@ -74,18 +80,35 @@ module alchitry_top (
         p1l1 = 1
         
         // Connecting dffs
-        seg_multiplex.d = seg_multiplex.q
+        // seg_multiplex.d = seg_multiplex.q
         
+        // ================== NEW CODE =================== //
         // Connect player 0 and player 1 button conditioner to edge detector
         p0_button_cond.in = p0_button
         p1_button_cond.in = p1_button
         p0_button_edge.in = p0_button_cond.out
         p1_button_edge.in = p1_button_cond.out
         
-        // Test motor on io_led
-        // ##### CHANGE THIS CONNECTION TO THE motor driver! #####
+        // Connect the game_datapath
+        game_datapath.rng_1 = rng_1.out
+        game_datapath.rng_2000 = rng_2000.out
+        
+        game_datapath.p0b0 = p0_button_edge.out[0]
+        game_datapath.p0b1 = p0_button_edge.out[1]
+        game_datapath.p0wall = p0_button_edge.out[2]
+        game_datapath.p1b0 = p1_button_edge.out[0]
+        game_datapath.p1b1 = p1_button_edge.out[1]
+        game_datapath.p1wall = p1_button_edge.out[2]
+        
+        // Connect motor
         motorIN1 = motor.in1
         motorIN2 = motor.in2
+        
+        // ================= PAST CODE ==================== //
+        // Test motor on io_led
+        // ##### CHANGE THIS CONNECTION TO THE motor driver! #####
+        // motorIN1 = motor.in1
+        // motorIN2 = motor.in2
         
         // Player Buttons - Motor Actuation
         // if (io_button_edge.out[0]) {
@@ -97,14 +120,14 @@ module alchitry_top (
         //     motor_direction.d = 1
         // }
         
-        if (p0_button_edge.out[0]) {
-            motor_speed.d = motor_speed.q + 1
-            motor_direction.d = 0
-        }
-        if (p1_button_edge.out[0]) {
-            motor_speed.d = motor_speed.q + 1
-            motor_direction.d = 1
-        }
+        // if (p0_button_edge.out[0]) {
+        //     motor_speed.d = motor_speed.q + 1
+        //     motor_direction.d = 0
+        // }
+        // if (p1_button_edge.out[0]) {
+        //     motor_speed.d = motor_speed.q + 1
+        //     motor_direction.d = 1
+        // }
         
         // Button Lights
         

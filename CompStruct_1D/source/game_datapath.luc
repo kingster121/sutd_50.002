@@ -2,7 +2,9 @@ module game_datapath (
     input clk,  // clock
     input rst,  // reset
     
-    
+    // RNG
+    input rng_1,
+    input rng_2000[11],
     
     // Inputs
     input p0b0,
@@ -13,14 +15,14 @@ module game_datapath (
     input p1wall,
     
     // Outputs
-    output correct_button,
-    output motor_direction,
-    output motor_speed,
-    output p0_score,
-    output p1_score,
-    output correct_button_compare,
-    output counter,
-    output temp
+    output correct_button[32],
+    output motor_direction[32],
+    output motor_speed[32],
+    output p0_score[32],
+    output p1_score[32],
+    output correct_button_compare[32],
+    output counter[32],
+    output temp[32]
 ) {
     
     sig input_alu_a[32]
@@ -87,5 +89,14 @@ module game_datapath (
             default : 
                 game_regfiles.data = game_alu.out
         }
+        
+        correct_button = game_regfiles.correct_button_out
+        motor_direction = game_regfiles.motor_direction_out
+        motor_speed = game_regfiles.motor_speed_out
+        p0_score = game_regfiles.p0_score_out
+        p1_score = game_regfiles.p1_score_out
+        correct_button_compare = game_regfiles.correct_button_compare_out
+        counter = game_regfiles.counter_out
+        temp = game_regfiles.temp_out
     }
 }
