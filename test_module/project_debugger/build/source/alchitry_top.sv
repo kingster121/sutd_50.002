@@ -12,12 +12,12 @@ module alchitry_top (
         output reg usb_tx
     );
     logic rst;
-    localparam _MP_STAGES_392838383 = 3'h4;
+    localparam _MP_STAGES_1446016958 = 3'h4;
     logic M_reset_cond_in;
     logic M_reset_cond_out;
     
     reset_conditioner #(
-        .STAGES(_MP_STAGES_392838383)
+        .STAGES(_MP_STAGES_1446016958)
     ) reset_cond (
         .clk(clk),
         .in(M_reset_cond_in),
@@ -25,15 +25,15 @@ module alchitry_top (
     );
     
     
-    localparam _MP_CLK_FREQ_1857223167 = 27'h5f5e100;
-    localparam _MP_BAUD_1857223167 = 20'hf4240;
+    localparam _MP_CLK_FREQ_1702479960 = 27'h5f5e100;
+    localparam _MP_BAUD_1702479960 = 20'hf4240;
     logic M_rx_rx;
     logic [7:0] M_rx_data;
     logic M_rx_new_data;
     
     uart_rx #(
-        .CLK_FREQ(_MP_CLK_FREQ_1857223167),
-        .BAUD(_MP_BAUD_1857223167)
+        .CLK_FREQ(_MP_CLK_FREQ_1702479960),
+        .BAUD(_MP_BAUD_1702479960)
     ) rx (
         .clk(clk),
         .rst(rst),
@@ -43,8 +43,8 @@ module alchitry_top (
     );
     
     
-    localparam _MP_CLK_FREQ_1635601897 = 27'h5f5e100;
-    localparam _MP_BAUD_1635601897 = 20'hf4240;
+    localparam _MP_CLK_FREQ_1361612667 = 27'h5f5e100;
+    localparam _MP_BAUD_1361612667 = 20'hf4240;
     logic M_tx_tx;
     logic M_tx_block;
     logic M_tx_busy;
@@ -52,8 +52,8 @@ module alchitry_top (
     logic M_tx_new_data;
     
     uart_tx #(
-        .CLK_FREQ(_MP_CLK_FREQ_1635601897),
-        .BAUD(_MP_BAUD_1635601897)
+        .CLK_FREQ(_MP_CLK_FREQ_1361612667),
+        .BAUD(_MP_BAUD_1361612667)
     ) tx (
         .clk(clk),
         .rst(rst),
@@ -109,7 +109,7 @@ module alchitry_top (
         M_debugger_correct_button = 32'h0;
         M_debugger_motor_direction = 32'h1;
         M_debugger_motor_speed = 32'h3;
-        M_debugger_p0_score = 7'h6f;
+        M_debugger_p0_score = 32'h7;
         M_debugger_p1_score = 32'hf;
         M_debugger_correct_button_compare = 32'h1f;
         M_debugger_counter = 32'h3f;

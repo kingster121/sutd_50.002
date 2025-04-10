@@ -95,7 +95,7 @@ module debugger (
         case (D_state_q)
             5'h0: begin
                 if (send_trigger & !tx_busy) begin
-                    D_bit_32_count_d = 1'h0;
+                    D_bit_32_count_d = 5'h1f;
                     D_correct_button_count_d = 1'h0;
                     D_motor_direction_count_d = 1'h0;
                     D_motor_speed_count_d = 1'h0;
@@ -130,15 +130,15 @@ module debugger (
             end
             5'h3: begin
                 if (!tx_busy) begin
-                    D_bit_32_count_d = D_bit_32_count_q + 1'h1;
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
                     new_tx = 1'h1;
                     if (D_correct_button_dff_q[D_bit_32_count_q] == 1'h1) begin
                         tx_data = 8'h31;
                     end else begin
                         tx_data = 8'h30;
                     end
-                    if (D_bit_32_count_q == 5'h1f) begin
-                        D_bit_32_count_d = 1'h0;
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
                         D_state_d = 5'h4;
                     end
                 end
@@ -155,16 +155,166 @@ module debugger (
             end
             5'h5: begin
                 if (!tx_busy) begin
-                    D_bit_32_count_d = D_bit_32_count_q + 1'h1;
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
                     new_tx = 1'h1;
                     if (D_motor_direction_dff_q[D_bit_32_count_q] == 1'h1) begin
                         tx_data = 8'h31;
                     end else begin
                         tx_data = 8'h30;
                     end
-                    if (D_bit_32_count_q == 5'h1f) begin
-                        D_bit_32_count_d = 1'h0;
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
                         D_state_d = 5'h6;
+                    end
+                end
+            end
+            5'h6: begin
+                if (!tx_busy) begin
+                    D_motor_speed_count_d = D_motor_speed_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_MOTOR_SPEED[D_motor_speed_count_q];
+                    if (D_motor_speed_count_q == 5'hd) begin
+                        D_state_d = 5'h7;
+                    end
+                end
+            end
+            5'h7: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_motor_speed_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h8;
+                    end
+                end
+            end
+            5'h8: begin
+                if (!tx_busy) begin
+                    D_p0_score_count_d = D_p0_score_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_P0_SCORE[D_p0_score_count_q];
+                    if (D_p0_score_count_q == 6'hf) begin
+                        D_state_d = 5'h9;
+                    end
+                end
+            end
+            5'h9: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_p0_score_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'ha;
+                    end
+                end
+            end
+            5'ha: begin
+                if (!tx_busy) begin
+                    D_p1_score_count_d = D_p1_score_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_P1_SCORE[D_p1_score_count_q];
+                    if (D_p1_score_count_q == 6'hf) begin
+                        D_state_d = 5'hb;
+                    end
+                end
+            end
+            5'hb: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_p1_score_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'hc;
+                    end
+                end
+            end
+            5'hc: begin
+                if (!tx_busy) begin
+                    D_correct_button_compare_count_d = D_correct_button_compare_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_P1_SCORE[D_correct_button_compare_count_q];
+                    if (D_correct_button_compare_count_q == 6'h18) begin
+                        D_state_d = 5'hd;
+                    end
+                end
+            end
+            5'hd: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_correct_button_compare_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'he;
+                    end
+                end
+            end
+            5'he: begin
+                if (!tx_busy) begin
+                    D_counter_count_d = D_counter_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_COUNTER[D_counter_count_q];
+                    if (D_counter_count_q == 5'h9) begin
+                        D_state_d = 5'hf;
+                    end
+                end
+            end
+            5'hf: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_counter_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h10;
+                    end
+                end
+            end
+            5'h10: begin
+                if (!tx_busy) begin
+                    D_temp_count_d = D_temp_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_TEMP[D_temp_count_q];
+                    if (D_temp_count_q == 5'h6) begin
+                        D_state_d = 5'h11;
+                    end
+                end
+            end
+            5'h11: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_temp_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h0;
                     end
                 end
             end
