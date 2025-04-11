@@ -7,8 +7,6 @@
 module game_datapath (
         input wire clk,
         input wire rst,
-        input wire rng_1,
-        input wire [10:0] rng_2000,
         input wire p0b0,
         input wire p0b1,
         input wire p1b0,
@@ -30,6 +28,7 @@ module game_datapath (
         output reg [31:0] b,
         output reg [5:0] alufn
     );
+    localparam CLOCK_DIVIDER = 5'h1b;
     logic [31:0] input_alu_a;
     logic [31:0] input_alu_b;
     logic [31:0] M_game_alu_a;
@@ -121,6 +120,50 @@ module game_datapath (
     );
     
     
+    localparam _MP_SIZE_289228865 = 1'h1;
+    localparam _MP_DIV_289228865 = 5'h1b;
+    localparam _MP_TOP_289228865 = 1'h0;
+    localparam _MP_UP_289228865 = 1'h1;
+    logic [0:0] M_slow_clk_value;
+    
+    counter #(
+        .SIZE(_MP_SIZE_289228865),
+        .DIV(_MP_DIV_289228865),
+        .TOP(_MP_TOP_289228865),
+        .UP(_MP_UP_289228865)
+    ) slow_clk (
+        .clk(clk),
+        .rst(rst),
+        .value(M_slow_clk_value)
+    );
+    
+    
+    localparam _MP_SIZE_1179812068 = 1'h1;
+    logic [0:0] M_rng_1_out;
+    
+    random_number_generator #(
+        .SIZE(_MP_SIZE_1179812068)
+    ) rng_1 (
+        .slow_clk(M_slow_clk_value),
+        .refresh(rst),
+        .clk(clk),
+        .out(M_rng_1_out)
+    );
+    
+    
+    localparam _MP_SIZE_685608210 = 4'hb;
+    logic [10:0] M_rng_2000_out;
+    
+    random_number_generator #(
+        .SIZE(_MP_SIZE_685608210)
+    ) rng_2000 (
+        .slow_clk(M_slow_clk_value),
+        .refresh(rst),
+        .clk(clk),
+        .out(M_rng_2000_out)
+    );
+    
+    
     always @* begin
         M_game_cu_regfile_rd2 = M_game_regfiles_rd2;
         
@@ -171,10 +214,10 @@ module game_datapath (
                 M_game_regfiles_data = M_game_alu_out;
             end
             2'h1: begin
-                M_game_regfiles_data = rng_1;
+                M_game_regfiles_data = M_rng_1_out;
             end
             2'h2: begin
-                M_game_regfiles_data = rng_2000;
+                M_game_regfiles_data = M_rng_2000_out;
             end
             default: begin
                 M_game_regfiles_data = M_game_alu_out;
@@ -185,7 +228,7 @@ module game_datapath (
         motor_speed = M_game_regfiles_motor_speed_out;
         p0_score = M_game_regfiles_p0_score_out;
         p1_score = M_game_regfiles_p1_score_out;
-        correct_button_compare = 32'ha;
+        correct_button_compare = M_game_regfiles_correct_button_compare_out;
         counter = M_game_regfiles_counter_out;
         temp = M_game_regfiles_temp_out;
         wa = M_game_regfiles_wa_out;

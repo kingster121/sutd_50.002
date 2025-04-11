@@ -1,0 +1,13 @@
+module rng_1 (
+    input clk,  // clock
+    input rst,  // reset
+    output out
+) {
+    .clk(clk) {
+        counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER))
+    }
+    random_number_generator rng_1()
+    always {
+        
+    }
+}

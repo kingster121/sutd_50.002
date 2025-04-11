@@ -1,0 +1,39 @@
+testbench rng_test {
+    sig clk
+    
+    random_number_generator rng(#SIZE(11),.clk(clk), .slow_clk(clk))
+
+    fun tick_clock() {
+        clk = 1
+        $silent_tick() // tick without capturing signals
+        clk = 0
+        $tick()
+    }
+    
+    
+    
+    test myTest {
+        clk = 0 // initialize the value
+        $tick() // capture initial state
+        clk = 1 // ticked the clock
+        $print(rng.out)
+        rng.refresh = 1
+        
+        $tick()
+        clk = 0
+        clk = 1 // ticked the clock
+        $print(rng.out)
+        rng.refresh = 1
+        $tick()
+        clk = 0
+        clk = 1 // ticked the clock
+        $print(rng.out)
+        rng.refresh = 1
+        $tick()
+        clk = 0
+        // test goes here
+        
+        
+        
+    }
+}

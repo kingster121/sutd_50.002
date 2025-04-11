@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-| Date         : Fri Apr 11 23:42:07 2025
+| Date         : Sat Apr 12 02:02:07 2025
 | Host         : fedora running 64-bit unknown
 | Command      : report_methodology -file alchitry_top_methodology_drc_routed.rpt -pb alchitry_top_methodology_drc_routed.pb -rpx alchitry_top_methodology_drc_routed.rpx
 | Design       : alchitry_top
@@ -23,11 +23,11 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max checks: <unlimited>
-             Checks found: 9
+             Checks found: 11
 +-----------+----------+-------------------------------+--------+
 | Rule      | Severity | Description                   | Checks |
 +-----------+----------+-------------------------------+--------+
-| TIMING-18 | Warning  | Missing input or output delay | 9      |
+| TIMING-18 | Warning  | Missing input or output delay | 11     |
 +-----------+----------+-------------------------------+--------+
 
 2. REPORT DETAILS
@@ -73,6 +73,16 @@ An input delay is missing on usb_rx relative to the rising and/or falling clock 
 Related violations: <none>
 
 TIMING-18#9 Warning
+Missing input or output delay  
+An output delay is missing on motorIN1 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#10 Warning
+Missing input or output delay  
+An output delay is missing on motorIN2 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#11 Warning
 Missing input or output delay  
 An output delay is missing on usb_tx relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>

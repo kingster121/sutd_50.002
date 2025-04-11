@@ -77,7 +77,7 @@ module game_cu (
         // debug = b0000
         
         if (rst) {
-            game_fsm.d = GameStates.START
+            game_fsm.d = GameStates.SET_MAX_COUNTER
         }
         
         else {
@@ -93,7 +93,7 @@ module game_cu (
                     alu_out_sel = 0
                     
                     if (p0b0)
-                        game_fsm.d = GameStates.P0B0_UPDATE_MOTOR
+                        game_fsm.d = GameStates.SET_MAX_COUNTER
                     if (p0b1)
                         game_fsm.d = GameStates.P0B1_UPDATE_MOTOR
                     if (p1b0)
@@ -155,6 +155,28 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d2
                     alu_out_sel = d0
+                    game_fsm.d = GameStates.IDLE
+                
+                GameStates.START:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0 // motor speed
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.SET_MAX_COUNTER
+                
+                GameStates.SET_MAX_COUNTER:
+                    alufn = 6h3A
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d7 // temp counter used as max counter reg for now
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d2
                     game_fsm.d = GameStates.IDLE
             }
         }

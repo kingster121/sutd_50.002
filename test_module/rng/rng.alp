@@ -76,6 +76,24 @@
                     "type": "Component",
                     "path": "Miscellaneous/bin_to_dec.luc"
                 }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/rng_2000.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/rng_1.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/rng_test.luc"
+                }
             }
         ],
         "constraintFiles": [
