@@ -22,7 +22,10 @@ module debugger (
         input wire [31:0] temp,
         input wire [3:0] wa,
         input wire we,
-        input wire [31:0] data
+        input wire [31:0] data,
+        input wire [31:0] a,
+        input wire [31:0] b,
+        input wire [5:0] alufn
     );
     localparam E_States_IDLE = 5'h0;
     localparam E_States_LOAD_DFF = 5'h1;
@@ -48,6 +51,12 @@ module debugger (
     localparam E_States_SEND_WE = 5'h15;
     localparam E_States_SEND_DATA_PREFIX = 5'h16;
     localparam E_States_SEND_DATA = 5'h17;
+    localparam E_States_SEND_A_PREFIX = 5'h18;
+    localparam E_States_SEND_A = 5'h19;
+    localparam E_States_SEND_B_PREFIX = 5'h1a;
+    localparam E_States_SEND_B = 5'h1b;
+    localparam E_States_SEND_ALUFN_PREFIX = 5'h1c;
+    localparam E_States_SEND_ALUFN = 5'h1d;
     localparam logic [29:0][7:0] TEXT_CORRECT_BUTTON = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h74, 8'h74, 8'h75, 8'h42, 8'h20, 8'h74, 8'h63, 8'h65, 8'h72, 8'h72, 8'h6f, 8'h43, 8'ha, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'ha, 8'ha}};
     localparam logic [17:0][7:0] TEXT_MOTOR_DIRECTION = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h69, 8'h74, 8'h63, 8'h65, 8'h72, 8'h69, 8'h44, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
     localparam logic [13:0][7:0] TEXT_MOTOR_SPEED = {{8'h20, 8'h3a, 8'h64, 8'h65, 8'h65, 8'h70, 8'h53, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
@@ -59,11 +68,15 @@ module debugger (
     localparam logic [5:0][7:0] TEXT_WA = {{8'h20, 8'h3a, 8'h41, 8'h57, 8'ha, 8'ha}};
     localparam logic [4:0][7:0] TEXT_WE = {{8'h20, 8'h3a, 8'h45, 8'h57, 8'ha}};
     localparam logic [6:0][7:0] TEXT_DATA = {{8'h20, 8'h3a, 8'h61, 8'h74, 8'h61, 8'h44, 8'ha}};
+    localparam logic [3:0][7:0] TEXT_A = {{8'h20, 8'h3a, 8'h41, 8'ha}};
+    localparam logic [3:0][7:0] TEXT_B = {{8'h20, 8'h3a, 8'h42, 8'ha}};
+    localparam logic [7:0][7:0] TEXT_ALUFN = {{8'h20, 8'h3a, 8'h6e, 8'h66, 8'h75, 8'h6c, 8'h41, 8'ha}};
     localparam BIT_0 = 8'h30;
     localparam BIT_1 = 8'h31;
     logic [4:0] D_state_d, D_state_q = 5'h0;
     logic [5:0] D_bit_32_count_d, D_bit_32_count_q = 1'h0;
-    logic [3:0] D_bit_4_count_d, D_bit_4_count_q = 1'h0;
+    logic [1:0] D_bit_4_count_d, D_bit_4_count_q = 1'h0;
+    logic [2:0] D_bit_6_count_d, D_bit_6_count_q = 1'h0;
     logic [4:0] D_correct_button_count_d, D_correct_button_count_q = 0;
     logic [4:0] D_motor_direction_count_d, D_motor_direction_count_q = 0;
     logic [3:0] D_motor_speed_count_d, D_motor_speed_count_q = 0;
@@ -75,6 +88,9 @@ module debugger (
     logic [2:0] D_wa_count_d, D_wa_count_q = 0;
     logic [2:0] D_we_count_d, D_we_count_q = 0;
     logic [2:0] D_data_count_d, D_data_count_q = 0;
+    logic [1:0] D_a_count_d, D_a_count_q = 0;
+    logic [1:0] D_b_count_d, D_b_count_q = 0;
+    logic [2:0] D_alufn_count_d, D_alufn_count_q = 0;
     logic [31:0] D_correct_button_dff_d, D_correct_button_dff_q = 1'h0;
     logic [31:0] D_motor_direction_dff_d, D_motor_direction_dff_q = 1'h0;
     logic [31:0] D_motor_speed_dff_d, D_motor_speed_dff_q = 1'h0;
@@ -86,10 +102,14 @@ module debugger (
     logic [3:0] D_wa_dff_d, D_wa_dff_q = 1'h0;
     logic D_we_dff_d, D_we_dff_q = 1'h0;
     logic [31:0] D_data_dff_d, D_data_dff_q = 1'h0;
+    logic [31:0] D_a_dff_d, D_a_dff_q = 1'h0;
+    logic [31:0] D_b_dff_d, D_b_dff_q = 1'h0;
+    logic [5:0] D_alufn_dff_d, D_alufn_dff_q = 1'h0;
     logic send_trigger;
     always @* begin
         D_bit_32_count_d = D_bit_32_count_q;
         D_bit_4_count_d = D_bit_4_count_q;
+        D_bit_6_count_d = D_bit_6_count_q;
         D_correct_button_count_d = D_correct_button_count_q;
         D_motor_direction_count_d = D_motor_direction_count_q;
         D_motor_speed_count_d = D_motor_speed_count_q;
@@ -98,6 +118,12 @@ module debugger (
         D_correct_button_compare_count_d = D_correct_button_compare_count_q;
         D_counter_count_d = D_counter_count_q;
         D_temp_count_d = D_temp_count_q;
+        D_wa_count_d = D_wa_count_q;
+        D_we_count_d = D_we_count_q;
+        D_data_count_d = D_data_count_q;
+        D_a_count_d = D_a_count_q;
+        D_b_count_d = D_b_count_q;
+        D_alufn_count_d = D_alufn_count_q;
         D_state_d = D_state_q;
         D_correct_button_dff_d = D_correct_button_dff_q;
         D_motor_direction_dff_d = D_motor_direction_dff_q;
@@ -110,9 +136,9 @@ module debugger (
         D_wa_dff_d = D_wa_dff_q;
         D_we_dff_d = D_we_dff_q;
         D_data_dff_d = D_data_dff_q;
-        D_wa_count_d = D_wa_count_q;
-        D_we_count_d = D_we_count_q;
-        D_data_count_d = D_data_count_q;
+        D_a_dff_d = D_a_dff_q;
+        D_b_dff_d = D_b_dff_q;
+        D_alufn_dff_d = D_alufn_dff_q;
         
         new_tx = 1'h0;
         tx_data = 8'bxxxxxxxx;
@@ -123,6 +149,7 @@ module debugger (
                 if (send_trigger & !tx_busy) begin
                     D_bit_32_count_d = 5'h1f;
                     D_bit_4_count_d = 2'h3;
+                    D_bit_6_count_d = 3'h5;
                     D_correct_button_count_d = 1'h0;
                     D_motor_direction_count_d = 1'h0;
                     D_motor_speed_count_d = 1'h0;
@@ -131,6 +158,12 @@ module debugger (
                     D_correct_button_compare_count_d = 1'h0;
                     D_counter_count_d = 1'h0;
                     D_temp_count_d = 1'h0;
+                    D_wa_count_d = 1'h0;
+                    D_we_count_d = 1'h0;
+                    D_data_count_d = 1'h0;
+                    D_a_count_d = 1'h0;
+                    D_b_count_d = 1'h0;
+                    D_alufn_count_d = 1'h0;
                     D_state_d = 5'h1;
                 end
             end
@@ -146,6 +179,9 @@ module debugger (
                 D_wa_dff_d = wa;
                 D_we_dff_d = we;
                 D_data_dff_d = data;
+                D_a_dff_d = a;
+                D_b_dff_d = b;
+                D_alufn_dff_d = alufn;
                 D_state_d = 5'h2;
             end
             5'h2: begin
@@ -415,6 +451,81 @@ module debugger (
                     end
                     if (D_bit_32_count_q == 1'h0) begin
                         D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h18;
+                    end
+                end
+            end
+            5'h18: begin
+                if (!tx_busy) begin
+                    D_a_count_d = D_a_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_A[D_a_count_q];
+                    if (D_a_count_q == 5'h3) begin
+                        D_state_d = 5'h19;
+                    end
+                end
+            end
+            5'h19: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_a_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h1a;
+                    end
+                end
+            end
+            5'h1a: begin
+                if (!tx_busy) begin
+                    D_b_count_d = D_b_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_B[D_b_count_q];
+                    if (D_b_count_q == 5'h3) begin
+                        D_state_d = 5'h1b;
+                    end
+                end
+            end
+            5'h1b: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_b_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h1c;
+                    end
+                end
+            end
+            5'h1c: begin
+                if (!tx_busy) begin
+                    D_alufn_count_d = D_alufn_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_ALUFN[D_alufn_count_q];
+                    if (D_alufn_count_q == 5'h7) begin
+                        D_state_d = 5'h1d;
+                    end
+                end
+            end
+            5'h1d: begin
+                if (!tx_busy) begin
+                    D_bit_6_count_d = D_bit_6_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_alufn_dff_q[D_bit_6_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_6_count_q == 1'h0) begin
+                        D_bit_6_count_d = 3'h5;
                         D_state_d = 5'h0;
                     end
                 end
@@ -431,6 +542,7 @@ module debugger (
             D_state_q <= 5'h0;
             D_bit_32_count_q <= 1'h0;
             D_bit_4_count_q <= 1'h0;
+            D_bit_6_count_q <= 1'h0;
             D_correct_button_count_q <= 0;
             D_motor_direction_count_q <= 0;
             D_motor_speed_count_q <= 0;
@@ -442,6 +554,9 @@ module debugger (
             D_wa_count_q <= 0;
             D_we_count_q <= 0;
             D_data_count_q <= 0;
+            D_a_count_q <= 0;
+            D_b_count_q <= 0;
+            D_alufn_count_q <= 0;
             D_correct_button_dff_q <= 1'h0;
             D_motor_direction_dff_q <= 1'h0;
             D_motor_speed_dff_q <= 1'h0;
@@ -453,10 +568,14 @@ module debugger (
             D_wa_dff_q <= 1'h0;
             D_we_dff_q <= 1'h0;
             D_data_dff_q <= 1'h0;
+            D_a_dff_q <= 1'h0;
+            D_b_dff_q <= 1'h0;
+            D_alufn_dff_q <= 1'h0;
         end else begin
             D_state_q <= D_state_d;
             D_bit_32_count_q <= D_bit_32_count_d;
             D_bit_4_count_q <= D_bit_4_count_d;
+            D_bit_6_count_q <= D_bit_6_count_d;
             D_correct_button_count_q <= D_correct_button_count_d;
             D_motor_direction_count_q <= D_motor_direction_count_d;
             D_motor_speed_count_q <= D_motor_speed_count_d;
@@ -468,6 +587,9 @@ module debugger (
             D_wa_count_q <= D_wa_count_d;
             D_we_count_q <= D_we_count_d;
             D_data_count_q <= D_data_count_d;
+            D_a_count_q <= D_a_count_d;
+            D_b_count_q <= D_b_count_d;
+            D_alufn_count_q <= D_alufn_count_d;
             D_correct_button_dff_q <= D_correct_button_dff_d;
             D_motor_direction_dff_q <= D_motor_direction_dff_d;
             D_motor_speed_dff_q <= D_motor_speed_dff_d;
@@ -479,6 +601,9 @@ module debugger (
             D_wa_dff_q <= D_wa_dff_d;
             D_we_dff_q <= D_we_dff_d;
             D_data_dff_q <= D_data_dff_d;
+            D_a_dff_q <= D_a_dff_d;
+            D_b_dff_q <= D_b_dff_d;
+            D_alufn_dff_q <= D_alufn_dff_d;
         end
     end
 endmodule

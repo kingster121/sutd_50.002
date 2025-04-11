@@ -14,7 +14,9 @@ module alu (
         output reg n
     );
     logic [31:0] out_sig;
+    logic c;
     always @* begin
+        c = 1'h0;
         z = 1'h0;
         v = 1'h0;
         n = 1'h0;
@@ -66,12 +68,13 @@ module alu (
                 out_sig = a <= b;
             end
             6'h38: begin
-                out_sig = (a & b) && 1'h0;
+                out_sig = ~(|(a & b));
             end
             6'h39: begin
-                out_sig = ~((a & b) && 1'h0);
+                out_sig = (|(a & b));
             end
             default: begin
+                c = 1'h0;
                 out_sig = 1'h0;
             end
         endcase

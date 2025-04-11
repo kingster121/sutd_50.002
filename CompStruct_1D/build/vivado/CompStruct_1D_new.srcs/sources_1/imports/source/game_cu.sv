@@ -71,14 +71,26 @@ module game_cu (
                     alufn = 1'h0;
                     asel = 1'h0;
                     bsel = 1'h0;
-                    regfile_we = 1'h1;
-                    regfile_wa = 1'h1;
+                    regfile_we = 1'h0;
+                    regfile_wa = 1'h0;
                     regfile_ra1 = 1'h0;
                     regfile_ra2 = 1'h0;
                     alu_out_sel = 1'h0;
+                    if (p0b0) begin
+                        D_game_fsm_d = 5'h1;
+                    end
+                    if (p0b1) begin
+                        D_game_fsm_d = 5'h2;
+                    end
+                    if (p1b0) begin
+                        D_game_fsm_d = 5'h3;
+                    end
+                    if (p1b1) begin
+                        D_game_fsm_d = 5'h4;
+                    end
                 end
                 5'h1: begin
-                    alufn = 6'h1a;
+                    alufn = 6'h38;
                     asel = 3'h4;
                     bsel = 1'h0;
                     regfile_we = 1'h1;
@@ -86,6 +98,7 @@ module game_cu (
                     regfile_ra1 = 1'h0;
                     regfile_ra2 = 3'h5;
                     alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h1;
                 end
                 5'h2: begin
                     alufn = 6'h38;
@@ -96,6 +109,7 @@ module game_cu (
                     regfile_ra1 = 1'h0;
                     regfile_ra2 = 3'h5;
                     alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h2;
                 end
                 5'h3: begin
                     alufn = 6'h39;
@@ -106,6 +120,7 @@ module game_cu (
                     regfile_ra1 = 1'h0;
                     regfile_ra2 = 3'h5;
                     alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h3;
                 end
                 5'h4: begin
                     alufn = 6'h39;
@@ -116,6 +131,7 @@ module game_cu (
                     regfile_ra1 = 1'h0;
                     regfile_ra2 = 3'h5;
                     alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h4;
                 end
                 5'h5: begin
                     alufn = 6'h0;

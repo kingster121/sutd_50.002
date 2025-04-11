@@ -20,7 +20,10 @@ module debugger (
     // Debugging for regfiles output
     input wa[4],
     input we,
-    input data[32]
+    input data[32],
+    input a[32],
+    input b[32],
+    input alufn[6]
 ) {
     
     enum States {
@@ -49,7 +52,13 @@ module debugger (
         SEND_WE_PREFIX,
         SEND_WE,
         SEND_DATA_PREFIX,
-        SEND_DATA
+        SEND_DATA,
+        SEND_A_PREFIX,
+        SEND_A,
+        SEND_B_PREFIX,
+        SEND_B,
+        SEND_ALUFN_PREFIX,
+        SEND_ALUFN
     }
     
     const TEXT_CORRECT_BUTTON = $reverse("\n\n===========\nCorrect Button: ")
@@ -64,6 +73,9 @@ module debugger (
     const TEXT_WA = $reverse("\n\nWA: ")
     const TEXT_WE = $reverse("\nWE: ")
     const TEXT_DATA = $reverse("\nData: ")
+    const TEXT_A = $reverse("\nA: ")
+    const TEXT_B = $reverse("\nB: ")
+    const TEXT_ALUFN = $reverse("\nAlufn: ")
     
     const BIT_0 = "0"
     const BIT_1 = "1"
@@ -72,7 +84,8 @@ module debugger (
         .rst(rst) {
             dff state[$width(States)](#INIT(States.IDLE))
             dff bit_32_count[6](#INIT(0))
-            dff bit_4_count[4](#INIT(0))
+            dff bit_4_count[2](#INIT(0))
+            dff bit_6_count[3](#INIT(0))
             
             dff correct_button_count[$clog2($width(TEXT_CORRECT_BUTTON, 0))]
             dff motor_direction_count[$clog2($width(TEXT_MOTOR_DIRECTION, 0))]
@@ -86,6 +99,9 @@ module debugger (
             dff wa_count[$clog2($width(TEXT_WA, 0))]
             dff we_count[$clog2($width(TEXT_WE, 0))]
             dff data_count[$clog2($width(TEXT_DATA, 0))]
+            dff a_count[$clog2($width(TEXT_A, 0))]
+            dff b_count[$clog2($width(TEXT_B, 0))]
+            dff alufn_count[$clog2($width(TEXT_ALUFN, 0))]
             
             // Register dff
             dff correct_button_dff[32](#INIT(0))
@@ -100,6 +116,9 @@ module debugger (
             dff wa_dff[4](#INIT(0))
             dff we_dff(#INIT(0))
             dff data_dff[32](#INIT(0))
+            dff a_dff[32](#INIT(0))
+            dff b_dff[32](#INIT(0))
+            dff alufn_dff[6](#INIT(0))
         }
     }
     
@@ -116,6 +135,7 @@ module debugger (
                 if (send_trigger & !tx_busy) {
                     bit_32_count.d = 31
                     bit_4_count.d = 3
+                    bit_6_count.d = 5
                     correct_button_count.d = 0
                     motor_direction_count.d = 0
                     motor_speed_count.d = 0
@@ -124,6 +144,13 @@ module debugger (
                     correct_button_compare_count.d = 0
                     counter_count.d = 0
                     temp_count.d = 0
+                    
+                    wa_count.d = 0
+                    we_count.d = 0
+                    data_count.d = 0
+                    a_count.d = 0
+                    b_count.d = 0
+                    alufn_count.d =0
                     state.d = States.LOAD_DFF
                 }
             
@@ -140,6 +167,9 @@ module debugger (
                 wa_dff.d = wa
                 we_dff.d = we
                 data_dff.d = data
+                a_dff.d = a
+                b_dff.d = b
+                alufn_dff.d = alufn
                 
                 state.d = States.SEND_CORRECT_BUTTON_PREFIX
             
@@ -425,6 +455,84 @@ module debugger (
                     // no more letters
                     if (bit_32_count.q == 0) { 
                         bit_32_count.d = 31
+                        state.d = States.SEND_A_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_A_PREFIX:
+                if (!tx_busy) {
+                    a_count.d = a_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_A[a_count.q] // send letter from PROMPT_TEXT
+                    if (a_count.q == $width(TEXT_A, 0) - 1) // no more letters
+                        state.d = States.SEND_A          // change states
+                }
+            
+            States.SEND_A:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (a_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_B_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_B_PREFIX:
+                if (!tx_busy) {
+                    b_count.d = b_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_B[b_count.q] // send letter from PROMPT_TEXT
+                    if (b_count.q == $width(TEXT_B, 0) - 1) // no more letters
+                        state.d = States.SEND_B          // change states
+                }
+            
+            States.SEND_B:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (b_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_ALUFN_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_ALUFN_PREFIX:
+                if (!tx_busy) {
+                    alufn_count.d = alufn_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_ALUFN[alufn_count.q] // send letter from PROMPT_TEXT
+                    if (alufn_count.q == $width(TEXT_ALUFN, 0) - 1) // no more letters
+                        state.d = States.SEND_ALUFN          // change states
+                }
+            
+            States.SEND_ALUFN:
+                if (!tx_busy) {
+                    bit_6_count.d = bit_6_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (alufn_dff.q[bit_6_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_6_count.q == 0) { 
+                        bit_6_count.d = 5
                         state.d = States.IDLE           // change states
                     }
                 }

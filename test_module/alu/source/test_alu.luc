@@ -1,0 +1,65 @@
+testbench test_alu {
+    sig clk
+
+    fun tick_clock() {
+        clk = 1
+        $silent_tick() // tick without capturing signals
+        clk = 0
+        $tick()
+    }
+
+    alu alu1
+    alu alu2
+    alu alu3
+    alu alu4
+    alu alu5
+    alu alu6
+    alu alu7
+    alu alu8
+    test myTest {
+        clk = 0 // initialize the value
+        $tick() // capture initial state
+
+        // test goes here
+        alu1.alufn = 6h38
+        alu1.a = 32b1000
+        alu1.b = 32b1010
+        $print(alu1.out)
+        
+        // test goes here
+        alu2.alufn = 6h38
+        alu2.a = 32b0100
+        alu2.b = 32b1010
+        $print(alu2.out)
+        
+        alu3.alufn = 6h39
+        alu3.a = 32b0010
+        alu3.b = 32b1010
+        $print(alu3.out)
+        
+        alu4.alufn = 6h39
+        alu4.a = 32b0001
+        alu4.b = 32b1010
+        $print(alu4.out)
+        
+        alu5.alufn = 6h38
+        alu5.a = 32b1000
+        alu5.b = 32b0101
+        $print(alu5.out)
+        
+        alu6.alufn = 6h38
+        alu6.a = 32b0100
+        alu6.b = 32b0101
+        $print(alu6.out)
+        
+        alu7.alufn = 6h39
+        alu7.a = 32b0010
+        alu7.b = 32b0101
+        $print(alu7.out)
+        
+        alu8.alufn = 6h39
+        alu8.a = 32b0001
+        alu8.b = 32b0101
+        $print(alu8.out)
+    }
+}

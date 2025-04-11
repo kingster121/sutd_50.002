@@ -118,6 +118,9 @@ module alchitry_top (
         debugger.wa =game_datapath.wa
         debugger.we = game_datapath.we
         debugger.data = game_datapath.data
+        debugger.a = game_datapath.a
+        debugger.b = game_datapath.b
+        debugger.alufn = game_datapath.alufn
         
         tx.new_data = debugger.new_tx
         tx.data = debugger.tx_data

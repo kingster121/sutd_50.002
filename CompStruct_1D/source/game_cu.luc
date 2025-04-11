@@ -3,7 +3,7 @@ module game_cu (
     input rst,  // reset
     // input counter_clk, // Shouldnt need this, since counter will be counted internally to the 100MHz clock
     input regfile_rd2[32],
-
+    
     // Button inputs
     input p0b0,
     input p0b1,
@@ -77,7 +77,7 @@ module game_cu (
         // debug = b0000
         
         if (rst) {
-            game_fsm.d = game_fsm.q
+            game_fsm.d = GameStates.START
         }
         
         else {
@@ -86,41 +86,42 @@ module game_cu (
                     alufn = 0
                     asel = 0
                     bsel = 0
-                    regfile_we = 1
-                    regfile_wa = 1
+                    regfile_we = 0
+                    regfile_wa = 0
                     regfile_ra1 = 0
                     regfile_ra2 = 0
                     alu_out_sel = 0
-                
-                    //if (p0b0)
-                    //    game_fsm.d = GameStates.P0B0_UPDATE_MOTOR
-                    //if (p0b1)
-                    //    game_fsm.d = GameStates.P0B1_UPDATE_MOTOR
-                    //if (p1b0)
-                    //    game_fsm.d = GameStates.P1B0_UPDATE_MOTOR
-                    //if (p1b1)
-                    //    game_fsm.d = GameStates.P1B1_UPDATE_MOTOR
+                    
+                    if (p0b0)
+                        game_fsm.d = GameStates.P0B0_UPDATE_MOTOR
+                    if (p0b1)
+                        game_fsm.d = GameStates.P0B1_UPDATE_MOTOR
+                    if (p1b0)
+                        game_fsm.d = GameStates.P1B0_UPDATE_MOTOR
+                    if (p1b1)
+                        game_fsm.d = GameStates.P1B1_UPDATE_MOTOR
                 
                 GameStates.P0B0_UPDATE_MOTOR:
-                    // alufn = 6h38 
-                    alufn = 6h1A
+                    alufn = 6h38 
                     asel = d4
                     bsel = d0
                     regfile_we = 1
                     regfile_wa = d1 // motor direction
-                    regfile_ra1 = 0
+                    regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
+                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
                 
-                 GameStates.P0B1_UPDATE_MOTOR:
+                GameStates.P0B1_UPDATE_MOTOR:
                     alufn = 6h38 
                     asel = d3
                     bsel = d0
                     regfile_we = 1
                     regfile_wa = d1 // motor direction
-                    regfile_ra1 = 0
+                    regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
+                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
                 
                 GameStates.P1B0_UPDATE_MOTOR:
                     alufn = 6h39 
@@ -128,29 +129,33 @@ module game_cu (
                     bsel = d0
                     regfile_we = 1
                     regfile_wa = d1 // motor direction
-                    regfile_ra1 = 0
+                    regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
+                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
                 
-                 GameStates.P1B1_UPDATE_MOTOR:
+                GameStates.P1B1_UPDATE_MOTOR:
                     alufn = 6h39 
                     asel = d1
                     bsel = d0
                     regfile_we = 1
                     regfile_wa = d1 // motor direction
-                    regfile_ra1 = 0
+                    regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
+                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED           
                 
+                // Maybe should have a condition to check if MAX speed has been reached
                 GameStates.INCREASE_MOTOR_SPEED:
                     alufn = 6h00
                     asel = d1
                     bsel = d0
                     regfile_we = 1
                     regfile_wa = d2 // motor speed
-                    regfile_ra1 = 0
+                    regfile_ra1 = d0
                     regfile_ra2 = d2
                     alu_out_sel = d0
+                    game_fsm.d = GameStates.IDLE
             }
         }
     }

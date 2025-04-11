@@ -1,6 +1,6 @@
 -------------------------------------
 | Tool Version : Vivado v.2024.2.2
-| Date         : Fri Apr 11 16:20:31 2025
+| Date         : Fri Apr 11 23:41:51 2025
 | Host         : fedora
 | Design       : design_1
 | Device       : xc7a35t-ftg256-1--

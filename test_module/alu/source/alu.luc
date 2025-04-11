@@ -62,10 +62,14 @@ module alu (
             default:
                 c = 0
                 out_sig = 0
-
+            
+            
         }
         
-        out = out_sig   
+        
+        out = out_sig
+        
+        
         
     }
 }

@@ -27,7 +27,10 @@ module game_datapath (
     // Debugging regfiles output
     output wa[4],
     output we,
-    output data[32]
+    output data[32],
+    output a[32],
+    output b[32],
+    output alufn[6]
 ) {
     
     sig input_alu_a[32]
@@ -85,6 +88,9 @@ module game_datapath (
         game_alu.a = input_alu_a
         game_alu.b = input_alu_b
         game_alu.alufn = game_cu.alufn
+        // game_alu.a = 32b00000000000000000000000000000001
+        // game_alu.b = 32b00000000000000000000000000000101
+        // game_alu.alufn = 6h39
         
         // wdsel mux
         case (game_cu.alu_out_sel){
@@ -102,6 +108,8 @@ module game_datapath (
         p0_score = game_regfiles.p0_score_out
         p1_score = game_regfiles.p1_score_out
         correct_button_compare = game_regfiles.correct_button_compare_out
+        // correct_button_compare = 32b1010 // Button 0
+        // correct_button_compare = 32b0101 // Button 1
         counter = game_regfiles.counter_out
         temp = game_regfiles.temp_out
         
@@ -109,5 +117,8 @@ module game_datapath (
         wa = game_regfiles.wa_out
         we = game_regfiles.we_out
         data = game_regfiles.data_out
+        a = input_alu_a
+        b = input_alu_b
+        alufn = game_cu.alufn
     }
 }

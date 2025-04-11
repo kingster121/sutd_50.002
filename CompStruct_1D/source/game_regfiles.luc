@@ -51,11 +51,13 @@ module game_regfiles (
         we_reg.d = we
         data_reg.d = data
         
+        correct_button_compare_reg.d = 32b1010
+        
         //write port
         if (we){
             case(wa){
-                d0 : correct_button_reg.d = 32h0000ffff
-                d1 : motor_direction_reg.d = 32h0000ffff
+                d0 : correct_button_reg.d = data
+                d1 : motor_direction_reg.d = data
                 d2 : motor_speed_reg.d = data
                 d3 : p0_score_reg.d = data
                 d4 : p1_score_reg.d = data

@@ -25,7 +25,10 @@ module game_datapath (
         output reg [31:0] temp,
         output reg [3:0] wa,
         output reg we,
-        output reg [31:0] data
+        output reg [31:0] data,
+        output reg [31:0] a,
+        output reg [31:0] b,
+        output reg [5:0] alufn
     );
     logic [31:0] input_alu_a;
     logic [31:0] input_alu_b;
@@ -182,12 +185,15 @@ module game_datapath (
         motor_speed = M_game_regfiles_motor_speed_out;
         p0_score = M_game_regfiles_p0_score_out;
         p1_score = M_game_regfiles_p1_score_out;
-        correct_button_compare = M_game_regfiles_correct_button_compare_out;
+        correct_button_compare = 32'ha;
         counter = M_game_regfiles_counter_out;
         temp = M_game_regfiles_temp_out;
         wa = M_game_regfiles_wa_out;
         we = M_game_regfiles_we_out;
         data = M_game_regfiles_data_out;
+        a = input_alu_a;
+        b = input_alu_b;
+        alufn = M_game_cu_alufn;
     end
     
     

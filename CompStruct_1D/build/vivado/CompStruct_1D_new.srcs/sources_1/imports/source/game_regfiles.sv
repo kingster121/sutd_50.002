@@ -41,26 +41,27 @@ module game_regfiles (
         D_wa_reg_d = D_wa_reg_q;
         D_we_reg_d = D_we_reg_q;
         D_data_reg_d = D_data_reg_q;
+        D_correct_button_compare_reg_d = D_correct_button_compare_reg_q;
         D_correct_button_reg_d = D_correct_button_reg_q;
         D_motor_direction_reg_d = D_motor_direction_reg_q;
         D_motor_speed_reg_d = D_motor_speed_reg_q;
         D_p0_score_reg_d = D_p0_score_reg_q;
         D_p1_score_reg_d = D_p1_score_reg_q;
-        D_correct_button_compare_reg_d = D_correct_button_compare_reg_q;
         D_counter_reg_d = D_counter_reg_q;
         D_temp_reg_d = D_temp_reg_q;
         
         D_wa_reg_d = wa;
         D_we_reg_d = we;
         D_data_reg_d = data;
+        D_correct_button_compare_reg_d = 32'ha;
         if (we) begin
             
             case (wa)
                 1'h0: begin
-                    D_correct_button_reg_d = 32'hffff;
+                    D_correct_button_reg_d = data;
                 end
                 1'h1: begin
-                    D_motor_direction_reg_d = 32'hffff;
+                    D_motor_direction_reg_d = data;
                 end
                 2'h2: begin
                     D_motor_speed_reg_d = data;
