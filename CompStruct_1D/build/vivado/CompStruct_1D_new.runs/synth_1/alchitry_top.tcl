@@ -73,6 +73,7 @@ read_verilog -library xil_defaultlib -sv {
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/alu.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/button_conditioner.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/counter.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/debugger.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/edge_detector.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/game_cu.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/game_datapath.sv
@@ -83,6 +84,8 @@ read_verilog -library xil_defaultlib -sv {
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pwm.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/random_number_generator.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/reset_conditioner.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/uart_rx.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/uart_tx.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/alchitry_top.sv
 }
 OPTRACE "Adding files" END { }

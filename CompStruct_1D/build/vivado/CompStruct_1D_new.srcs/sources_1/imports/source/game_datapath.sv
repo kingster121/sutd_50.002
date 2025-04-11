@@ -22,7 +22,10 @@ module game_datapath (
         output reg [31:0] p1_score,
         output reg [31:0] correct_button_compare,
         output reg [31:0] counter,
-        output reg [31:0] temp
+        output reg [31:0] temp,
+        output reg [3:0] wa,
+        output reg we,
+        output reg [31:0] data
     );
     logic [31:0] input_alu_a;
     logic [31:0] input_alu_b;
@@ -48,13 +51,12 @@ module game_datapath (
     logic [31:0] M_game_cu_regfile_rd2;
     logic [5:0] M_game_cu_alufn;
     logic [2:0] M_game_cu_asel;
-    logic [2:0] M_game_cu_bsel;
+    logic [1:0] M_game_cu_bsel;
     logic [1:0] M_game_cu_alu_out_sel;
-    logic [2:0] M_game_cu_regfile_wa;
-    logic [2:0] M_game_cu_regfile_ra1;
-    logic [2:0] M_game_cu_regfile_ra2;
+    logic [3:0] M_game_cu_regfile_wa;
+    logic [3:0] M_game_cu_regfile_ra1;
+    logic [3:0] M_game_cu_regfile_ra2;
     logic M_game_cu_regfile_we;
-    logic [3:0] M_game_cu_debug;
     
     game_cu game_cu (
         .p0b0(p0b0),
@@ -73,8 +75,7 @@ module game_datapath (
         .regfile_wa(M_game_cu_regfile_wa),
         .regfile_ra1(M_game_cu_regfile_ra1),
         .regfile_ra2(M_game_cu_regfile_ra2),
-        .regfile_we(M_game_cu_regfile_we),
-        .debug(M_game_cu_debug)
+        .regfile_we(M_game_cu_regfile_we)
     );
     
     
@@ -89,6 +90,9 @@ module game_datapath (
     logic [31:0] M_game_regfiles_correct_button_compare_out;
     logic [31:0] M_game_regfiles_counter_out;
     logic [31:0] M_game_regfiles_temp_out;
+    logic [3:0] M_game_regfiles_wa_out;
+    logic M_game_regfiles_we_out;
+    logic [31:0] M_game_regfiles_data_out;
     
     game_regfiles game_regfiles (
         .we(M_game_cu_regfile_we),
@@ -107,7 +111,10 @@ module game_datapath (
         .p1_score_out(M_game_regfiles_p1_score_out),
         .correct_button_compare_out(M_game_regfiles_correct_button_compare_out),
         .counter_out(M_game_regfiles_counter_out),
-        .temp_out(M_game_regfiles_temp_out)
+        .temp_out(M_game_regfiles_temp_out),
+        .wa_out(M_game_regfiles_wa_out),
+        .we_out(M_game_regfiles_we_out),
+        .data_out(M_game_regfiles_data_out)
     );
     
     
@@ -178,6 +185,9 @@ module game_datapath (
         correct_button_compare = M_game_regfiles_correct_button_compare_out;
         counter = M_game_regfiles_counter_out;
         temp = M_game_regfiles_temp_out;
+        wa = M_game_regfiles_wa_out;
+        we = M_game_regfiles_we_out;
+        data = M_game_regfiles_data_out;
     end
     
     

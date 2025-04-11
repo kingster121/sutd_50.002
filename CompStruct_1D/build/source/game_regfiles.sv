@@ -7,11 +7,11 @@
 module game_regfiles (
         input wire clk,
         input wire rst,
-        input wire [2:0] wa,
+        input wire [3:0] wa,
         input wire we,
         input wire [31:0] data,
-        input wire [2:0] ra1,
-        input wire [2:0] ra2,
+        input wire [3:0] ra1,
+        input wire [3:0] ra2,
         output reg [31:0] rd1,
         output reg [31:0] rd2,
         output reg [31:0] correct_button_out,
@@ -21,7 +21,10 @@ module game_regfiles (
         output reg [31:0] p1_score_out,
         output reg [31:0] correct_button_compare_out,
         output reg [31:0] counter_out,
-        output reg [31:0] temp_out
+        output reg [31:0] temp_out,
+        output reg [3:0] wa_out,
+        output reg we_out,
+        output reg [31:0] data_out
     );
     logic [31:0] D_correct_button_reg_d, D_correct_button_reg_q = 1'h0;
     logic [31:0] D_motor_direction_reg_d, D_motor_direction_reg_q = 1'h0;
@@ -31,7 +34,13 @@ module game_regfiles (
     logic [31:0] D_correct_button_compare_reg_d, D_correct_button_compare_reg_q = 1'h0;
     logic [31:0] D_counter_reg_d, D_counter_reg_q = 1'h0;
     logic [31:0] D_temp_reg_d, D_temp_reg_q = 1'h0;
+    logic [3:0] D_wa_reg_d, D_wa_reg_q = 1'h0;
+    logic D_we_reg_d, D_we_reg_q = 1'h0;
+    logic [31:0] D_data_reg_d, D_data_reg_q = 6'h20;
     always @* begin
+        D_wa_reg_d = D_wa_reg_q;
+        D_we_reg_d = D_we_reg_q;
+        D_data_reg_d = D_data_reg_q;
         D_correct_button_reg_d = D_correct_button_reg_q;
         D_motor_direction_reg_d = D_motor_direction_reg_q;
         D_motor_speed_reg_d = D_motor_speed_reg_q;
@@ -41,14 +50,17 @@ module game_regfiles (
         D_counter_reg_d = D_counter_reg_q;
         D_temp_reg_d = D_temp_reg_q;
         
+        D_wa_reg_d = wa;
+        D_we_reg_d = we;
+        D_data_reg_d = data;
         if (we) begin
             
             case (wa)
                 1'h0: begin
-                    D_correct_button_reg_d = data;
+                    D_correct_button_reg_d = 32'hffff;
                 end
                 1'h1: begin
-                    D_motor_direction_reg_d = data;
+                    D_motor_direction_reg_d = 32'hffff;
                 end
                 2'h2: begin
                     D_motor_speed_reg_d = data;
@@ -138,6 +150,9 @@ module game_regfiles (
         correct_button_compare_out = D_correct_button_compare_reg_q;
         counter_out = D_counter_reg_q;
         temp_out = D_temp_reg_q;
+        wa_out = D_wa_reg_q;
+        we_out = D_we_reg_q;
+        data_out = D_data_reg_q;
     end
     
     
@@ -151,6 +166,9 @@ module game_regfiles (
             D_correct_button_compare_reg_q <= 1'h0;
             D_counter_reg_q <= 1'h0;
             D_temp_reg_q <= 1'h0;
+            D_wa_reg_q <= 1'h0;
+            D_we_reg_q <= 1'h0;
+            D_data_reg_q <= 6'h20;
         end else begin
             D_correct_button_reg_q <= D_correct_button_reg_d;
             D_motor_direction_reg_q <= D_motor_direction_reg_d;
@@ -160,6 +178,9 @@ module game_regfiles (
             D_correct_button_compare_reg_q <= D_correct_button_compare_reg_d;
             D_counter_reg_q <= D_counter_reg_d;
             D_temp_reg_q <= D_temp_reg_d;
+            D_wa_reg_q <= D_wa_reg_d;
+            D_we_reg_q <= D_we_reg_d;
+            D_data_reg_q <= D_data_reg_d;
         end
     end
 endmodule

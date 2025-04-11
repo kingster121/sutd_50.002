@@ -110,7 +110,19 @@
             {
                 "file": {
                     "type": "DiskFile",
-                    "path": "source/serial_debug.luc"
+                    "path": "source/debugger.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "Component",
+                    "path": "Interfaces/uart_rx.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "Component",
+                    "path": "Interfaces/uart_tx.luc"
                 }
             }
         ],

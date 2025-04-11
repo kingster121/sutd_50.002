@@ -1,0 +1,438 @@
+module debugger (
+    input clk,         // clock
+    input rst,         // reset
+    input new_rx,      // new RX flag
+    input rx_data[8],  // RX data
+    output new_tx,     // new TX flag
+    output tx_data[8], // TX data
+    input tx_busy,      // TX is busy flag
+    
+    // Register
+    input correct_button[32],
+    input motor_direction[32],
+    input motor_speed[32],
+    input p0_score[32],
+    input p1_score[32],
+    input correct_button_compare[32],
+    input counter[32],
+    input temp[32],
+    
+    // Debugging for regfiles output
+    input wa[4],
+    input we,
+    input data[32]
+) {
+    
+    enum States {
+        IDLE, 
+        LOAD_DFF,
+        SEND_CORRECT_BUTTON_PREFIX,
+        SEND_CORRECT_BUTTON,
+        SEND_MOTOR_DIRECTION_PREFIX,
+        SEND_MOTOR_DIRECTION,
+        SEND_MOTOR_SPEED_PREFIX,
+        SEND_MOTOR_SPEED,
+        SEND_P0_SCORE_PREFIX,
+        SEND_P0_SCORE,
+        SEND_P1_SCORE_PREFIX,
+        SEND_P1_SCORE,
+        SEND_CORRECT_BUTTON_COMPARE_PREFIX,
+        SEND_CORRECT_BUTTON_COMPARE,
+        SEND_COUNTER_PREFIX,
+        SEND_COUNTER,
+        SEND_TEMP_PREFIX,
+        SEND_TEMP,
+        
+        // Debugging for regfiles output
+        SEND_WA_PREFIX,
+        SEND_WA,
+        SEND_WE_PREFIX,
+        SEND_WE,
+        SEND_DATA_PREFIX,
+        SEND_DATA
+    }
+    
+    const TEXT_CORRECT_BUTTON = $reverse("\nCorrect Button: ")
+    const TEXT_MOTOR_DIRECTION = $reverse("\nMotor Direction: ")
+    const TEXT_MOTOR_SPEED = $reverse("\nMotor Speed: ")
+    const TEXT_P0_SCORE = $reverse("\nPlayer0 Score: ")
+    const TEXT_P1_SCORE = $reverse("\nPlayer1 Score: ")
+    const TEXT_CORRECT_BUTTON_COMPARE = $reverse("\nCorrect Button Compare: ")
+    const TEXT_COUNTER = $reverse("\nCounter: ")
+    const TEXT_TEMP = $reverse("\nTemp: ")
+    
+    const TEXT_WA = $reverse("\n\nWA: ")
+    const TEXT_WE = $reverse("\nWE: ")
+    const TEXT_DATA = $reverse("\nData: ")
+    
+    const BIT_0 = "0"
+    const BIT_1 = "1"
+    
+    .clk(clk) {
+        .rst(rst) {
+            dff state[$width(States)](#INIT(States.IDLE))
+            dff bit_32_count[6](#INIT(0))
+            dff bit_1_count[1](#INIT(0))
+            dff bit_4_count[4](#INIT(0))
+            
+            dff correct_button_count[$clog2($width(TEXT_CORRECT_BUTTON, 0))]
+            dff motor_direction_count[$clog2($width(TEXT_MOTOR_DIRECTION, 0))]
+            dff motor_speed_count[$clog2($width(TEXT_MOTOR_SPEED, 0))]
+            dff p0_score_count[$clog2($width(TEXT_P0_SCORE, 0))]
+            dff p1_score_count[$clog2($width(TEXT_P1_SCORE, 0))]
+            dff correct_button_compare_count[$clog2($width(TEXT_CORRECT_BUTTON_COMPARE, 0))]
+            dff counter_count[$clog2($width(TEXT_COUNTER, 0))]
+            dff temp_count[$clog2($width(TEXT_TEMP, 0))]
+            
+            dff wa_count[$clog2($width(TEXT_WA, 0))]
+            dff we_count[$clog2($width(TEXT_WE, 0))]
+            dff data_count[$clog2($width(TEXT_DATA, 0))]
+            
+            // Register dff
+            dff correct_button_dff[32](#INIT(0))
+            dff motor_direction_dff[32](#INIT(0))
+            dff motor_speed_dff[32](#INIT(0))
+            dff p0_score_dff[32](#INIT(0))
+            dff p1_score_dff[32](#INIT(0))
+            dff correct_button_compare_dff[32](#INIT(0))
+            dff counter_dff[32](#INIT(0))
+            dff temp_dff[32](#INIT(0))
+            
+            dff wa_dff[4](#INIT(0))
+            dff we_dff(#INIT(0))
+            dff data_dff[32](#INIT(0))
+        }
+    }
+    
+    sig send_trigger   
+    
+    always {
+        new_tx = 0 // defaults to no data
+        tx_data = 8hxx // don't care
+        
+        send_trigger = new_rx & (rx_data == "h")
+        
+        case (state.q) {
+            States.IDLE:
+                if (send_trigger & !tx_busy) {
+                    bit_32_count.d = 31
+                    bit_1_count.d = 1
+                    bit_4_count.d = 3
+                    correct_button_count.d = 0
+                    motor_direction_count.d = 0
+                    motor_speed_count.d = 0
+                    p0_score_count.d = 0
+                    p1_score_count.d = 0
+                    correct_button_compare_count.d = 0
+                    counter_count.d = 0
+                    temp_count.d = 0
+                    state.d = States.LOAD_DFF
+                }
+            
+            States.LOAD_DFF:
+                correct_button_dff.d = correct_button
+                motor_direction_dff.d = motor_direction
+                motor_speed_dff.d = motor_speed
+                p0_score_dff.d = p0_score
+                p1_score_dff.d = p1_score
+                correct_button_compare_dff.d = correct_button_compare
+                counter_dff.d = counter
+                temp_dff.d = temp
+                
+                wa_dff.d = wa
+                we_dff.d = we
+                data_dff.d = data
+                
+                state.d = States.SEND_CORRECT_BUTTON_PREFIX
+            
+            States.SEND_CORRECT_BUTTON_PREFIX:
+                if (!tx_busy) {
+                    correct_button_count.d = correct_button_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_CORRECT_BUTTON[correct_button_count.q] // send letter from PROMPT_TEXT
+                    if (correct_button_count.q == $width(TEXT_CORRECT_BUTTON, 0) - 1) // no more letters
+                        state.d = States.SEND_CORRECT_BUTTON           // change states
+                }
+            
+            States.SEND_CORRECT_BUTTON:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (correct_button_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_MOTOR_DIRECTION_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_MOTOR_DIRECTION_PREFIX:
+                if (!tx_busy) {
+                    motor_direction_count.d = motor_direction_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_MOTOR_DIRECTION[motor_direction_count.q] // send letter from PROMPT_TEXT
+                    if (motor_direction_count.q == $width(TEXT_MOTOR_DIRECTION, 0) - 1) // no more letters
+                        state.d = States.SEND_MOTOR_DIRECTION           // change states
+                }
+            
+            States.SEND_MOTOR_DIRECTION:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (motor_direction_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_MOTOR_SPEED_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_MOTOR_SPEED_PREFIX:
+                if (!tx_busy) {
+                    motor_speed_count.d = motor_speed_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_MOTOR_SPEED[motor_speed_count.q] // send letter from PROMPT_TEXT
+                    if (motor_speed_count.q == $width(TEXT_MOTOR_SPEED, 0) - 1) // no more letters
+                        state.d = States.SEND_MOTOR_SPEED          // change states
+                }
+            
+            States.SEND_MOTOR_SPEED:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (motor_speed_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_P0_SCORE_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_P0_SCORE_PREFIX:
+                if (!tx_busy) {
+                    p0_score_count.d =p0_score_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_P0_SCORE[p0_score_count.q] // send letter from PROMPT_TEXT
+                    if (p0_score_count.q == $width(TEXT_P0_SCORE, 0) - 1) // no more letters
+                        state.d = States.SEND_P0_SCORE          // change states
+                }
+            
+            States.SEND_P0_SCORE:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (p0_score_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_P1_SCORE_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_P1_SCORE_PREFIX:
+                if (!tx_busy) {
+                    p1_score_count.d =p1_score_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_P1_SCORE[p1_score_count.q] // send letter from PROMPT_TEXT
+                    if (p1_score_count.q == $width(TEXT_P1_SCORE, 0) - 1) // no more letters
+                        state.d = States.SEND_P1_SCORE          // change states
+                }
+            
+            States.SEND_P1_SCORE:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (p1_score_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_CORRECT_BUTTON_COMPARE_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_CORRECT_BUTTON_COMPARE_PREFIX:
+                if (!tx_busy) {
+                    correct_button_compare_count.d =correct_button_compare_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_CORRECT_BUTTON_COMPARE[correct_button_compare_count.q] // send letter from PROMPT_TEXT
+                    if (correct_button_compare_count.q == $width(TEXT_CORRECT_BUTTON_COMPARE, 0) - 1) // no more letters
+                        state.d = States.SEND_CORRECT_BUTTON_COMPARE          // change states
+                }
+            
+            States.SEND_CORRECT_BUTTON_COMPARE:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (correct_button_compare_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_COUNTER_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_COUNTER_PREFIX:
+                if (!tx_busy) {
+                    counter_count.d = counter_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_COUNTER[counter_count.q] // send letter from PROMPT_TEXT
+                    if (counter_count.q == $width(TEXT_COUNTER, 0) - 1) // no more letters
+                        state.d = States.SEND_COUNTER          // change states
+                }
+            
+            States.SEND_COUNTER:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (counter_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_TEMP_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_TEMP_PREFIX:
+                if (!tx_busy) {
+                    temp_count.d = temp_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_TEMP[temp_count.q] // send letter from PROMPT_TEXT
+                    if (temp_count.q == $width(TEXT_TEMP, 0) - 1) // no more letters
+                        state.d = States.SEND_TEMP          // change states
+                }
+            
+            States.SEND_TEMP:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (temp_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_WA_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_WA_PREFIX:
+                if (!tx_busy) {
+                    wa_count.d = wa_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_WA[wa_count.q] // send letter from PROMPT_TEXT
+                    if (wa_count.q == $width(TEXT_WA, 0) - 1) // no more letters
+                        state.d = States.SEND_WA          // change states
+                }
+            
+            States.SEND_WA:
+                if (!tx_busy) {
+                    bit_4_count.d = bit_4_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (wa_dff.q[bit_4_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_4_count.q == 0) { 
+                        bit_4_count.d = 3
+                        state.d = States.SEND_WE_PREFIX           // change states
+                    }
+                }
+            
+            States.SEND_WE_PREFIX:
+                if (!tx_busy) {
+                    we_count.d = we_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_WE[we_count.q] // send letter from PROMPT_TEXT
+                    if (we_count.q == $width(TEXT_WE, 0) - 1) // no more letters
+                        state.d = States.SEND_WE          // change states
+                }
+            
+            States.SEND_WE:
+                if (!tx_busy) {
+                    // bit_1_count.d = bit_1_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (we_dff.q == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    // if (bit_1_count.q == 0) { 
+                    //    bit_1_count.d = 1
+                    state.d = States.SEND_DATA_PREFIX           // change states
+                    // }
+                }
+            
+            States.SEND_DATA_PREFIX:
+                if (!tx_busy) {
+                    data_count.d = data_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_DATA[data_count.q] // send letter from PROMPT_TEXT
+                    if (data_count.q == $width(TEXT_DATA, 0) - 1) // no more letters
+                        state.d = States.SEND_DATA          // change states
+                }
+            
+            States.SEND_DATA:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (data_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.IDLE           // change states
+                    }
+                }
+            
+            default:
+                state.d = States.IDLE
+        }
+    }
+}

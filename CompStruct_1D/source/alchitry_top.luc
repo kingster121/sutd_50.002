@@ -59,8 +59,17 @@ module alchitry_top (
             
             // Directly connect motor to the datapath
             motor motor(.motor_speed(game_datapath.motor_speed), .motor_direction(game_datapath.motor_direction))
+            
+            // rx and tx for serial debugging
+            #BAUD(1_000_000), #CLK_FREQ(100_000_000) {
+                uart_rx rx
+                uart_tx tx
+            }
+            // Debugger module
+            debugger debugger
         }
         
+        // RNG modules 
         random_number_generator rng_1(#SIZE(1), .slow_clk(slow_clk.value), .refresh(0))
         random_number_generator rng_2000(#SIZE(11), .slow_clk(slow_clk.value), .refresh(0))
     }
@@ -81,6 +90,40 @@ module alchitry_top (
         
         // Connecting dffs
         // seg_multiplex.d = seg_multiplex.q
+        
+        // =================== DEBUGGING ===================== //
+        rx.rx = usb_rx          // connect rx input
+        usb_tx = tx.tx          // connect tx output
+        
+        debugger.new_rx = rx.new_data
+        debugger.rx_data = rx.data
+        // debugger.correct_button = 32b00000000000000000000000000000000
+        // debugger.motor_direction = 32b00000000000000000000000000000001
+        // debugger.motor_speed = 32b00000000000000000000000000000011
+        // debugger.p0_score = 32b00000000000000000000000000000111
+        // debugger.p1_score = 32b00000000000000000000000000001111
+        // debugger.correct_button_compare = 32b00000000000000000000000000011111
+        // debugger.counter = 32b00000000000000000000000000111111
+        // debugger.temp = 32b00000000000000000000000001111111
+        debugger.correct_button = game_datapath.correct_button
+        debugger.motor_direction = game_datapath.motor_direction
+        debugger.motor_speed = game_datapath.motor_speed
+        debugger.p0_score = game_datapath.p0_score
+        debugger.p1_score = game_datapath.p1_score
+        debugger.correct_button_compare = game_datapath.correct_button_compare
+        debugger.counter = game_datapath.counter
+        debugger.temp = game_datapath.temp
+        
+        // Debugging inputs to regfile
+        debugger.wa =game_datapath.wa
+        debugger.we = game_datapath.we
+        debugger.data = game_datapath.data
+        
+        tx.new_data = debugger.new_tx
+        tx.data = debugger.tx_data
+        debugger.tx_busy = tx.busy
+        
+        tx.block = 0            // no flow control, do not block
         
         // ================== NEW CODE =================== //
         // Connect player 0 and player 1 button conditioner to edge detector
