@@ -48,7 +48,7 @@ module debugger (
     localparam E_States_SEND_WE = 5'h15;
     localparam E_States_SEND_DATA_PREFIX = 5'h16;
     localparam E_States_SEND_DATA = 5'h17;
-    localparam logic [16:0][7:0] TEXT_CORRECT_BUTTON = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h74, 8'h74, 8'h75, 8'h42, 8'h20, 8'h74, 8'h63, 8'h65, 8'h72, 8'h72, 8'h6f, 8'h43, 8'ha}};
+    localparam logic [29:0][7:0] TEXT_CORRECT_BUTTON = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h74, 8'h74, 8'h75, 8'h42, 8'h20, 8'h74, 8'h63, 8'h65, 8'h72, 8'h72, 8'h6f, 8'h43, 8'ha, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'ha, 8'ha}};
     localparam logic [17:0][7:0] TEXT_MOTOR_DIRECTION = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h69, 8'h74, 8'h63, 8'h65, 8'h72, 8'h69, 8'h44, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
     localparam logic [13:0][7:0] TEXT_MOTOR_SPEED = {{8'h20, 8'h3a, 8'h64, 8'h65, 8'h65, 8'h70, 8'h53, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
     localparam logic [15:0][7:0] TEXT_P0_SCORE = {{8'h20, 8'h3a, 8'h65, 8'h72, 8'h6f, 8'h63, 8'h53, 8'h20, 8'h30, 8'h72, 8'h65, 8'h79, 8'h61, 8'h6c, 8'h50, 8'ha}};
@@ -63,7 +63,6 @@ module debugger (
     localparam BIT_1 = 8'h31;
     logic [4:0] D_state_d, D_state_q = 5'h0;
     logic [5:0] D_bit_32_count_d, D_bit_32_count_q = 1'h0;
-    logic [0:0] D_bit_1_count_d, D_bit_1_count_q = 1'h0;
     logic [3:0] D_bit_4_count_d, D_bit_4_count_q = 1'h0;
     logic [4:0] D_correct_button_count_d, D_correct_button_count_q = 0;
     logic [4:0] D_motor_direction_count_d, D_motor_direction_count_q = 0;
@@ -90,7 +89,6 @@ module debugger (
     logic send_trigger;
     always @* begin
         D_bit_32_count_d = D_bit_32_count_q;
-        D_bit_1_count_d = D_bit_1_count_q;
         D_bit_4_count_d = D_bit_4_count_q;
         D_correct_button_count_d = D_correct_button_count_q;
         D_motor_direction_count_d = D_motor_direction_count_q;
@@ -124,7 +122,6 @@ module debugger (
             5'h0: begin
                 if (send_trigger & !tx_busy) begin
                     D_bit_32_count_d = 5'h1f;
-                    D_bit_1_count_d = 1'h1;
                     D_bit_4_count_d = 2'h3;
                     D_correct_button_count_d = 1'h0;
                     D_motor_direction_count_d = 1'h0;
@@ -156,7 +153,7 @@ module debugger (
                     D_correct_button_count_d = D_correct_button_count_q + 1'h1;
                     new_tx = 1'h1;
                     tx_data = TEXT_CORRECT_BUTTON[D_correct_button_count_q];
-                    if (D_correct_button_count_q == 6'h10) begin
+                    if (D_correct_button_count_q == 6'h1d) begin
                         D_state_d = 5'h3;
                     end
                 end
@@ -433,7 +430,6 @@ module debugger (
         if ((rst) == 1'b1) begin
             D_state_q <= 5'h0;
             D_bit_32_count_q <= 1'h0;
-            D_bit_1_count_q <= 1'h0;
             D_bit_4_count_q <= 1'h0;
             D_correct_button_count_q <= 0;
             D_motor_direction_count_q <= 0;
@@ -460,7 +456,6 @@ module debugger (
         end else begin
             D_state_q <= D_state_d;
             D_bit_32_count_q <= D_bit_32_count_d;
-            D_bit_1_count_q <= D_bit_1_count_d;
             D_bit_4_count_q <= D_bit_4_count_d;
             D_correct_button_count_q <= D_correct_button_count_d;
             D_motor_direction_count_q <= D_motor_direction_count_d;

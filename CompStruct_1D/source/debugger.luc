@@ -52,7 +52,7 @@ module debugger (
         SEND_DATA
     }
     
-    const TEXT_CORRECT_BUTTON = $reverse("\nCorrect Button: ")
+    const TEXT_CORRECT_BUTTON = $reverse("\n\n===========\nCorrect Button: ")
     const TEXT_MOTOR_DIRECTION = $reverse("\nMotor Direction: ")
     const TEXT_MOTOR_SPEED = $reverse("\nMotor Speed: ")
     const TEXT_P0_SCORE = $reverse("\nPlayer0 Score: ")
@@ -72,7 +72,6 @@ module debugger (
         .rst(rst) {
             dff state[$width(States)](#INIT(States.IDLE))
             dff bit_32_count[6](#INIT(0))
-            dff bit_1_count[1](#INIT(0))
             dff bit_4_count[4](#INIT(0))
             
             dff correct_button_count[$clog2($width(TEXT_CORRECT_BUTTON, 0))]
@@ -116,7 +115,6 @@ module debugger (
             States.IDLE:
                 if (send_trigger & !tx_busy) {
                     bit_32_count.d = 31
-                    bit_1_count.d = 1
                     bit_4_count.d = 3
                     correct_button_count.d = 0
                     motor_direction_count.d = 0
