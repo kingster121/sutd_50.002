@@ -29,7 +29,7 @@ module game_datapath (
     output b[32],
     output alufn[6]
 ) {
-    const CLOCK_DIVIDER = 17 // 100MHz = 10 ns. To get 1ms = 10ns * 2^17
+    const CLOCK_DIVIDER = 14 // 10MHz = 100ns. To get 1ms = 100ns * 2^14
     sig input_alu_a[32]
     sig input_alu_b[32]
     

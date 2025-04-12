@@ -28,7 +28,7 @@ module alchitry_top (
 ) {
     sig rst                 // reset signal
     // const CLOCK_DIVIDER = $is_sim() ? 11 : 17
-    const CLK_FREQ = $is_sim() ? 1000 : 100000000
+    const CLK_FREQ = $is_sim() ? 1000 : 10_000_000 // Changed to 100MHz to meet timing constraint
     // const SEG_REFRESH = $is_sim() ? 2 : 10
     
     .clk(clk) {
@@ -61,7 +61,7 @@ module alchitry_top (
             motor motor(.motor_speed(game_datapath.motor_speed), .motor_direction(game_datapath.motor_direction))
             
             // rx and tx for serial debugging
-            #BAUD(1_000_000), #CLK_FREQ(100_000_000) {
+            #BAUD(100_000), #CLK_FREQ(CLK_FREQ) {
                 uart_rx rx
                 uart_tx tx
             }

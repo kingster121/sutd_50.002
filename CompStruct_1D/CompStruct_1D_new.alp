@@ -129,14 +129,14 @@
         "constraintFiles": [
             {
                 "file": {
-                    "type": "Component",
-                    "path": "Constraints/alchitry.acf"
+                    "type": "DiskFile",
+                    "path": "constraint/io_v1_pulldown.acf"
                 }
             },
             {
                 "file": {
                     "type": "DiskFile",
-                    "path": "constraint/io_v1_pulldown.acf"
+                    "path": "constraint/alchitry.acf"
                 }
             }
         ],

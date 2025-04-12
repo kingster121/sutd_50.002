@@ -53,7 +53,7 @@ module game_regfiles (
         we_reg.d = we
         data_reg.d = data
         
-        correct_button_compare_reg.d = 32b1010
+        // correct_button_compare_reg.d = 32b1010
         
         //write port
         if (we){

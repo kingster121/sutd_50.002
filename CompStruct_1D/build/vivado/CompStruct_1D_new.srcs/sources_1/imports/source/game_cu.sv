@@ -49,10 +49,9 @@ module game_cu (
     localparam E_GameStates_CHECK_COUNTER = 5'h16;
     localparam E_GameStates_BRANCH_COUNTER = 5'h17;
     localparam E_GameStates_SET_CORRECT_BUTTON = 5'h18;
-    localparam E_GameStates_CHECK_CORRECT_BUTTON = 5'h19;
-    localparam E_GameStates_BRANCH_CORRECT_BUTTON = 5'h1a;
-    localparam E_GameStates_SET_0_CORRECT_BUTTON = 5'h1b;
-    localparam E_GameStates_SET_1_CORRECT_BUTTON = 5'h1c;
+    localparam E_GameStates_BRANCH_CORRECT_BUTTON = 5'h19;
+    localparam E_GameStates_SET_0_CORRECT_BUTTON = 5'h1a;
+    localparam E_GameStates_SET_1_CORRECT_BUTTON = 5'h1b;
     logic [4:0] D_game_fsm_d, D_game_fsm_q = 5'h0;
     always @* begin
         D_game_fsm_d = D_game_fsm_q;
@@ -229,14 +228,52 @@ module game_cu (
                     end
                 end
                 5'h18: begin
-                    alufn = 6'h3a;
-                    asel = 3'h7;
-                    bsel = 2'h3;
+                    alufn = 6'h0;
+                    asel = 1'h0;
+                    bsel = 1'h0;
                     regfile_we = 1'h1;
-                    regfile_wa = 3'h7;
-                    regfile_ra1 = 3'h7;
-                    regfile_ra2 = 3'h7;
+                    regfile_wa = 1'h0;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 1'h0;
+                    alu_out_sel = 1'h1;
+                    D_game_fsm_d = 5'h19;
+                end
+                5'h19: begin
+                    alufn = 6'h0;
+                    asel = 1'h0;
+                    bsel = 1'h0;
+                    regfile_we = 1'h0;
+                    regfile_wa = 1'h0;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 1'h0;
                     alu_out_sel = 1'h0;
+                    if (~regfile_rd2[1'h0]) begin
+                        D_game_fsm_d = 5'h1a;
+                    end else begin
+                        D_game_fsm_d = 5'h1b;
+                    end
+                end
+                5'h1a: begin
+                    alufn = 6'h1b;
+                    asel = 1'h0;
+                    bsel = 1'h1;
+                    regfile_we = 1'h1;
+                    regfile_wa = 3'h5;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 1'h0;
+                    alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h0;
+                end
+                5'h1b: begin
+                    alufn = 6'h1b;
+                    asel = 1'h0;
+                    bsel = 2'h2;
+                    regfile_we = 1'h1;
+                    regfile_wa = 3'h5;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 1'h0;
+                    alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h0;
                 end
             endcase
         end

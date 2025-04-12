@@ -57,8 +57,8 @@ module game_cu (
         
         // Set correct buttons
         SET_CORRECT_BUTTON,
-        CHECK_CORRECT_BUTTON,
-        BRANCH_CORRECT_BUTTON,
+        // CHECK_CORRECT_BUTTON,
+        BRANCH_CORRECT_BUTTON, // Direct read from correct button reg
         SET_0_CORRECT_BUTTON,
         SET_1_CORRECT_BUTTON
     }
@@ -239,14 +239,52 @@ module game_cu (
                         game_fsm.d = GameStates.BRANCH_COUNTER
                 
                 GameStates.SET_CORRECT_BUTTON:
-                    alufn = 6h3A
-                    asel = d7
-                    bsel = d3
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
                     regfile_we = 1
-                    regfile_wa = d7 
-                    regfile_ra1 = d7
-                    regfile_ra2 = d7 // Allows for direct read 
+                    regfile_wa = d0 
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d1 // rng_1
+                    game_fsm.d = GameStates.BRANCH_CORRECT_BUTTON
+                
+                GameStates.BRANCH_CORRECT_BUTTON:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0 
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0 // Direct read correct_button reg
+                    alu_out_sel = d0 // rng_1
+                    if (~regfile_rd2[0])
+                        game_fsm.d = GameStates.SET_0_CORRECT_BUTTON
+                    else
+                        game_fsm.d = GameStates.SET_1_CORRECT_BUTTON
+                
+                GameStates.SET_0_CORRECT_BUTTON:
+                    alufn = 6h1B
+                    asel = d0
+                    bsel = d1
+                    regfile_we = 1
+                    regfile_wa = d5 // correct_button_compare
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
                     alu_out_sel = d0
+                    game_fsm.d = GameStates.IDLE
+                
+                GameStates.SET_1_CORRECT_BUTTON:
+                    alufn = 6h1B
+                    asel = d0
+                    bsel = d2
+                    regfile_we = 1
+                    regfile_wa = d5 // correct_button_compare
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.IDLE
+                
             }
         }
     }
