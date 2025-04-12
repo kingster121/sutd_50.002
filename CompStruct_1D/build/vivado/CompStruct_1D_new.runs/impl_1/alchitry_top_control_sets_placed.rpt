@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-| Date         : Sat Apr 12 02:01:53 2025
+| Date         : Sat Apr 12 10:30:33 2025
 | Host         : fedora running 64-bit unknown
 | Command      : report_control_sets -verbose -file alchitry_top_control_sets_placed.rpt
 | Design       : alchitry_top
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |    27 |
-|    Minimum number of control sets                        |    27 |
+| Total control sets                                       |    31 |
+|    Minimum number of control sets                        |    31 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    88 |
+| Unused register locations in slices containing registers |    86 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,15 +39,15 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |    27 |
+| Total control sets |    31 |
 | >= 0 to < 4        |     0 |
-| >= 4 to < 6        |     9 |
+| >= 4 to < 6        |    10 |
 | >= 6 to < 8        |     2 |
 | >= 8 to < 10       |     2 |
 | >= 10 to < 12      |     1 |
-| >= 12 to < 14      |     0 |
+| >= 12 to < 14      |     1 |
 | >= 14 to < 16      |     0 |
-| >= 16              |    13 |
+| >= 16              |    15 |
 +--------------------+-------+
 * Control sets can be remapped at either synth_design or opt_design
 
@@ -58,12 +58,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              71 |           25 |
+| No           | No                    | No                     |              71 |           27 |
 | No           | No                    | Yes                    |               0 |            0 |
-| No           | Yes                   | No                     |             113 |           42 |
-| Yes          | No                    | No                     |              47 |           22 |
+| No           | Yes                   | No                     |             103 |           40 |
+| Yes          | No                    | No                     |              47 |           17 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |             513 |          128 |
+| Yes          | Yes                   | No                     |             725 |          194 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -74,32 +74,36 @@ Table of Contents
 |  Clock Signal  |                           Enable Signal                          |                          Set/Reset Signal                         | Slice Load Count | Bel Load Count | Bels / Slice |
 +----------------+------------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+--------------+
 |  clk_IBUF_BUFG |                                                                  | reset_cond/M_reset_cond_in                                        |                2 |              4 |         2.00 |
-|  clk_IBUF_BUFG | tx/FSM_onehot_D_state_q_reg[14][0]                               | reset_cond/Q[0]                                                   |                2 |              4 |         2.00 |
-|  clk_IBUF_BUFG | tx/FSM_onehot_D_state_q_reg[6][0]                                | reset_cond/Q[0]                                                   |                1 |              4 |         4.00 |
-|  clk_IBUF_BUFG | tx/FSM_sequential_D_state_q_reg[1]_2[0]                          | reset_cond/Q[0]                                                   |                1 |              4 |         4.00 |
-|  clk_IBUF_BUFG | tx/FSM_sequential_D_state_q_reg[1]_3[0]                          | reset_cond/Q[0]                                                   |                1 |              4 |         4.00 |
-|  clk_IBUF_BUFG | tx/FSM_sequential_D_state_q_reg[1]_6[0]                          | reset_cond/Q[0]                                                   |                2 |              5 |         2.50 |
-|  clk_IBUF_BUFG | tx/FSM_sequential_D_state_q_reg[1]_5[0]                          | reset_cond/Q[0]                                                   |                2 |              5 |         2.50 |
-|  clk_IBUF_BUFG | tx/FSM_sequential_D_state_q_reg[1]_4[0]                          | reset_cond/Q[0]                                                   |                2 |              5 |         2.50 |
-|  clk_IBUF_BUFG | tx/FSM_sequential_D_state_q_reg[1]_0[0]                          | reset_cond/Q[0]                                                   |                2 |              5 |         2.50 |
+|  clk_IBUF_BUFG | debugger/D_motor_speed_count_q[3]_i_1_n_0                        | reset_cond/Q[0]                                                   |                1 |              4 |         4.00 |
+|  clk_IBUF_BUFG | debugger/D_p1_score_count_q[3]_i_1_n_0                           | reset_cond/Q[0]                                                   |                1 |              4 |         4.00 |
+|  clk_IBUF_BUFG | debugger/D_p0_score_count_q[3]_i_1_n_0                           | reset_cond/Q[0]                                                   |                2 |              4 |         2.00 |
+|  clk_IBUF_BUFG | debugger/D_counter_count_q[3]_i_1_n_0                            | reset_cond/Q[0]                                                   |                1 |              4 |         4.00 |
+|  clk_IBUF_BUFG | debugger/D_bit_32_count_q[4]_i_1_n_0                             | reset_cond/Q[0]                                                   |                1 |              5 |         5.00 |
+|  clk_IBUF_BUFG | debugger/FSM_sequential_D_state_q[4]_i_1_n_0                     | reset_cond/Q[0]                                                   |                2 |              5 |         2.50 |
+|  clk_IBUF_BUFG | debugger/D_correct_button_compare_count_q[4]_i_1_n_0             | reset_cond/Q[0]                                                   |                1 |              5 |         5.00 |
+|  clk_IBUF_BUFG | debugger/D_motor_direction_count_q[4]_i_1_n_0                    | reset_cond/Q[0]                                                   |                1 |              5 |         5.00 |
+|  clk_IBUF_BUFG | debugger/D_correct_button_count_q[4]_i_1_n_0                     | reset_cond/Q[0]                                                   |                1 |              5 |         5.00 |
 |  clk_IBUF_BUFG | rx/D_ctr_q[6]_i_2__0_n_0                                         | rx/D_ctr_q[6]_i_1__0_n_0                                          |                2 |              6 |         3.00 |
-|  clk_IBUF_BUFG | debugger/E[0]                                                    |                                                                   |                5 |              7 |         1.40 |
+|  clk_IBUF_BUFG | debugger/E[0]                                                    |                                                                   |                3 |              7 |         2.33 |
 |  clk_IBUF_BUFG | rx/D_saved_data_d                                                |                                                                   |                3 |              8 |         2.67 |
 |  clk_IBUF_BUFG | motor/pwm/ctr/E[0]                                               | reset_cond/Q[0]                                                   |                3 |              9 |         3.00 |
 |  clk_IBUF_BUFG |                                                                  | motor/pwm/ctr/D_ctr_q[0]_i_1_n_0                                  |                3 |             11 |         3.67 |
-|  clk_IBUF_BUFG | forLoop_idx_0_1394947674[1].p1_button_cond/D_ctr_q[0]_i_2__0_n_0 | forLoop_idx_0_1394947674[1].p1_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
-|  clk_IBUF_BUFG | forLoop_idx_0_627666672[1].p0_button_cond/D_ctr_q[0]_i_2_n_0     | forLoop_idx_0_627666672[1].p0_button_cond/sync/D_pipe_q_reg[1]_0  |                5 |             17 |         3.40 |
-|  clk_IBUF_BUFG | forLoop_idx_0_1394947674[0].p1_button_cond/D_ctr_q[0]_i_2__1_n_0 | forLoop_idx_0_1394947674[0].p1_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
-|  clk_IBUF_BUFG | forLoop_idx_0_627666672[0].p0_button_cond/D_ctr_q[0]_i_2__3_n_0  | forLoop_idx_0_627666672[0].p0_button_cond/sync/D_pipe_q_reg[1]_0  |                5 |             17 |         3.40 |
-|  clk_IBUF_BUFG | debugger/FSM_onehot_D_state_q[29]_i_1_n_0                        | reset_cond/Q[0]                                                   |                8 |             30 |         3.75 |
-|  clk_IBUF_BUFG | game_datapath/game_cu/D_game_fsm_q_reg[2]_0[2]                   | reset_cond/Q[0]                                                   |                8 |             32 |         4.00 |
-|  clk_IBUF_BUFG | game_datapath/game_cu/D_motor_speed_reg_d                        | reset_cond/Q[0]                                                   |                8 |             32 |         4.00 |
-|  clk_IBUF_BUFG | game_datapath/game_cu/D_motor_direction_reg_d                    | reset_cond/Q[0]                                                   |                7 |             32 |         4.57 |
-|  clk_IBUF_BUFG | game_datapath/rng_1/edge_detector/E[0]                           |                                                                   |               14 |             32 |         2.29 |
-|  clk_IBUF_BUFG |                                                                  |                                                                   |               25 |             71 |         2.84 |
-|  clk_IBUF_BUFG | game_datapath/slow_clk/D_ctr_q_reg[27]_0[0]                      | reset_cond/Q[0]                                                   |               18 |             96 |         5.33 |
-|  clk_IBUF_BUFG |                                                                  | reset_cond/Q[0]                                                   |               37 |             98 |         2.65 |
-|  clk_IBUF_BUFG | debugger/D_correct_button_dff_d                                  | reset_cond/Q[0]                                                   |               41 |            172 |         4.20 |
+|  clk_IBUF_BUFG | game_datapath/game_cu/FSM_onehot_D_game_fsm_q[12]_i_1_n_0        | reset_cond/Q[0]                                                   |                4 |             13 |         3.25 |
+|  clk_IBUF_BUFG | forLoop_idx_0_941172384[0].p1_button_cond/D_ctr_q[0]_i_2__2_n_0  | forLoop_idx_0_941172384[0].p1_button_cond/sync/D_pipe_q_reg[1]_0  |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG | forLoop_idx_0_941172384[1].p1_button_cond/D_ctr_q[0]_i_2__1_n_0  | forLoop_idx_0_941172384[1].p1_button_cond/sync/D_pipe_q_reg[1]_0  |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG | forLoop_idx_0_1393461335[1].p0_button_cond/D_ctr_q[0]_i_2_n_0    | forLoop_idx_0_1393461335[1].p0_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG | forLoop_idx_0_1393461335[0].p0_button_cond/D_ctr_q[0]_i_2__0_n_0 | forLoop_idx_0_1393461335[0].p0_button_cond/sync/D_pipe_q_reg[1]_0 |                5 |             17 |         3.40 |
+|  clk_IBUF_BUFG | game_datapath/game_cu/E[0]                                       | reset_cond/Q[0]                                                   |                9 |             32 |         3.56 |
+|  clk_IBUF_BUFG | game_datapath/game_cu/FSM_onehot_D_game_fsm_q_reg[10]_2[0]       | reset_cond/Q[0]                                                   |                5 |             32 |         6.40 |
+|  clk_IBUF_BUFG | game_datapath/game_cu/FSM_onehot_D_game_fsm_q_reg[10]_3[0]       | reset_cond/Q[0]                                                   |                8 |             32 |         4.00 |
+|  clk_IBUF_BUFG | game_datapath/game_cu/FSM_onehot_D_game_fsm_q_reg[10]_4[0]       | reset_cond/Q[0]                                                   |               13 |             32 |         2.46 |
+|  clk_IBUF_BUFG | game_datapath/game_cu/FSM_onehot_D_game_fsm_q_reg[6]_0[0]        | reset_cond/Q[0]                                                   |               12 |             32 |         2.67 |
+|  clk_IBUF_BUFG | game_datapath/game_cu/FSM_onehot_D_game_fsm_q_reg[8]_0[0]        | reset_cond/Q[0]                                                   |                9 |             32 |         3.56 |
+|  clk_IBUF_BUFG | game_datapath/slow_clk_edge/E[0]                                 |                                                                   |               11 |             32 |         2.91 |
+|  clk_IBUF_BUFG |                                                                  |                                                                   |               27 |             71 |         2.63 |
+|  clk_IBUF_BUFG |                                                                  | reset_cond/Q[0]                                                   |               35 |             88 |         2.51 |
+|  clk_IBUF_BUFG | game_datapath/slow_clk/D_ctr_q_reg[17]_0[0]                      | reset_cond/Q[0]                                                   |               18 |             96 |         5.33 |
+|  clk_IBUF_BUFG | debugger/D_correct_button_dff_d                                  | reset_cond/Q[0]                                                   |               80 |            300 |         3.75 |
 +----------------+------------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+--------------+
 
 

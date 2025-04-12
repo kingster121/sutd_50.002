@@ -8,7 +8,7 @@ module game_regfiles (
     input ra1[4], // read address port 1
     input ra2[4], // read address port 2
     output rd1[32], // read data port 1
-    output rd2[32], // read data port 1
+    output rd2[32], // read data port 2
     
     // Registers/DFFs
     output correct_button_out[32],
@@ -19,6 +19,7 @@ module game_regfiles (
     output correct_button_compare_out[32],
     output counter_out[32],
     output temp_out[32],
+    output temp1_out[32], 
     
     // Inputs to game_regfiles for debugging
     output wa_out[4],
@@ -36,6 +37,7 @@ module game_regfiles (
             dff correct_button_compare_reg[32](#INIT(0))
             dff counter_reg[32](#INIT(0))
             dff temp_reg[32](#INIT(0))
+            dff temp1_reg[32](#INIT(0))
             
             // For debugging regfile
             dff wa_reg[4](#INIT(0))
@@ -64,6 +66,7 @@ module game_regfiles (
                 d5 : correct_button_compare_reg.d = data
                 d6 : counter_reg.d = data
                 d7 : temp_reg.d = data
+                d8 : temp1_reg.d = data
             }
         }
         
@@ -78,6 +81,7 @@ module game_regfiles (
             d5 : rd1 = correct_button_compare_reg.q
             d6 : rd1 = counter_reg.q
             d7 : rd1 = temp_reg.q
+            d8 : rd1 = temp1_reg.q
             default : rd1 = 0
         }
         
@@ -91,6 +95,7 @@ module game_regfiles (
             d5 : rd2 = correct_button_compare_reg.q
             d6 : rd2 = counter_reg.q
             d7 : rd2 = temp_reg.q
+            d8 : rd2 = temp1_reg.q
             default : rd2 = 0
         }
         
@@ -103,6 +108,7 @@ module game_regfiles (
         correct_button_compare_out = correct_button_compare_reg.q
         counter_out = counter_reg.q
         temp_out = temp_reg.q
+        temp1_out = temp1_reg.q
         
         // Debugging inputs
         wa_out = wa_reg.q

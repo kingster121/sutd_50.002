@@ -21,6 +21,7 @@ module game_datapath (
         output reg [31:0] correct_button_compare,
         output reg [31:0] counter,
         output reg [31:0] temp,
+        output reg [31:0] temp1,
         output reg [3:0] wa,
         output reg we,
         output reg [31:0] data,
@@ -28,7 +29,7 @@ module game_datapath (
         output reg [31:0] b,
         output reg [5:0] alufn
     );
-    localparam CLOCK_DIVIDER = 5'h1b;
+    localparam CLOCK_DIVIDER = 5'h11;
     logic [31:0] input_alu_a;
     logic [31:0] input_alu_b;
     logic [31:0] M_game_alu_a;
@@ -50,10 +51,42 @@ module game_datapath (
     );
     
     
+    localparam _MP_SIZE_1490548602 = 1'h1;
+    localparam _MP_DIV_1490548602 = 5'h11;
+    localparam _MP_TOP_1490548602 = 1'h0;
+    localparam _MP_UP_1490548602 = 1'h1;
+    logic [0:0] M_slow_clk_value;
+    
+    counter #(
+        .SIZE(_MP_SIZE_1490548602),
+        .DIV(_MP_DIV_1490548602),
+        .TOP(_MP_TOP_1490548602),
+        .UP(_MP_UP_1490548602)
+    ) slow_clk (
+        .rst(rst),
+        .clk(clk),
+        .value(M_slow_clk_value)
+    );
+    
+    
+    localparam _MP_RISE_691326053 = 1'h1;
+    localparam _MP_FALL_691326053 = 1'h0;
+    logic M_slow_clk_edge_out;
+    
+    edge_detector #(
+        .RISE(_MP_RISE_691326053),
+        .FALL(_MP_FALL_691326053)
+    ) slow_clk_edge (
+        .in(M_slow_clk_value),
+        .clk(clk),
+        .out(M_slow_clk_edge_out)
+    );
+    
+    
     logic [31:0] M_game_cu_regfile_rd2;
     logic [5:0] M_game_cu_alufn;
     logic [2:0] M_game_cu_asel;
-    logic [1:0] M_game_cu_bsel;
+    logic [2:0] M_game_cu_bsel;
     logic [1:0] M_game_cu_alu_out_sel;
     logic [3:0] M_game_cu_regfile_wa;
     logic [3:0] M_game_cu_regfile_ra1;
@@ -61,6 +94,7 @@ module game_datapath (
     logic M_game_cu_regfile_we;
     
     game_cu game_cu (
+        .slow_clk(M_slow_clk_edge_out),
         .p0b0(p0b0),
         .p0b1(p0b1),
         .p1b0(p1b0),
@@ -92,6 +126,7 @@ module game_datapath (
     logic [31:0] M_game_regfiles_correct_button_compare_out;
     logic [31:0] M_game_regfiles_counter_out;
     logic [31:0] M_game_regfiles_temp_out;
+    logic [31:0] M_game_regfiles_temp1_out;
     logic [3:0] M_game_regfiles_wa_out;
     logic M_game_regfiles_we_out;
     logic [31:0] M_game_regfiles_data_out;
@@ -114,35 +149,18 @@ module game_datapath (
         .correct_button_compare_out(M_game_regfiles_correct_button_compare_out),
         .counter_out(M_game_regfiles_counter_out),
         .temp_out(M_game_regfiles_temp_out),
+        .temp1_out(M_game_regfiles_temp1_out),
         .wa_out(M_game_regfiles_wa_out),
         .we_out(M_game_regfiles_we_out),
         .data_out(M_game_regfiles_data_out)
     );
     
     
-    localparam _MP_SIZE_289228865 = 1'h1;
-    localparam _MP_DIV_289228865 = 5'h1b;
-    localparam _MP_TOP_289228865 = 1'h0;
-    localparam _MP_UP_289228865 = 1'h1;
-    logic [0:0] M_slow_clk_value;
-    
-    counter #(
-        .SIZE(_MP_SIZE_289228865),
-        .DIV(_MP_DIV_289228865),
-        .TOP(_MP_TOP_289228865),
-        .UP(_MP_UP_289228865)
-    ) slow_clk (
-        .clk(clk),
-        .rst(rst),
-        .value(M_slow_clk_value)
-    );
-    
-    
-    localparam _MP_SIZE_1179812068 = 1'h1;
+    localparam _MP_SIZE_617243680 = 1'h1;
     logic [0:0] M_rng_1_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_1179812068)
+        .SIZE(_MP_SIZE_617243680)
     ) rng_1 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
@@ -151,11 +169,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_685608210 = 4'hb;
+    localparam _MP_SIZE_426278887 = 4'hb;
     logic [10:0] M_rng_2000_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_685608210)
+        .SIZE(_MP_SIZE_426278887)
     ) rng_2000 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
@@ -201,6 +219,9 @@ module game_datapath (
             2'h3: begin
                 input_alu_b = 32'h3;
             end
+            3'h4: begin
+                input_alu_b = 32'h0;
+            end
             default: begin
                 input_alu_b = 1'h0;
             end
@@ -231,6 +252,7 @@ module game_datapath (
         correct_button_compare = M_game_regfiles_correct_button_compare_out;
         counter = M_game_regfiles_counter_out;
         temp = M_game_regfiles_temp_out;
+        temp1 = M_game_regfiles_temp1_out;
         wa = M_game_regfiles_wa_out;
         we = M_game_regfiles_we_out;
         data = M_game_regfiles_data_out;

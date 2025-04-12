@@ -22,6 +22,7 @@ module game_regfiles (
         output reg [31:0] correct_button_compare_out,
         output reg [31:0] counter_out,
         output reg [31:0] temp_out,
+        output reg [31:0] temp1_out,
         output reg [3:0] wa_out,
         output reg we_out,
         output reg [31:0] data_out
@@ -34,6 +35,7 @@ module game_regfiles (
     logic [31:0] D_correct_button_compare_reg_d, D_correct_button_compare_reg_q = 1'h0;
     logic [31:0] D_counter_reg_d, D_counter_reg_q = 1'h0;
     logic [31:0] D_temp_reg_d, D_temp_reg_q = 1'h0;
+    logic [31:0] D_temp1_reg_d, D_temp1_reg_q = 1'h0;
     logic [3:0] D_wa_reg_d, D_wa_reg_q = 1'h0;
     logic D_we_reg_d, D_we_reg_q = 1'h0;
     logic [31:0] D_data_reg_d, D_data_reg_q = 6'h20;
@@ -49,6 +51,7 @@ module game_regfiles (
         D_p1_score_reg_d = D_p1_score_reg_q;
         D_counter_reg_d = D_counter_reg_q;
         D_temp_reg_d = D_temp_reg_q;
+        D_temp1_reg_d = D_temp1_reg_q;
         
         D_wa_reg_d = wa;
         D_we_reg_d = we;
@@ -81,6 +84,9 @@ module game_regfiles (
                 3'h7: begin
                     D_temp_reg_d = data;
                 end
+                4'h8: begin
+                    D_temp1_reg_d = data;
+                end
             endcase
         end
         
@@ -108,6 +114,9 @@ module game_regfiles (
             end
             3'h7: begin
                 rd1 = D_temp_reg_q;
+            end
+            4'h8: begin
+                rd1 = D_temp1_reg_q;
             end
             default: begin
                 rd1 = 1'h0;
@@ -139,6 +148,9 @@ module game_regfiles (
             3'h7: begin
                 rd2 = D_temp_reg_q;
             end
+            4'h8: begin
+                rd2 = D_temp1_reg_q;
+            end
             default: begin
                 rd2 = 1'h0;
             end
@@ -151,6 +163,7 @@ module game_regfiles (
         correct_button_compare_out = D_correct_button_compare_reg_q;
         counter_out = D_counter_reg_q;
         temp_out = D_temp_reg_q;
+        temp1_out = D_temp1_reg_q;
         wa_out = D_wa_reg_q;
         we_out = D_we_reg_q;
         data_out = D_data_reg_q;
@@ -167,6 +180,7 @@ module game_regfiles (
             D_correct_button_compare_reg_q <= 1'h0;
             D_counter_reg_q <= 1'h0;
             D_temp_reg_q <= 1'h0;
+            D_temp1_reg_q <= 1'h0;
             D_wa_reg_q <= 1'h0;
             D_we_reg_q <= 1'h0;
             D_data_reg_q <= 6'h20;
@@ -179,6 +193,7 @@ module game_regfiles (
             D_correct_button_compare_reg_q <= D_correct_button_compare_reg_d;
             D_counter_reg_q <= D_counter_reg_d;
             D_temp_reg_q <= D_temp_reg_d;
+            D_temp1_reg_q <= D_temp1_reg_d;
             D_wa_reg_q <= D_wa_reg_d;
             D_we_reg_q <= D_we_reg_d;
             D_data_reg_q <= D_data_reg_d;

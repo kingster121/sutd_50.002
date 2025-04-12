@@ -20,6 +20,7 @@ module debugger (
         input wire [31:0] correct_button_compare,
         input wire [31:0] counter,
         input wire [31:0] temp,
+        input wire [31:0] temp1,
         input wire [3:0] wa,
         input wire we,
         input wire [31:0] data,
@@ -45,18 +46,20 @@ module debugger (
     localparam E_States_SEND_COUNTER = 5'hf;
     localparam E_States_SEND_TEMP_PREFIX = 5'h10;
     localparam E_States_SEND_TEMP = 5'h11;
-    localparam E_States_SEND_WA_PREFIX = 5'h12;
-    localparam E_States_SEND_WA = 5'h13;
-    localparam E_States_SEND_WE_PREFIX = 5'h14;
-    localparam E_States_SEND_WE = 5'h15;
-    localparam E_States_SEND_DATA_PREFIX = 5'h16;
-    localparam E_States_SEND_DATA = 5'h17;
-    localparam E_States_SEND_A_PREFIX = 5'h18;
-    localparam E_States_SEND_A = 5'h19;
-    localparam E_States_SEND_B_PREFIX = 5'h1a;
-    localparam E_States_SEND_B = 5'h1b;
-    localparam E_States_SEND_ALUFN_PREFIX = 5'h1c;
-    localparam E_States_SEND_ALUFN = 5'h1d;
+    localparam E_States_SEND_TEMP1_PREFIX = 5'h12;
+    localparam E_States_SEND_TEMP1 = 5'h13;
+    localparam E_States_SEND_WA_PREFIX = 5'h14;
+    localparam E_States_SEND_WA = 5'h15;
+    localparam E_States_SEND_WE_PREFIX = 5'h16;
+    localparam E_States_SEND_WE = 5'h17;
+    localparam E_States_SEND_DATA_PREFIX = 5'h18;
+    localparam E_States_SEND_DATA = 5'h19;
+    localparam E_States_SEND_A_PREFIX = 5'h1a;
+    localparam E_States_SEND_A = 5'h1b;
+    localparam E_States_SEND_B_PREFIX = 5'h1c;
+    localparam E_States_SEND_B = 5'h1d;
+    localparam E_States_SEND_ALUFN_PREFIX = 5'h1e;
+    localparam E_States_SEND_ALUFN = 5'h1f;
     localparam logic [29:0][7:0] TEXT_CORRECT_BUTTON = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h74, 8'h74, 8'h75, 8'h42, 8'h20, 8'h74, 8'h63, 8'h65, 8'h72, 8'h72, 8'h6f, 8'h43, 8'ha, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'h3d, 8'ha, 8'ha}};
     localparam logic [17:0][7:0] TEXT_MOTOR_DIRECTION = {{8'h20, 8'h3a, 8'h6e, 8'h6f, 8'h69, 8'h74, 8'h63, 8'h65, 8'h72, 8'h69, 8'h44, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
     localparam logic [13:0][7:0] TEXT_MOTOR_SPEED = {{8'h20, 8'h3a, 8'h64, 8'h65, 8'h65, 8'h70, 8'h53, 8'h20, 8'h72, 8'h6f, 8'h74, 8'h6f, 8'h4d, 8'ha}};
@@ -65,6 +68,7 @@ module debugger (
     localparam logic [24:0][7:0] TEXT_CORRECT_BUTTON_COMPARE = {{8'h20, 8'h3a, 8'h65, 8'h72, 8'h61, 8'h70, 8'h6d, 8'h6f, 8'h43, 8'h20, 8'h6e, 8'h6f, 8'h74, 8'h74, 8'h75, 8'h42, 8'h20, 8'h74, 8'h63, 8'h65, 8'h72, 8'h72, 8'h6f, 8'h43, 8'ha}};
     localparam logic [9:0][7:0] TEXT_COUNTER = {{8'h20, 8'h3a, 8'h72, 8'h65, 8'h74, 8'h6e, 8'h75, 8'h6f, 8'h43, 8'ha}};
     localparam logic [6:0][7:0] TEXT_TEMP = {{8'h20, 8'h3a, 8'h70, 8'h6d, 8'h65, 8'h54, 8'ha}};
+    localparam logic [7:0][7:0] TEXT_TEMP1 = {{8'h20, 8'h3a, 8'h31, 8'h70, 8'h6d, 8'h65, 8'h54, 8'ha}};
     localparam logic [5:0][7:0] TEXT_WA = {{8'h20, 8'h3a, 8'h41, 8'h57, 8'ha, 8'ha}};
     localparam logic [4:0][7:0] TEXT_WE = {{8'h20, 8'h3a, 8'h45, 8'h57, 8'ha}};
     localparam logic [6:0][7:0] TEXT_DATA = {{8'h20, 8'h3a, 8'h61, 8'h74, 8'h61, 8'h44, 8'ha}};
@@ -85,6 +89,7 @@ module debugger (
     logic [4:0] D_correct_button_compare_count_d, D_correct_button_compare_count_q = 0;
     logic [3:0] D_counter_count_d, D_counter_count_q = 0;
     logic [2:0] D_temp_count_d, D_temp_count_q = 0;
+    logic [2:0] D_temp1_count_d, D_temp1_count_q = 0;
     logic [2:0] D_wa_count_d, D_wa_count_q = 0;
     logic [2:0] D_we_count_d, D_we_count_q = 0;
     logic [2:0] D_data_count_d, D_data_count_q = 0;
@@ -99,6 +104,7 @@ module debugger (
     logic [31:0] D_correct_button_compare_dff_d, D_correct_button_compare_dff_q = 1'h0;
     logic [31:0] D_counter_dff_d, D_counter_dff_q = 1'h0;
     logic [31:0] D_temp_dff_d, D_temp_dff_q = 1'h0;
+    logic [31:0] D_temp1_dff_d, D_temp1_dff_q = 1'h0;
     logic [3:0] D_wa_dff_d, D_wa_dff_q = 1'h0;
     logic D_we_dff_d, D_we_dff_q = 1'h0;
     logic [31:0] D_data_dff_d, D_data_dff_q = 1'h0;
@@ -118,6 +124,7 @@ module debugger (
         D_correct_button_compare_count_d = D_correct_button_compare_count_q;
         D_counter_count_d = D_counter_count_q;
         D_temp_count_d = D_temp_count_q;
+        D_temp1_count_d = D_temp1_count_q;
         D_wa_count_d = D_wa_count_q;
         D_we_count_d = D_we_count_q;
         D_data_count_d = D_data_count_q;
@@ -133,6 +140,7 @@ module debugger (
         D_correct_button_compare_dff_d = D_correct_button_compare_dff_q;
         D_counter_dff_d = D_counter_dff_q;
         D_temp_dff_d = D_temp_dff_q;
+        D_temp1_dff_d = D_temp1_dff_q;
         D_wa_dff_d = D_wa_dff_q;
         D_we_dff_d = D_we_dff_q;
         D_data_dff_d = D_data_dff_q;
@@ -158,6 +166,7 @@ module debugger (
                     D_correct_button_compare_count_d = 1'h0;
                     D_counter_count_d = 1'h0;
                     D_temp_count_d = 1'h0;
+                    D_temp1_count_d = 1'h0;
                     D_wa_count_d = 1'h0;
                     D_we_count_d = 1'h0;
                     D_data_count_d = 1'h0;
@@ -176,6 +185,7 @@ module debugger (
                 D_correct_button_compare_dff_d = correct_button_compare;
                 D_counter_dff_d = counter;
                 D_temp_dff_d = temp;
+                D_temp1_dff_d = temp1;
                 D_wa_dff_d = wa;
                 D_we_dff_d = we;
                 D_data_dff_d = data;
@@ -386,15 +396,40 @@ module debugger (
             end
             5'h12: begin
                 if (!tx_busy) begin
-                    D_wa_count_d = D_wa_count_q + 1'h1;
+                    D_temp1_count_d = D_temp1_count_q + 1'h1;
                     new_tx = 1'h1;
-                    tx_data = TEXT_WA[D_wa_count_q];
-                    if (D_wa_count_q == 5'h5) begin
+                    tx_data = TEXT_TEMP1[D_temp1_count_q];
+                    if (D_temp1_count_q == 5'h7) begin
                         D_state_d = 5'h13;
                     end
                 end
             end
             5'h13: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_temp1_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h14;
+                    end
+                end
+            end
+            5'h14: begin
+                if (!tx_busy) begin
+                    D_wa_count_d = D_wa_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_WA[D_wa_count_q];
+                    if (D_wa_count_q == 5'h5) begin
+                        D_state_d = 5'h15;
+                    end
+                end
+            end
+            5'h15: begin
                 if (!tx_busy) begin
                     D_bit_4_count_d = D_bit_4_count_q - 1'h1;
                     new_tx = 1'h1;
@@ -405,21 +440,21 @@ module debugger (
                     end
                     if (D_bit_4_count_q == 1'h0) begin
                         D_bit_4_count_d = 2'h3;
-                        D_state_d = 5'h14;
+                        D_state_d = 5'h16;
                     end
                 end
             end
-            5'h14: begin
+            5'h16: begin
                 if (!tx_busy) begin
                     D_we_count_d = D_we_count_q + 1'h1;
                     new_tx = 1'h1;
                     tx_data = TEXT_WE[D_we_count_q];
                     if (D_we_count_q == 5'h4) begin
-                        D_state_d = 5'h15;
+                        D_state_d = 5'h17;
                     end
                 end
             end
-            5'h15: begin
+            5'h17: begin
                 if (!tx_busy) begin
                     new_tx = 1'h1;
                     if (D_we_dff_q == 1'h1) begin
@@ -427,40 +462,15 @@ module debugger (
                     end else begin
                         tx_data = 8'h30;
                     end
-                    D_state_d = 5'h16;
+                    D_state_d = 5'h18;
                 end
             end
-            5'h16: begin
+            5'h18: begin
                 if (!tx_busy) begin
                     D_data_count_d = D_data_count_q + 1'h1;
                     new_tx = 1'h1;
                     tx_data = TEXT_DATA[D_data_count_q];
                     if (D_data_count_q == 5'h6) begin
-                        D_state_d = 5'h17;
-                    end
-                end
-            end
-            5'h17: begin
-                if (!tx_busy) begin
-                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
-                    new_tx = 1'h1;
-                    if (D_data_dff_q[D_bit_32_count_q] == 1'h1) begin
-                        tx_data = 8'h31;
-                    end else begin
-                        tx_data = 8'h30;
-                    end
-                    if (D_bit_32_count_q == 1'h0) begin
-                        D_bit_32_count_d = 5'h1f;
-                        D_state_d = 5'h18;
-                    end
-                end
-            end
-            5'h18: begin
-                if (!tx_busy) begin
-                    D_a_count_d = D_a_count_q + 1'h1;
-                    new_tx = 1'h1;
-                    tx_data = TEXT_A[D_a_count_q];
-                    if (D_a_count_q == 5'h3) begin
                         D_state_d = 5'h19;
                     end
                 end
@@ -469,7 +479,7 @@ module debugger (
                 if (!tx_busy) begin
                     D_bit_32_count_d = D_bit_32_count_q - 1'h1;
                     new_tx = 1'h1;
-                    if (D_a_dff_q[D_bit_32_count_q] == 1'h1) begin
+                    if (D_data_dff_q[D_bit_32_count_q] == 1'h1) begin
                         tx_data = 8'h31;
                     end else begin
                         tx_data = 8'h30;
@@ -482,10 +492,10 @@ module debugger (
             end
             5'h1a: begin
                 if (!tx_busy) begin
-                    D_b_count_d = D_b_count_q + 1'h1;
+                    D_a_count_d = D_a_count_q + 1'h1;
                     new_tx = 1'h1;
-                    tx_data = TEXT_B[D_b_count_q];
-                    if (D_b_count_q == 5'h3) begin
+                    tx_data = TEXT_A[D_a_count_q];
+                    if (D_a_count_q == 5'h3) begin
                         D_state_d = 5'h1b;
                     end
                 end
@@ -494,7 +504,7 @@ module debugger (
                 if (!tx_busy) begin
                     D_bit_32_count_d = D_bit_32_count_q - 1'h1;
                     new_tx = 1'h1;
-                    if (D_b_dff_q[D_bit_32_count_q] == 1'h1) begin
+                    if (D_a_dff_q[D_bit_32_count_q] == 1'h1) begin
                         tx_data = 8'h31;
                     end else begin
                         tx_data = 8'h30;
@@ -507,15 +517,40 @@ module debugger (
             end
             5'h1c: begin
                 if (!tx_busy) begin
-                    D_alufn_count_d = D_alufn_count_q + 1'h1;
+                    D_b_count_d = D_b_count_q + 1'h1;
                     new_tx = 1'h1;
-                    tx_data = TEXT_ALUFN[D_alufn_count_q];
-                    if (D_alufn_count_q == 5'h7) begin
+                    tx_data = TEXT_B[D_b_count_q];
+                    if (D_b_count_q == 5'h3) begin
                         D_state_d = 5'h1d;
                     end
                 end
             end
             5'h1d: begin
+                if (!tx_busy) begin
+                    D_bit_32_count_d = D_bit_32_count_q - 1'h1;
+                    new_tx = 1'h1;
+                    if (D_b_dff_q[D_bit_32_count_q] == 1'h1) begin
+                        tx_data = 8'h31;
+                    end else begin
+                        tx_data = 8'h30;
+                    end
+                    if (D_bit_32_count_q == 1'h0) begin
+                        D_bit_32_count_d = 5'h1f;
+                        D_state_d = 5'h1e;
+                    end
+                end
+            end
+            5'h1e: begin
+                if (!tx_busy) begin
+                    D_alufn_count_d = D_alufn_count_q + 1'h1;
+                    new_tx = 1'h1;
+                    tx_data = TEXT_ALUFN[D_alufn_count_q];
+                    if (D_alufn_count_q == 5'h7) begin
+                        D_state_d = 5'h1f;
+                    end
+                end
+            end
+            5'h1f: begin
                 if (!tx_busy) begin
                     D_bit_6_count_d = D_bit_6_count_q - 1'h1;
                     new_tx = 1'h1;
@@ -551,6 +586,7 @@ module debugger (
             D_correct_button_compare_count_q <= 0;
             D_counter_count_q <= 0;
             D_temp_count_q <= 0;
+            D_temp1_count_q <= 0;
             D_wa_count_q <= 0;
             D_we_count_q <= 0;
             D_data_count_q <= 0;
@@ -565,6 +601,7 @@ module debugger (
             D_correct_button_compare_dff_q <= 1'h0;
             D_counter_dff_q <= 1'h0;
             D_temp_dff_q <= 1'h0;
+            D_temp1_dff_q <= 1'h0;
             D_wa_dff_q <= 1'h0;
             D_we_dff_q <= 1'h0;
             D_data_dff_q <= 1'h0;
@@ -584,6 +621,7 @@ module debugger (
             D_correct_button_compare_count_q <= D_correct_button_compare_count_d;
             D_counter_count_q <= D_counter_count_d;
             D_temp_count_q <= D_temp_count_d;
+            D_temp1_count_q <= D_temp1_count_d;
             D_wa_count_q <= D_wa_count_d;
             D_we_count_q <= D_we_count_d;
             D_data_count_q <= D_data_count_d;
@@ -598,6 +636,7 @@ module debugger (
             D_correct_button_compare_dff_q <= D_correct_button_compare_dff_d;
             D_counter_dff_q <= D_counter_dff_d;
             D_temp_dff_q <= D_temp_dff_d;
+            D_temp1_dff_q <= D_temp1_dff_d;
             D_wa_dff_q <= D_wa_dff_d;
             D_we_dff_q <= D_we_dff_d;
             D_data_dff_q <= D_data_dff_d;

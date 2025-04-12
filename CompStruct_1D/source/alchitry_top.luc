@@ -113,6 +113,7 @@ module alchitry_top (
         debugger.correct_button_compare = game_datapath.correct_button_compare
         debugger.counter = game_datapath.counter
         debugger.temp = game_datapath.temp
+        debugger.temp1 = game_datapath.temp1
         
         // Debugging inputs to regfile
         debugger.wa =game_datapath.wa

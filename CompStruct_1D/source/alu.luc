@@ -39,6 +39,8 @@ module alu (
                 out_sig = a ^ b 
             6h1A: // "A"
                 out_sig = a
+            6h1B:
+                out_sig = b
             6h20: // SHL 
                 out_sig = a << b[4:0]
             6h21: // SHR 
@@ -62,7 +64,7 @@ module alu (
             default:
                 c = 0
                 out_sig = 0
-
+            
         }
         
         out = out_sig   

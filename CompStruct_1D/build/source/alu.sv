@@ -49,6 +49,9 @@ module alu (
             6'h1a: begin
                 out_sig = a;
             end
+            6'h1b: begin
+                out_sig = b;
+            end
             6'h20: begin
                 out_sig = a << b[3'h4:1'h0];
             end

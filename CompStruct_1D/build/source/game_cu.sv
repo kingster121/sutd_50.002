@@ -7,6 +7,7 @@
 module game_cu (
         input wire clk,
         input wire rst,
+        input wire slow_clk,
         input wire [31:0] regfile_rd2,
         input wire p0b0,
         input wire p0b1,
@@ -16,7 +17,7 @@ module game_cu (
         input wire p1wall,
         output reg [5:0] alufn,
         output reg [2:0] asel,
-        output reg [1:0] bsel,
+        output reg [2:0] bsel,
         output reg [1:0] alu_out_sel,
         output reg [3:0] regfile_wa,
         output reg [3:0] regfile_ra1,
@@ -41,15 +42,17 @@ module game_cu (
     localparam E_GameStates_P1_HAVENT_WIN = 5'hf;
     localparam E_GameStates_GAMEOVER = 5'h10;
     localparam E_GameStates_START = 5'h11;
-    localparam E_GameStates_SET_MAX_COUNTER = 5'h12;
-    localparam E_GameStates_INCREASE_COUNTER = 5'h13;
-    localparam E_GameStates_CHECK_COUNTER = 5'h14;
-    localparam E_GameStates_BRANCH_COUNTER = 5'h15;
-    localparam E_GameStates_SET_CORRECT_BUTTON = 5'h16;
-    localparam E_GameStates_CHECK_CORRECT_BUTTON = 5'h17;
-    localparam E_GameStates_BRANCH_CORRECT_BUTTON = 5'h18;
-    localparam E_GameStates_SET_0_CORRECT_BUTTON = 5'h19;
-    localparam E_GameStates_SET_1_CORRECT_BUTTON = 5'h1a;
+    localparam E_GameStates_RESET_COUNTER = 5'h12;
+    localparam E_GameStates_SET_MAX_COUNTER = 5'h13;
+    localparam E_GameStates_INCREASE_COUNTER = 5'h14;
+    localparam E_GameStates_WAIT_FOR_EDGE_LOW = 5'h15;
+    localparam E_GameStates_CHECK_COUNTER = 5'h16;
+    localparam E_GameStates_BRANCH_COUNTER = 5'h17;
+    localparam E_GameStates_SET_CORRECT_BUTTON = 5'h18;
+    localparam E_GameStates_CHECK_CORRECT_BUTTON = 5'h19;
+    localparam E_GameStates_BRANCH_CORRECT_BUTTON = 5'h1a;
+    localparam E_GameStates_SET_0_CORRECT_BUTTON = 5'h1b;
+    localparam E_GameStates_SET_1_CORRECT_BUTTON = 5'h1c;
     logic [4:0] D_game_fsm_d, D_game_fsm_q = 5'h0;
     always @* begin
         D_game_fsm_d = D_game_fsm_q;
@@ -63,7 +66,7 @@ module game_cu (
         regfile_ra1 = 1'h0;
         regfile_ra2 = 1'h0;
         if (rst) begin
-            D_game_fsm_d = 5'h12;
+            D_game_fsm_d = 5'h0;
         end else begin
             
             case (D_game_fsm_q)
@@ -77,7 +80,7 @@ module game_cu (
                     regfile_ra2 = 1'h0;
                     alu_out_sel = 1'h0;
                     if (p0b0) begin
-                        D_game_fsm_d = 5'h12;
+                        D_game_fsm_d = 5'h11;
                     end
                     if (p0b1) begin
                         D_game_fsm_d = 5'h2;
@@ -156,6 +159,17 @@ module game_cu (
                     D_game_fsm_d = 5'h12;
                 end
                 5'h12: begin
+                    alufn = 6'h1b;
+                    asel = 1'h0;
+                    bsel = 3'h4;
+                    regfile_we = 1'h1;
+                    regfile_wa = 3'h6;
+                    regfile_ra1 = 3'h6;
+                    regfile_ra2 = 1'h0;
+                    alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h13;
+                end
+                5'h13: begin
                     alufn = 6'h3a;
                     asel = 1'h0;
                     bsel = 1'h0;
@@ -164,7 +178,65 @@ module game_cu (
                     regfile_ra1 = 1'h0;
                     regfile_ra2 = 1'h0;
                     alu_out_sel = 2'h2;
-                    D_game_fsm_d = 5'h0;
+                    D_game_fsm_d = 5'h14;
+                end
+                5'h14: begin
+                    alufn = 6'h0;
+                    asel = 1'h1;
+                    bsel = 1'h0;
+                    regfile_we = 1'h1;
+                    regfile_wa = 3'h6;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 3'h6;
+                    alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h15;
+                end
+                5'h15: begin
+                    if (~slow_clk) begin
+                        D_game_fsm_d = 5'h16;
+                    end else begin
+                        D_game_fsm_d = 5'h15;
+                    end
+                end
+                5'h16: begin
+                    alufn = 6'h35;
+                    asel = 1'h0;
+                    bsel = 1'h0;
+                    regfile_we = 1'h1;
+                    regfile_wa = 4'h8;
+                    regfile_ra1 = 3'h6;
+                    regfile_ra2 = 3'h7;
+                    alu_out_sel = 1'h0;
+                    D_game_fsm_d = 5'h17;
+                end
+                5'h17: begin
+                    alufn = 6'h0;
+                    asel = 1'h0;
+                    bsel = 1'h0;
+                    regfile_we = 1'h0;
+                    regfile_wa = 1'h0;
+                    regfile_ra1 = 1'h0;
+                    regfile_ra2 = 4'h8;
+                    alu_out_sel = 1'h0;
+                    if (~regfile_rd2[1'h0]) begin
+                        D_game_fsm_d = 5'h18;
+                    end else begin
+                        if (slow_clk) begin
+                            D_game_fsm_d = 5'h14;
+                        end else begin
+                            D_game_fsm_d = 5'h17;
+                        end
+                    end
+                end
+                5'h18: begin
+                    alufn = 6'h3a;
+                    asel = 3'h7;
+                    bsel = 2'h3;
+                    regfile_we = 1'h1;
+                    regfile_wa = 3'h7;
+                    regfile_ra1 = 3'h7;
+                    regfile_ra2 = 3'h7;
+                    alu_out_sel = 1'h0;
                 end
             endcase
         end

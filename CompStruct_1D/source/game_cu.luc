@@ -1,7 +1,7 @@
 module game_cu (
     input clk,  // clock
     input rst,  // reset
-    // input counter_clk, // Shouldnt need this, since counter will be counted internally to the 100MHz clock
+    input slow_clk, // Shouldnt need this, since counter will be counted internally to the 100MHz clock
     input regfile_rd2[32],
     
     // Button inputs
@@ -14,7 +14,7 @@ module game_cu (
     
     output alufn[6],
     output asel[3],
-    output bsel[2],
+    output bsel[3],
     output alu_out_sel[2],
     output regfile_wa[4],
     output regfile_ra1[4],
@@ -48,8 +48,10 @@ module game_cu (
         
         // START/RESET
         START,
+        RESET_COUNTER,
         SET_MAX_COUNTER,
         INCREASE_COUNTER,
+        WAIT_FOR_EDGE_LOW,
         CHECK_COUNTER,
         BRANCH_COUNTER,
         
@@ -77,7 +79,7 @@ module game_cu (
         // debug = b0000
         
         if (rst) {
-            game_fsm.d = GameStates.SET_MAX_COUNTER
+            game_fsm.d = GameStates.IDLE
         }
         
         else {
@@ -93,7 +95,7 @@ module game_cu (
                     alu_out_sel = 0
                     
                     if (p0b0)
-                        game_fsm.d = GameStates.SET_MAX_COUNTER
+                        game_fsm.d = GameStates.START
                     if (p0b1)
                         game_fsm.d = GameStates.P0B1_UPDATE_MOTOR
                     if (p1b0)
@@ -162,8 +164,19 @@ module game_cu (
                     asel = d0
                     bsel = d0
                     regfile_we = 0
-                    regfile_wa = d0 // motor speed
+                    regfile_wa = d0
                     regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.RESET_COUNTER
+                
+                GameStates.RESET_COUNTER:
+                    alufn = 6h1B // 'B'
+                    asel = d0
+                    bsel = d4
+                    regfile_we = 1
+                    regfile_wa = d6 // counter
+                    regfile_ra1 = d6
                     regfile_ra2 = d0
                     alu_out_sel = d0
                     game_fsm.d = GameStates.SET_MAX_COUNTER
@@ -177,7 +190,63 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d0
                     alu_out_sel = d2
-                    game_fsm.d = GameStates.IDLE
+                    game_fsm.d = GameStates.INCREASE_COUNTER
+                
+                GameStates.INCREASE_COUNTER:
+                    alufn = 6h00
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d6 // counter reg
+                    regfile_ra1 = d0
+                    regfile_ra2 = d6
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.WAIT_FOR_EDGE_LOW
+                
+                // Added not from the FSM diagram
+                GameStates.WAIT_FOR_EDGE_LOW:
+                    if (~slow_clk)
+                        game_fsm.d = GameStates.CHECK_COUNTER
+                    else
+                        game_fsm.d = GameStates.WAIT_FOR_EDGE_LOW
+                
+                GameStates.CHECK_COUNTER:
+                    alufn = 6h35
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d8 // temp1 reg 
+                    regfile_ra1 = d6
+                    regfile_ra2 = d7
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.BRANCH_COUNTER
+                
+                GameStates.BRANCH_COUNTER:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d8 // Allows for direct read 
+                    alu_out_sel = d0
+                    
+                    if (~regfile_rd2[0])
+                        game_fsm.d = GameStates.SET_CORRECT_BUTTON
+                    else if (slow_clk)
+                        game_fsm.d = GameStates.INCREASE_COUNTER
+                    else
+                        game_fsm.d = GameStates.BRANCH_COUNTER
+                
+                GameStates.SET_CORRECT_BUTTON:
+                    alufn = 6h3A
+                    asel = d7
+                    bsel = d3
+                    regfile_we = 1
+                    regfile_wa = d7 
+                    regfile_ra1 = d7
+                    regfile_ra2 = d7 // Allows for direct read 
+                    alu_out_sel = d0
             }
         }
     }

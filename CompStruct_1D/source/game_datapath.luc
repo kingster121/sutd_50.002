@@ -2,11 +2,6 @@ module game_datapath (
     input clk,  // clock
     input rst,  // reset
     
-    
-    // RNG
-    // input rng_1,
-    // input rng_2000[11],
-    
     // Inputs
     input p0b0,
     input p0b1,
@@ -24,6 +19,7 @@ module game_datapath (
     output correct_button_compare[32],
     output counter[32],
     output temp[32],
+    output temp1[32],
     
     // Debugging regfiles output
     output wa[4],
@@ -33,16 +29,20 @@ module game_datapath (
     output b[32],
     output alufn[6]
 ) {
-    const CLOCK_DIVIDER = 27 // 100MHz / 2^27 = 700Hz. 1 Period = 1ms
-    
+    const CLOCK_DIVIDER = 17 // 100MHz = 10 ns. To get 1ms = 10ns * 2^17
     sig input_alu_a[32]
     sig input_alu_b[32]
     
     alu game_alu
     
     .clk(clk) {
+        // Slow clock
+        counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER), .rst(rst)) 
+        edge_detector slow_clk_edge(#RISE(1), #FALL(0), .in(slow_clk.value))
+        
         .rst(rst) {
             game_cu game_cu(
+                .slow_clk(slow_clk_edge.out),
                 .p0b0(p0b0),
                 .p0b1(p0b1),
                 .p1b0(p1b0),
@@ -58,7 +58,7 @@ module game_datapath (
                 .ra2(game_cu.regfile_ra2)
             )
             
-            counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER)) 
+            
         }
         
         random_number_generator rng_1(#SIZE(1), .slow_clk(slow_clk.value), .refresh(rst))
@@ -86,6 +86,7 @@ module game_datapath (
             d1: input_alu_b = 32b1010
             d2: input_alu_b = 32b0101
             d3: input_alu_b = 32d3
+            d4: input_alu_b = 32d0
             default: //necessary to init
                 input_alu_b = 0
         }
@@ -113,6 +114,7 @@ module game_datapath (
         correct_button_compare = game_regfiles.correct_button_compare_out
         counter = game_regfiles.counter_out
         temp = game_regfiles.temp_out
+        temp1 = game_regfiles.temp1_out
         
         // Debugging game_regfiles outputs
         wa = game_regfiles.wa_out
