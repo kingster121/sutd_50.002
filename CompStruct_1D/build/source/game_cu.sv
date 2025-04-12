@@ -30,13 +30,13 @@ module game_cu (
     localparam E_GameStates_P1B0_UPDATE_MOTOR = 5'h3;
     localparam E_GameStates_P1B1_UPDATE_MOTOR = 5'h4;
     localparam E_GameStates_INCREASE_MOTOR_SPEED = 5'h5;
-    localparam E_GameStates_P0_INCREASE_SCORES = 5'h6;
-    localparam E_GameStates_P0_CHECK_SCORES = 5'h7;
+    localparam E_GameStates_P0_INCREASE_SCORE = 5'h6;
+    localparam E_GameStates_P0_CHECK_SCORE = 5'h7;
     localparam E_GameStates_P0_WALL_BRANCH = 5'h8;
     localparam E_GameStates_P0_WIN = 5'h9;
     localparam E_GameStates_P0_HAVENT_WIN = 5'ha;
-    localparam E_GameStates_P1_INCREASE_SCORES = 5'hb;
-    localparam E_GameStates_P1_CHECK_SCORES = 5'hc;
+    localparam E_GameStates_P1_INCREASE_SCORE = 5'hb;
+    localparam E_GameStates_P1_CHECK_SCORE = 5'hc;
     localparam E_GameStates_P1_WALL_BRANCH = 5'hd;
     localparam E_GameStates_P1_WIN = 5'he;
     localparam E_GameStates_P1_HAVENT_WIN = 5'hf;
@@ -89,6 +89,12 @@ module game_cu (
                     end
                     if (p1b1) begin
                         D_game_fsm_d = 5'h4;
+                    end
+                    if (p0wall) begin
+                        D_game_fsm_d = 5'h6;
+                    end
+                    if (p1wall) begin
+                        D_game_fsm_d = 5'hb;
                     end
                 end
                 5'h1: begin

@@ -31,10 +31,10 @@ PINOUT(V1), STANDARD(LVCMOS33) {
     pin motorIN2 B11
     
     // Player LED
-    pin p0l0 A24
-    pin p0l1 A21
-    pin p1l0 A23
-    pin p1l1 A20
+    pin p0l0 A21
+    pin p0l1 A18
+    pin p1l0 A20
+    pin p1l1 A17
 
     PULL(DOWN) {
         // pin io_dip[0][0] B30

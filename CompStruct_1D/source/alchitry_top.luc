@@ -129,7 +129,7 @@ module alchitry_top (
         
         tx.block = 0            // no flow control, do not block
         
-        // ================== NEW CODE =================== //
+        // ================== Connecting the FPGA modules =================== //
         // Connect player 0 and player 1 button conditioner to edge detector
         p0_button_cond.in = p0_button
         p1_button_cond.in = p1_button
@@ -147,10 +147,17 @@ module alchitry_top (
         game_datapath.p1b1 = p1_button_edge.out[1]
         game_datapath.p1wall = p1_button_edge.out[2]
         
+        // ================== CONNECTING PHYSICAL OUTPUTS =================== //
         // Connect motor
         motorIN1 = motor.in1
         motorIN2 = motor.in2
         
+        // Connect button LEDs
+        p0l0 = game_datapath.correct_button_compare[28]
+        p0l1 = game_datapath.correct_button_compare[29]
+        p1l0 = game_datapath.correct_button_compare[30]
+        p1l1 = game_datapath.correct_button_compare[31]
+                
         // ================= PAST CODE ==================== //
         // Test motor on io_led
         // ##### CHANGE THIS CONNECTION TO THE motor driver! #####

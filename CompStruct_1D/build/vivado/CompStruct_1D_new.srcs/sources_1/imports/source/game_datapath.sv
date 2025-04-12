@@ -51,17 +51,17 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_377981802 = 1'h1;
-    localparam _MP_DIV_377981802 = 4'he;
-    localparam _MP_TOP_377981802 = 1'h0;
-    localparam _MP_UP_377981802 = 1'h1;
+    localparam _MP_SIZE_467221177 = 1'h1;
+    localparam _MP_DIV_467221177 = 4'he;
+    localparam _MP_TOP_467221177 = 1'h0;
+    localparam _MP_UP_467221177 = 1'h1;
     logic [0:0] M_slow_clk_value;
     
     counter #(
-        .SIZE(_MP_SIZE_377981802),
-        .DIV(_MP_DIV_377981802),
-        .TOP(_MP_TOP_377981802),
-        .UP(_MP_UP_377981802)
+        .SIZE(_MP_SIZE_467221177),
+        .DIV(_MP_DIV_467221177),
+        .TOP(_MP_TOP_467221177),
+        .UP(_MP_UP_467221177)
     ) slow_clk (
         .rst(rst),
         .clk(clk),
@@ -69,13 +69,13 @@ module game_datapath (
     );
     
     
-    localparam _MP_RISE_88866094 = 1'h1;
-    localparam _MP_FALL_88866094 = 1'h0;
+    localparam _MP_RISE_1918442155 = 1'h1;
+    localparam _MP_FALL_1918442155 = 1'h0;
     logic M_slow_clk_edge_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_88866094),
-        .FALL(_MP_FALL_88866094)
+        .RISE(_MP_RISE_1918442155),
+        .FALL(_MP_FALL_1918442155)
     ) slow_clk_edge (
         .in(M_slow_clk_value),
         .clk(clk),
@@ -156,11 +156,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_2087381847 = 1'h1;
+    localparam _MP_SIZE_1083548409 = 1'h1;
     logic [0:0] M_rng_1_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_2087381847)
+        .SIZE(_MP_SIZE_1083548409)
     ) rng_1 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
@@ -169,11 +169,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_1712596275 = 4'hb;
+    localparam _MP_SIZE_1706856435 = 4'hb;
     logic [10:0] M_rng_2000_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_1712596275)
+        .SIZE(_MP_SIZE_1706856435)
     ) rng_2000 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),

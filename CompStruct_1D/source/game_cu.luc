@@ -34,13 +34,13 @@ module game_cu (
         INCREASE_MOTOR_SPEED,
         
         // Score states
-        P0_INCREASE_SCORES,
-        P0_CHECK_SCORES, 
+        P0_INCREASE_SCORE,
+        P0_CHECK_SCORE, 
         P0_WALL_BRANCH,
         P0_WIN,
         P0_HAVENT_WIN,
-        P1_INCREASE_SCORES,
-        P1_CHECK_SCORES, 
+        P1_INCREASE_SCORE,
+        P1_CHECK_SCORE, 
         P1_WALL_BRANCH,
         P1_WIN,
         P1_HAVENT_WIN,
@@ -94,6 +94,7 @@ module game_cu (
                     regfile_ra2 = 0
                     alu_out_sel = 0
                     
+                    // User button presses
                     if (p0b0)
                         game_fsm.d = GameStates.START
                     if (p0b1)
@@ -102,6 +103,12 @@ module game_cu (
                         game_fsm.d = GameStates.P1B0_UPDATE_MOTOR
                     if (p1b1)
                         game_fsm.d = GameStates.P1B1_UPDATE_MOTOR
+                    
+                    // Game wall presses
+                    if (p0wall)
+                        game_fsm.d = GameStates.P0_INCREASE_SCORE
+                    if (p1wall)
+                        game_fsm.d = GameStates.P1_INCREASE_SCORE
                 
                 GameStates.P0B0_UPDATE_MOTOR:
                     alufn = 6h38 
@@ -279,12 +286,22 @@ module game_cu (
                     asel = d0
                     bsel = d2
                     regfile_we = 1
-                    regfile_wa = d5 // correct_button_compare
+                    regfile_wa = d5 // correct button compare
                     regfile_ra1 = d0
                     regfile_ra2 = d0
                     alu_out_sel = d0
                     game_fsm.d = GameStates.IDLE
                 
+                GameStates.P0_INCREASE_SCORE:
+                    alufn = 6h00
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d3 // player 0 score reg
+                    regfile_ra1 = d0
+                    regfile_ra2 = d3
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.P0_CHECK_SCORE
             }
         }
     }

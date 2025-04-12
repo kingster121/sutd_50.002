@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-| Date         : Sat Apr 12 11:18:23 2025
+| Date         : Sun Apr 13 00:15:06 2025
 | Host         : fedora running 64-bit unknown
 | Command      : report_methodology -file alchitry_top_methodology_drc_routed.rpt -pb alchitry_top_methodology_drc_routed.pb -rpx alchitry_top_methodology_drc_routed.rpx
 | Design       : alchitry_top
@@ -23,15 +23,31 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max checks: <unlimited>
-             Checks found: 11
+             Checks found: 18
 +-----------+----------+-------------------------------+--------+
 | Rule      | Severity | Description                   | Checks |
 +-----------+----------+-------------------------------+--------+
-| TIMING-18 | Warning  | Missing input or output delay | 11     |
+| SYNTH-10  | Warning  | Wide multiplier               | 3      |
+| TIMING-18 | Warning  | Missing input or output delay | 15     |
 +-----------+----------+-------------------------------+--------+
 
 2. REPORT DETAILS
 -----------------
+SYNTH-10#1 Warning
+Wide multiplier  
+Detected multiplier at game_datapath/game_alu/out_sig0 of size 16x18, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#2 Warning
+Wide multiplier  
+Detected multiplier at game_datapath/game_alu/out_sig0__0 of size 18x18, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#3 Warning
+Wide multiplier  
+Detected multiplier at game_datapath/game_alu/out_sig0__1 of size 18x16, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
 TIMING-18#1 Warning
 Missing input or output delay  
 An input delay is missing on p0_button[0] relative to the rising and/or falling clock edge(s) of clk_0.
@@ -83,6 +99,26 @@ An output delay is missing on motorIN2 relative to the rising and/or falling clo
 Related violations: <none>
 
 TIMING-18#11 Warning
+Missing input or output delay  
+An output delay is missing on p0l0 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#12 Warning
+Missing input or output delay  
+An output delay is missing on p0l1 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#13 Warning
+Missing input or output delay  
+An output delay is missing on p1l0 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#14 Warning
+Missing input or output delay  
+An output delay is missing on p1l1 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#15 Warning
 Missing input or output delay  
 An output delay is missing on usb_tx relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-| Date             : Sat Apr 12 11:18:24 2025
+| Date             : Sun Apr 13 00:15:07 2025
 | Host             : fedora running 64-bit unknown
 | Command          : report_power -file alchitry_top_power_routed.rpt -pb alchitry_top_power_summary_routed.pb -rpx alchitry_top_power_routed.rpx
 | Design           : alchitry_top
@@ -33,7 +33,7 @@ Table of Contents
 | Total On-Chip Power (W)  | 0.073        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.001        |
+| Dynamic (W)              | 0.002        |
 | Device Static (W)        | 0.072        |
 | Effective TJA (C/W)      | 4.9          |
 | Max Ambient (C)          | 84.6         |
@@ -53,14 +53,15 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
-| Slice Logic    |    <0.001 |     2261 |       --- |             --- |
-|   LUT as Logic |    <0.001 |      777 |     20800 |            3.74 |
-|   Register     |    <0.001 |     1188 |     41600 |            2.86 |
-|   CARRY4       |    <0.001 |       51 |      8150 |            0.63 |
+| Slice Logic    |    <0.001 |     2455 |       --- |             --- |
+|   LUT as Logic |    <0.001 |      826 |     20800 |            3.97 |
+|   Register     |    <0.001 |     1226 |     41600 |            2.95 |
+|   CARRY4       |    <0.001 |       71 |      8150 |            0.87 |
 |   F7/F8 Muxes  |    <0.001 |       76 |     32600 |            0.23 |
-|   Others       |     0.000 |       50 |       --- |             --- |
-| Signals        |    <0.001 |     1842 |       --- |             --- |
-| I/O            |    <0.001 |       34 |       170 |           20.00 |
+|   Others       |     0.000 |       65 |       --- |             --- |
+| Signals        |    <0.001 |     2008 |       --- |             --- |
+| DSPs           |    <0.001 |        3 |        90 |            3.33 |
+| I/O            |    <0.001 |       36 |       170 |           21.18 |
 | Static Power   |     0.072 |          |           |                 |
 | Total          |     0.073 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
@@ -72,7 +73,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.011 |       0.001 |      0.010 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.011 |       0.002 |      0.010 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.013 |       0.000 |      0.013 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -138,10 +139,11 @@ Table of Contents
 3.1 By Hierarchy
 ----------------
 
-+--------------+-----------+
-| Name         | Power (W) |
-+--------------+-----------+
-| alchitry_top |     0.001 |
-+--------------+-----------+
++-----------------+-----------+
+| Name            | Power (W) |
++-----------------+-----------+
+| alchitry_top    |     0.002 |
+|   game_datapath |     0.001 |
++-----------------+-----------+
 
 
