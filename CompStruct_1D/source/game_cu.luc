@@ -64,7 +64,7 @@ module game_cu (
     }
     
     // CHANGE THIS TO START
-    dff game_fsm[$width(GameStates)](#INIT(GameStates.IDLE), .clk(clk), .rst(rst))
+    dff game_fsm[$width(GameStates)](#INIT(GameStates.START), .clk(clk), .rst(rst))
     
     always {
         alufn = 0
@@ -75,8 +75,6 @@ module game_cu (
         regfile_wa = 0
         regfile_ra1 = 0
         regfile_ra2 = 0
-        
-        // debug = b0000
         
         if (rst) {
             game_fsm.d = GameStates.IDLE
@@ -96,7 +94,7 @@ module game_cu (
                     
                     // User button presses
                     if (p0b0)
-                        game_fsm.d = GameStates.START
+                        game_fsm.d = GameStates.P0B0_UPDATE_MOTOR
                     if (p0b1)
                         game_fsm.d = GameStates.P0B1_UPDATE_MOTOR
                     if (p1b0)
@@ -302,7 +300,54 @@ module game_cu (
                     regfile_ra2 = d3
                     alu_out_sel = d0
                     game_fsm.d = GameStates.P0_CHECK_SCORE
-            }
+                
+                GameStates.P0_CHECK_SCORE:
+                    alufn = 6h35
+                    asel = d0
+                    bsel = d3
+                    regfile_we = 1
+                    regfile_wa = d7 // temp reg
+                    regfile_ra1 = d3
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.P0_WALL_BRANCH
+                
+                GameStates.P0_WALL_BRANCH:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d7 // direct read result of comparison
+                    alu_out_sel = d0
+                    if (~regfile_rd2[0])
+                        game_fsm.d = GameStates.P0_WIN
+                    else
+                        game_fsm.d = GameStates.P0_HAVENT_WIN
+                
+                GameStates.P0_WIN:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.GAMEOVER
+                
+                 GameStates.P0_HAVENT_WIN:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.RESET_COUNTER
+            }    
         }
     }
 }

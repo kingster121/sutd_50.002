@@ -153,10 +153,10 @@ module alchitry_top (
         motorIN2 = motor.in2
         
         // Connect button LEDs
-        p0l0 = game_datapath.correct_button_compare[28]
-        p0l1 = game_datapath.correct_button_compare[29]
-        p1l0 = game_datapath.correct_button_compare[30]
-        p1l1 = game_datapath.correct_button_compare[31]
+        p0l0 = game_datapath.correct_button_compare[3]
+        p0l1 = game_datapath.correct_button_compare[2]
+        p1l0 = game_datapath.correct_button_compare[1]
+        p1l1 = game_datapath.correct_button_compare[0]
                 
         // ================= PAST CODE ==================== //
         // Test motor on io_led
