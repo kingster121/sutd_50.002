@@ -303,7 +303,7 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d3
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.P0_CHECK_SCORE
+                    game_fsm.d = GameStates.P0_CHECK_SCORE   
                 
                 GameStates.P0_CHECK_SCORE:
                     alufn = 6h35
@@ -430,7 +430,7 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d1
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.WAIT_CENTER_BUTTON_PRESS
+                    game_fsm.d = GameStates.START
                 
                  GameStates.WAIT_CENTER_BUTTON_PRESS:
                     alufn = 6h00

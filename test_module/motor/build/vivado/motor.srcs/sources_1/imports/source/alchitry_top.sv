@@ -18,12 +18,27 @@ module alchitry_top (
     );
     logic rst;
     localparam CLK_FREQ = 27'h5f5e100;
-    localparam _MP_STAGES_334206166 = 3'h4;
+    logic [2:0] M_motor_motor_speed;
+    logic M_motor_motor_direction;
+    logic M_motor_in1;
+    logic M_motor_in2;
+    
+    motor motor (
+        .clk(clk),
+        .rst(rst),
+        .motor_speed(M_motor_motor_speed),
+        .motor_direction(M_motor_motor_direction),
+        .in1(M_motor_in1),
+        .in2(M_motor_in2)
+    );
+    
+    
+    localparam _MP_STAGES_629758745 = 3'h4;
     logic M_reset_cond_in;
     logic M_reset_cond_out;
     
     reset_conditioner #(
-        .STAGES(_MP_STAGES_334206166)
+        .STAGES(_MP_STAGES_629758745)
     ) reset_cond (
         .clk(clk),
         .in(M_reset_cond_in),
@@ -31,74 +46,51 @@ module alchitry_top (
     );
     
     
-    localparam logic [4:0][0:0] _MP_RISE_371800028 = {{1'h1, 1'h1, 1'h1, 1'h1, 1'h1}};
-    localparam logic [4:0][0:0] _MP_FALL_371800028 = {{1'h0, 1'h0, 1'h0, 1'h0, 1'h0}};
+    localparam logic [4:0][0:0] _MP_RISE_1732385238 = {{1'h1, 1'h1, 1'h1, 1'h1, 1'h1}};
+    localparam logic [4:0][0:0] _MP_FALL_1732385238 = {{1'h0, 1'h0, 1'h0, 1'h0, 1'h0}};
     logic [4:0] M_io_button_edge_in;
     logic [4:0] M_io_button_edge_out;
     
-    genvar idx_0_371800028;
+    genvar idx_0_1732385238;
     
     generate
-        for (idx_0_371800028 = 0; idx_0_371800028 < 5; idx_0_371800028 = idx_0_371800028 + 1) begin: forLoop_idx_0_371800028
+        for (idx_0_1732385238 = 0; idx_0_1732385238 < 5; idx_0_1732385238 = idx_0_1732385238 + 1) begin: forLoop_idx_0_1732385238
             edge_detector #(
-                .RISE(_MP_RISE_371800028[idx_0_371800028]),
-                .FALL(_MP_FALL_371800028[idx_0_371800028])
+                .RISE(_MP_RISE_1732385238[idx_0_1732385238]),
+                .FALL(_MP_FALL_1732385238[idx_0_1732385238])
             ) io_button_edge (
                 .clk(clk),
-                .in(M_io_button_edge_in[idx_0_371800028]),
-                .out(M_io_button_edge_out[idx_0_371800028])
+                .in(M_io_button_edge_in[idx_0_1732385238]),
+                .out(M_io_button_edge_out[idx_0_1732385238])
             );
         end
     endgenerate
     
     
-    localparam logic [4:0][26:0] _MP_CLK_FREQ_986159324 = {{27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100}};
-    localparam _MP_MIN_DELAY_986159324 = 5'h14;
-    localparam _MP_NUM_SYNC_986159324 = 2'h2;
+    localparam logic [4:0][26:0] _MP_CLK_FREQ_44731858 = {{27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100}};
+    localparam _MP_MIN_DELAY_44731858 = 5'h14;
+    localparam _MP_NUM_SYNC_44731858 = 2'h2;
     logic [4:0] M_io_button_cond_in;
     logic [4:0] M_io_button_cond_out;
     
-    genvar idx_0_986159324;
+    genvar idx_0_44731858;
     
     generate
-        for (idx_0_986159324 = 0; idx_0_986159324 < 5; idx_0_986159324 = idx_0_986159324 + 1) begin: forLoop_idx_0_986159324
+        for (idx_0_44731858 = 0; idx_0_44731858 < 5; idx_0_44731858 = idx_0_44731858 + 1) begin: forLoop_idx_0_44731858
             button_conditioner #(
-                .CLK_FREQ(_MP_CLK_FREQ_986159324[idx_0_986159324]),
-                .MIN_DELAY(_MP_MIN_DELAY_986159324),
-                .NUM_SYNC(_MP_NUM_SYNC_986159324)
+                .CLK_FREQ(_MP_CLK_FREQ_44731858[idx_0_44731858]),
+                .MIN_DELAY(_MP_MIN_DELAY_44731858),
+                .NUM_SYNC(_MP_NUM_SYNC_44731858)
             ) io_button_cond (
                 .clk(clk),
-                .in(M_io_button_cond_in[idx_0_986159324]),
-                .out(M_io_button_cond_out[idx_0_986159324])
+                .in(M_io_button_cond_in[idx_0_44731858]),
+                .out(M_io_button_cond_out[idx_0_44731858])
             );
         end
     endgenerate
     
     
-    localparam _MP_WIDTH_1536520322 = 4'h9;
-    localparam _MP_TOP_1536520322 = 9'h17d;
-    localparam _MP_DIV_1536520322 = 5'h12;
-    logic [8:0] M_pwm_value;
-    logic M_pwm_update;
-    logic M_pwm_pulse;
-    
-    pwm #(
-        .WIDTH(_MP_WIDTH_1536520322),
-        .TOP(_MP_TOP_1536520322),
-        .DIV(_MP_DIV_1536520322)
-    ) pwm (
-        .clk(clk),
-        .rst(rst),
-        .value(M_pwm_value),
-        .update(M_pwm_update),
-        .pulse(M_pwm_pulse)
-    );
-    
-    
-    logic [8:0] D_value_d, D_value_q = 8'hbe;
     always @* begin
-        D_value_d = D_value_q;
-        
         M_reset_cond_in = ~rst_n;
         rst = M_reset_cond_out;
         led = 8'h0;
@@ -106,26 +98,11 @@ module alchitry_top (
         io_segment = 1'h0;
         io_select = 1'h0;
         usb_tx = usb_rx;
+        M_motor_motor_speed = 1'h1;
+        M_motor_motor_direction = 1'h0;
         M_io_button_cond_in = io_button;
         M_io_button_edge_in = M_io_button_cond_out;
-        D_value_d = D_value_q;
-        M_pwm_value = D_value_q;
-        M_pwm_update = 1'h1;
-        if (M_io_button_edge_out[1'h0]) begin
-            D_value_d = D_value_q + 4'ha;
-        end
-        if (M_io_button_edge_out[2'h2]) begin
-            D_value_d = D_value_q - 4'ha;
-        end
-        io_led[1'h0][1'h0] = M_pwm_pulse;
     end
     
     
-    always @(posedge (clk)) begin
-        if ((rst) == 1'b1) begin
-            D_value_q <= 8'hbe;
-        end else begin
-            D_value_q <= D_value_d;
-        end
-    end
 endmodule

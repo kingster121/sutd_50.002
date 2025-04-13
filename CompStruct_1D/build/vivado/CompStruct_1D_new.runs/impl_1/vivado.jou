@@ -3,8 +3,8 @@
 # SW Build 6060944 on Thu Mar 06 19:10:09 MST 2025
 # IP Build 6050500 on Thu Mar  6 23:33:39 MST 2025
 # SharedData Build 6060542 on Thu Mar 06 10:31:07 MST 2025
-# Start of session at: Sun Apr 13 15:58:21 2025
-# Process ID         : 66374
+# Start of session at: Sun Apr 13 16:57:43 2025
+# Process ID         : 129491
 # Current directory  : /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.runs/impl_1
 # Command line       : vivado -log alchitry_top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source alchitry_top.tcl -notrace
 # Log file           : /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.runs/impl_1/alchitry_top.vdi
@@ -13,12 +13,12 @@
 # Platform           : unknown
 # Operating System   : unknown
 # Processor Detail   : 11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz
-# CPU Frequency      : 857.166 MHz
+# CPU Frequency      : 2790.636 MHz
 # CPU Physical cores : 4
 # CPU Logical cores  : 8
 # Host memory        : 16487 MB
 # Swap memory        : 8589 MB
 # Total Virtual      : 25077 MB
-# Available Virtual  : 18124 MB
+# Available Virtual  : 16980 MB
 #-----------------------------------------------------------
 source alchitry_top.tcl -notrace

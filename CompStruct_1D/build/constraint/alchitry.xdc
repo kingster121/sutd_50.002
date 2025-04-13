@@ -43,16 +43,16 @@ set_property IOSTANDARD LVCMOS33 [get_ports {motorIN1}]
 set_property PACKAGE_PIN F3 [get_ports {motorIN2}]
 set_property IOSTANDARD LVCMOS33 [get_ports {motorIN2}]
 
-set_property PACKAGE_PIN G2 [get_ports {p0l0}]
+set_property PACKAGE_PIN H2 [get_ports {p0l0}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p0l0}]
 
-set_property PACKAGE_PIN H2 [get_ports {p0l1}]
+set_property PACKAGE_PIN K1 [get_ports {p0l1}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p0l1}]
 
-set_property PACKAGE_PIN G1 [get_ports {p1l0}]
+set_property PACKAGE_PIN H1 [get_ports {p1l0}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p1l0}]
 
-set_property PACKAGE_PIN H1 [get_ports {p1l1}]
+set_property PACKAGE_PIN J1 [get_ports {p1l1}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p1l1}]
 
 set_property PACKAGE_PIN C7 [get_ports {p0_button[0]}]
@@ -63,7 +63,7 @@ set_property PACKAGE_PIN C6 [get_ports {p0_button[1]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p0_button[1]}]
 set_property PULLDOWN true [get_ports {p0_button[1]}]
 
-set_property PACKAGE_PIN B7 [get_ports {p0_button[2]}]
+set_property PACKAGE_PIN A7 [get_ports {p0_button[2]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p0_button[2]}]
 set_property PULLDOWN true [get_ports {p0_button[2]}]
 

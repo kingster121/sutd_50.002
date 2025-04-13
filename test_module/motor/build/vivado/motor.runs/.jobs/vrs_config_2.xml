@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Runs Version="1" Minor="0">
-	<Run Id="impl_1" LaunchDir="/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/motor/build/vivado/motor.runs/impl_1" FlowId="Vivado_Implementation" FromStepId="init_design" ToStepId="write_bitstream"/>
+	<Run Id="impl_1" LaunchDir="/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/motor/build/vivado/motor.runs/impl_1" FlowId="Vivado_Implementation" FromStepId="init_design" ToStepId="write_bitstream"/>
 	<Parameters>
 		<Parameter Name="runs.monitorLSFJobs" Val="true" Type="bool"/>
 		<Parameter Name="runs.enableClusterConf" Val="true" Type="bool"/>

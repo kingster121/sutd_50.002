@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a35tftg256-1" LaunchTime="1743418076">
+<GenRun Id="impl_1" LaunchPart="xc7a35tftg256-1" LaunchTime="1744535917">
   <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
   <File Type="POSTROUTE-PHYSOPT-RQS" Name="alchitry_top_postroute_physopted.rqs"/>
   <File Type="ROUTE-RQS" Name="alchitry_top_routed.rqs"/>
@@ -89,7 +89,7 @@
     <File Path="$PSRCDIR/sources_1/imports/source/button_conditioner.sv">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/button_conditioner.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -98,7 +98,7 @@
     <File Path="$PSRCDIR/sources_1/imports/source/counter.sv">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/counter.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -107,7 +107,16 @@
     <File Path="$PSRCDIR/sources_1/imports/source/edge_detector.sv">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/edge_detector.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/source/motor.sv">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../source/motor.sv"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -116,7 +125,7 @@
     <File Path="$PSRCDIR/sources_1/imports/source/pipeline.sv">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/pipeline.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -125,7 +134,7 @@
     <File Path="$PSRCDIR/sources_1/imports/source/pwm.sv">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/pwm.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -134,7 +143,7 @@
     <File Path="$PSRCDIR/sources_1/imports/source/reset_conditioner.sv">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/reset_conditioner.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -143,7 +152,7 @@
     <File Path="$PSRCDIR/sources_1/imports/source/alchitry_top.sv">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/alchitry_top.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -153,7 +162,7 @@
       <FileInfo>
         <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="ImportPath" Val="$PPRDIR/../source/lucid_globals.sv"/>
-        <Attr Name="ImportTime" Val="1743418029"/>
+        <Attr Name="ImportTime" Val="1744535876"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -190,7 +199,7 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2023">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024">
       <Desc>Default settings for Implementation.</Desc>
     </StratHandle>
     <Step Id="init_design"/>

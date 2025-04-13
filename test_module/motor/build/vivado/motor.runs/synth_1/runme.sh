@@ -4,13 +4,13 @@
 # Vivado(TM)
 # runme.sh: a Vivado-generated Runs Script for UNIX
 # Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
-# Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+# Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 # 
 
 if [ -z "$PATH" ]; then
-  PATH=/home/wata/Documents/Xilinx/Vivado/2023.2/ids_lite/ISE/bin/lin64:/home/wata/Documents/Xilinx/Vivado/2023.2/bin
+  PATH=/home/wata/Documents/Xilinx/Vitis/2024.2/bin:/home/wata/Documents/Xilinx/Vivado/2024.2/ids_lite/ISE/bin/lin64:/home/wata/Documents/Xilinx/Vivado/2024.2/bin
 else
-  PATH=/home/wata/Documents/Xilinx/Vivado/2023.2/ids_lite/ISE/bin/lin64:/home/wata/Documents/Xilinx/Vivado/2023.2/bin:$PATH
+  PATH=/home/wata/Documents/Xilinx/Vitis/2024.2/bin:/home/wata/Documents/Xilinx/Vivado/2024.2/ids_lite/ISE/bin/lin64:/home/wata/Documents/Xilinx/Vivado/2024.2/bin:$PATH
 fi
 export PATH
 
@@ -21,7 +21,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/motor/build/vivado/motor.runs/synth_1'
+HD_PWD='/home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/test_module/motor/build/vivado/motor.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

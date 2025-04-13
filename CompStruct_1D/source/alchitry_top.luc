@@ -39,12 +39,13 @@ module alchitry_top (
         
         // P0 and P1 button conditioner and edge detector
         // B0, B1, wall
-        edge_detector p0_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
-        edge_detector p1_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
-        edge_detector center_button_edge(#RISE(1), #FALL(0))
         button_conditioner p0_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
         button_conditioner p1_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
         button_conditioner center_button_cond(#CLK_FREQ(CLK_FREQ)) 
+        
+        edge_detector p0_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
+        edge_detector p1_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
+        edge_detector center_button_edge(#RISE(1), #FALL(0))
         
         // edge_detector seg_clk_edge(#RISE(1), #FALL(0), .in(seg_clk.value))
         
@@ -96,14 +97,7 @@ module alchitry_top (
         
         debugger.new_rx = rx.new_data
         debugger.rx_data = rx.data
-        // debugger.correct_button = 32b00000000000000000000000000000000
-        // debugger.motor_direction = 32b00000000000000000000000000000001
-        // debugger.motor_speed = 32b00000000000000000000000000000011
-        // debugger.p0_score = 32b00000000000000000000000000000111
-        // debugger.p1_score = 32b00000000000000000000000000001111
-        // debugger.correct_button_compare = 32b00000000000000000000000000011111
-        // debugger.counter = 32b00000000000000000000000000111111
-        // debugger.temp = 32b00000000000000000000000001111111
+        
         debugger.correct_button = game_datapath.correct_button
         debugger.motor_direction = game_datapath.motor_direction
         debugger.motor_speed = game_datapath.motor_speed

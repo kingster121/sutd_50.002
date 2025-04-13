@@ -1,0 +1,43 @@
+module motor (
+    input clk,  // clock
+    input rst,  // reset
+    input motor_speed[3], // range from 0 for stop to 7 for max speed
+    input motor_direction, // 0 for going to player 0, 1 for going to player 1
+    output in1,
+    output in2
+) {
+    .clk(clk) {      
+        .rst(rst){
+            // The duty cycle is: NOT TOP/value but is value/TOP instead
+            // The period is: TOP / (CLK_FREQ / 2^DIV)
+            //pwm pwm(#WIDTH(9), #TOP(381), #DIV(18), .update(1))
+            pwm pwm(#WIDTH(10), #TOP(250), #DIV(3), .update(1))
+        }
+    }
+    
+    always {
+        in1 = 0
+        in2 = 0
+        
+        case (motor_speed) {
+            0: pwm.value = 0
+            1: pwm.value = 35
+            
+            default:
+            pwm.value = 0
+        }
+        
+        // pwm.value = motor_speed * 35 // 54 is from TOP/[number of speed settings] 250/7 = 35
+        
+        // player 1 move
+        if (motor_direction == 1) {
+            in1 = pwm.pulse
+            in2 = 0
+        }
+        // player 0 move
+        if (motor_direction == 0) {
+            in1 = 0 
+            in2 = pwm.pulse
+        }
+    }
+}

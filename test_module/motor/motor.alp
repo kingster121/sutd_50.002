@@ -46,19 +46,25 @@
                     "type": "Component",
                     "path": "Pulses/edge_detector.luc"
                 }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/motor.luc"
+                }
             }
         ],
         "constraintFiles": [
             {
                 "file": {
-                    "type": "Component",
-                    "path": "Constraints/alchitry.acf"
+                    "type": "DiskFile",
+                    "path": "constraint/alchitry.acf"
                 }
             },
             {
                 "file": {
-                    "type": "Component",
-                    "path": "Constraints/io_v1_pulldown.acf"
+                    "type": "DiskFile",
+                    "path": "constraint/io_v1_pulldown.acf"
                 }
             }
         ],

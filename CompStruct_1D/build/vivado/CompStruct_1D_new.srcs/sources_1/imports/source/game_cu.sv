@@ -422,7 +422,7 @@ module game_cu (
                     regfile_ra1 = 1'h0;
                     regfile_ra2 = 1'h1;
                     alu_out_sel = 1'h0;
-                    D_game_fsm_d = 5'h12;
+                    D_game_fsm_d = 5'h13;
                 end
                 5'h12: begin
                     alufn = 6'h0;
