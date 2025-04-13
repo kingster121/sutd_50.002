@@ -79,6 +79,10 @@ set_property PACKAGE_PIN A5 [get_ports {p1_button[2]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p1_button[2]}]
 set_property PULLDOWN true [get_ports {p1_button[2]}]
 
+set_property PACKAGE_PIN B6 [get_ports {center_button}]
+set_property IOSTANDARD LVCMOS33 [get_ports {center_button}]
+set_property PULLDOWN true [get_ports {center_button}]
+
 set_property PACKAGE_PIN P8 [get_ports {io_select[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {io_select[0]}]
 

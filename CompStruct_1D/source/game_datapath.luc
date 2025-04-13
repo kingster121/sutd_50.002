@@ -9,6 +9,7 @@ module game_datapath (
     input p1b1,
     input p0wall,
     input p1wall,
+    input center_button,
     
     // Outputs
     output correct_button[32],
@@ -48,7 +49,8 @@ module game_datapath (
                 .p1b0(p1b0),
                 .p1b1(p1b1),
                 .p0wall(p0wall),
-                .p1wall(p1wall)
+                .p1wall(p1wall),
+                .center_button(center_button)
             )
             
             game_regfiles game_regfiles(

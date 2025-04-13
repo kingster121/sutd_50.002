@@ -11,6 +11,7 @@ module game_cu (
     input p1b1,
     input p0wall,
     input p1wall,
+    input center_button,
     
     output alufn[6],
     output asel[3],
@@ -26,12 +27,13 @@ module game_cu (
     enum GameStates {
         IDLE,
         
-        // Motor states
+        // User button inputs
         P0B0_UPDATE_MOTOR,
         P0B1_UPDATE_MOTOR,
         P1B0_UPDATE_MOTOR,
         P1B1_UPDATE_MOTOR,
         INCREASE_MOTOR_SPEED,
+        
         
         // Score states
         P0_INCREASE_SCORE,
@@ -45,6 +47,8 @@ module game_cu (
         P1_WIN,
         P1_HAVENT_WIN,
         GAMEOVER,
+        REVERSE_MOTOR,
+        WAIT_CENTER_BUTTON_PRESS,
         
         // START/RESET
         START,
@@ -162,7 +166,7 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d2
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.IDLE
+                    game_fsm.d = GameStates.SET_CORRECT_BUTTON
                 
                 GameStates.START:
                     alufn = 6h00
@@ -346,7 +350,99 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d0
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.RESET_COUNTER
+                    game_fsm.d = GameStates.REVERSE_MOTOR
+                
+                GameStates.P1_INCREASE_SCORE:
+                    alufn = 6h00
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d4 // player 0 score reg
+                    regfile_ra1 = d0
+                    regfile_ra2 = d4
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.P1_CHECK_SCORE
+                
+                GameStates.P1_CHECK_SCORE:
+                    alufn = 6h35
+                    asel = d0
+                    bsel = d3
+                    regfile_we = 1
+                    regfile_wa = d7 // temp reg
+                    regfile_ra1 = d4
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.P1_WALL_BRANCH
+                
+                GameStates.P1_WALL_BRANCH:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d7 // direct read result of comparison
+                    alu_out_sel = d0
+                    if (~regfile_rd2[0])
+                        game_fsm.d = GameStates.P1_WIN
+                    else
+                        game_fsm.d = GameStates.P1_HAVENT_WIN
+                
+                GameStates.P1_WIN:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.GAMEOVER
+                
+                GameStates.P1_HAVENT_WIN:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.REVERSE_MOTOR
+                
+                GameStates.GAMEOVER:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.REVERSE_MOTOR
+                
+                GameStates.REVERSE_MOTOR:
+                    alufn = 6h16 // XOR --- 32b01 ^ motor_direction -> Invert last-bit motor_direction
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d1
+                    regfile_ra1 = d0
+                    regfile_ra2 = d1
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.WAIT_CENTER_BUTTON_PRESS
+                
+                 GameStates.WAIT_CENTER_BUTTON_PRESS:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    if (center_button)
+                        game_fsm.d = GameStates.START
             }    
         }
     }

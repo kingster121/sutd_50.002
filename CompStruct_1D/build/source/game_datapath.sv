@@ -13,6 +13,7 @@ module game_datapath (
         input wire p1b1,
         input wire p0wall,
         input wire p1wall,
+        input wire center_button,
         output reg [31:0] correct_button,
         output reg [31:0] motor_direction,
         output reg [31:0] motor_speed,
@@ -51,17 +52,17 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_1404805154 = 1'h1;
-    localparam _MP_DIV_1404805154 = 4'he;
-    localparam _MP_TOP_1404805154 = 1'h0;
-    localparam _MP_UP_1404805154 = 1'h1;
+    localparam _MP_SIZE_112776750 = 1'h1;
+    localparam _MP_DIV_112776750 = 4'he;
+    localparam _MP_TOP_112776750 = 1'h0;
+    localparam _MP_UP_112776750 = 1'h1;
     logic [0:0] M_slow_clk_value;
     
     counter #(
-        .SIZE(_MP_SIZE_1404805154),
-        .DIV(_MP_DIV_1404805154),
-        .TOP(_MP_TOP_1404805154),
-        .UP(_MP_UP_1404805154)
+        .SIZE(_MP_SIZE_112776750),
+        .DIV(_MP_DIV_112776750),
+        .TOP(_MP_TOP_112776750),
+        .UP(_MP_UP_112776750)
     ) slow_clk (
         .rst(rst),
         .clk(clk),
@@ -69,13 +70,13 @@ module game_datapath (
     );
     
     
-    localparam _MP_RISE_984532835 = 1'h1;
-    localparam _MP_FALL_984532835 = 1'h0;
+    localparam _MP_RISE_339160126 = 1'h1;
+    localparam _MP_FALL_339160126 = 1'h0;
     logic M_slow_clk_edge_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_984532835),
-        .FALL(_MP_FALL_984532835)
+        .RISE(_MP_RISE_339160126),
+        .FALL(_MP_FALL_339160126)
     ) slow_clk_edge (
         .in(M_slow_clk_value),
         .clk(clk),
@@ -101,6 +102,7 @@ module game_datapath (
         .p1b1(p1b1),
         .p0wall(p0wall),
         .p1wall(p1wall),
+        .center_button(center_button),
         .clk(clk),
         .rst(rst),
         .regfile_rd2(M_game_cu_regfile_rd2),
@@ -156,11 +158,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_620801142 = 1'h1;
+    localparam _MP_SIZE_76804685 = 1'h1;
     logic [0:0] M_rng_1_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_620801142)
+        .SIZE(_MP_SIZE_76804685)
     ) rng_1 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
@@ -169,11 +171,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_192602295 = 4'hb;
+    localparam _MP_SIZE_167713477 = 4'hb;
     logic [10:0] M_rng_2000_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_192602295)
+        .SIZE(_MP_SIZE_167713477)
     ) rng_2000 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),

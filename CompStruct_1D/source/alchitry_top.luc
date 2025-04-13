@@ -15,6 +15,7 @@ module alchitry_top (
     // 2 - Wall
     input p0_button[3],
     input p1_button[3],
+    input center_button,
     
     // Motor IN1 and IN2
     output motorIN1,
@@ -40,8 +41,10 @@ module alchitry_top (
         // B0, B1, wall
         edge_detector p0_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
         edge_detector p1_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
+        edge_detector center_button_edge(#RISE(1), #FALL(0))
         button_conditioner p0_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
         button_conditioner p1_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
+        button_conditioner center_button_cond(#CLK_FREQ(CLK_FREQ)) 
         
         // edge_detector seg_clk_edge(#RISE(1), #FALL(0), .in(seg_clk.value))
         
@@ -83,10 +86,6 @@ module alchitry_top (
         io_segment = 8h00
         io_select = 4h0
         usb_tx = usb_rx         // loop serial port
-        p0l0 = 1
-        p0l1 = 1
-        p1l0 = 1
-        p1l1 = 1
         
         // Connecting dffs
         // seg_multiplex.d = seg_multiplex.q
@@ -130,22 +129,22 @@ module alchitry_top (
         tx.block = 0            // no flow control, do not block
         
         // ================== Connecting the FPGA modules =================== //
-        // Connect player 0 and player 1 button conditioner to edge detector
+        // Connect p0, p1 and center button conditioner to edge detector
         p0_button_cond.in = p0_button
         p1_button_cond.in = p1_button
+        center_button_cond.in = center_button
         p0_button_edge.in = p0_button_cond.out
         p1_button_edge.in = p1_button_cond.out
+        center_button_edge.in = center_button_cond.out
         
-        // Connect the game_datapath
-        // game_datapath.rng_1 = rng_1.out
-        // game_datapath.rng_2000 = rng_2000.out
-        
+        // Connect the HIGH edge detector to the datapath
         game_datapath.p0b0 = p0_button_edge.out[0]
         game_datapath.p0b1 = p0_button_edge.out[1]
         game_datapath.p0wall = p0_button_edge.out[2]
         game_datapath.p1b0 = p1_button_edge.out[0]
         game_datapath.p1b1 = p1_button_edge.out[1]
         game_datapath.p1wall = p1_button_edge.out[2]
+        game_datapath.center_button = center_button_edge.out
         
         // ================== CONNECTING PHYSICAL OUTPUTS =================== //
         // Connect motor
@@ -153,10 +152,10 @@ module alchitry_top (
         motorIN2 = motor.in2
         
         // Connect button LEDs
-        p0l0 = game_datapath.correct_button_compare[3]
-        p0l1 = game_datapath.correct_button_compare[2]
-        p1l0 = game_datapath.correct_button_compare[1]
-        p1l1 = game_datapath.correct_button_compare[0]
+        p0l0 = ~game_datapath.correct_button[0]
+        p0l1 = game_datapath.correct_button[0]
+        p1l0 = ~game_datapath.correct_button[0]
+        p1l1 = game_datapath.correct_button[0]
                 
         // ================= PAST CODE ==================== //
         // Test motor on io_led

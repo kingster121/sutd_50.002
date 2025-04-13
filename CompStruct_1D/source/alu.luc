@@ -9,11 +9,8 @@ module alu (
 ) {
     
     sig out_sig[32]
-    sig c
-    
     
     always {
-        c = 0
         z = 0
         v = 0
         n = 0
@@ -53,16 +50,12 @@ module alu (
                 out_sig = a < b 
             6h37: // CMPLE
                 out_sig = a <= b
-            
             6h38: // OUT_NO
                 out_sig = ~|(a & b)
-            
             6h39: // OUT_ANY
                 out_sig = |(a & b)
             
-            
             default:
-                c = 0
                 out_sig = 0
             
         }

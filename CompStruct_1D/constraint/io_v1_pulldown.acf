@@ -78,7 +78,10 @@ PINOUT(V1), STANDARD(LVCMOS33) {
         pin p1_button[1] B34 // Button 1
         pin p1_button[2] B18 // Wall
         
-        pin reset_button B39
+        // Center button
+        pin center_button B21
+        
+        // pin reset_button B39
     }
     
     pin io_select[0] A9
