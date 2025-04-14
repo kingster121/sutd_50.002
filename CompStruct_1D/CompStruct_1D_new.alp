@@ -26,12 +26,6 @@
             {
                 "file": {
                     "type": "Component",
-                    "path": "Miscellaneous/decoder.luc"
-                }
-            },
-            {
-                "file": {
-                    "type": "Component",
                     "path": "Pulses/edge_detector.luc"
                 }
             },
@@ -57,18 +51,6 @@
                 "file": {
                     "type": "Component",
                     "path": "Conditioning/button_conditioner.luc"
-                }
-            },
-            {
-                "file": {
-                    "type": "DiskFile",
-                    "path": "source/seven_segment_encoder.luc"
-                }
-            },
-            {
-                "file": {
-                    "type": "Component",
-                    "path": "Miscellaneous/bin_to_dec.luc"
                 }
             },
             {

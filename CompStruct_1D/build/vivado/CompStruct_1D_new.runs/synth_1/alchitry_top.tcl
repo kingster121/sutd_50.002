@@ -78,6 +78,7 @@ read_verilog -library xil_defaultlib -sv {
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/game_cu.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/game_datapath.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/game_regfiles.sv
+  /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/led_score_encoder.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/motor.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pipeline.sv
   /home/wata/Desktop/school/term4/50.002_Computer_Structures/workspace/sutd_50.002/CompStruct_1D/build/vivado/CompStruct_1D_new.srcs/sources_1/imports/source/pn_gen.sv

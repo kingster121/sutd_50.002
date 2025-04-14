@@ -55,6 +55,24 @@ set_property IOSTANDARD LVCMOS33 [get_ports {p1l0}]
 set_property PACKAGE_PIN J1 [get_ports {p1l1}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p1l1}]
 
+set_property PACKAGE_PIN M6 [get_ports {p0_score[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p0_score[0]}]
+
+set_property PACKAGE_PIN H5 [get_ports {p0_score[1]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p0_score[1]}]
+
+set_property PACKAGE_PIN J3 [get_ports {p0_score[2]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p0_score[2]}]
+
+set_property PACKAGE_PIN N6 [get_ports {p1_score[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p1_score[0]}]
+
+set_property PACKAGE_PIN H4 [get_ports {p1_score[1]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p1_score[1]}]
+
+set_property PACKAGE_PIN H3 [get_ports {p1_score[2]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p1_score[2]}]
+
 set_property PACKAGE_PIN C7 [get_ports {p0_button[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p0_button[0]}]
 set_property PULLDOWN true [get_ports {p0_button[0]}]

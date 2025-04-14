@@ -53,6 +53,7 @@ module game_cu (
         RESET_P0_SCORE,
         RESET_P1_SCORE,
         REVERSE_MOTOR,
+        SET_LOWEST_SPEED,
         WAIT_CENTER_BUTTON_PRESS,
         
         // START/RESET
@@ -504,7 +505,18 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d1
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.START
+                    game_fsm.d = GameStates.SET_LOWEST_SPEED
+                
+                GameStates.SET_LOWEST_SPEED:
+                    alufn = 6h1A
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d2
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.WAIT_CENTER_BUTTON_PRESS
                 
                 GameStates.WAIT_CENTER_BUTTON_PRESS:
                     alufn = 6h00

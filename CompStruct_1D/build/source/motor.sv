@@ -12,16 +12,16 @@ module motor (
         output reg in1,
         output reg in2
     );
-    localparam _MP_WIDTH_1486459384 = 4'ha;
-    localparam _MP_TOP_1486459384 = 8'hfa;
-    localparam _MP_DIV_1486459384 = 2'h3;
+    localparam _MP_WIDTH_361634271 = 4'ha;
+    localparam _MP_TOP_361634271 = 8'hfa;
+    localparam _MP_DIV_361634271 = 2'h3;
     logic [9:0] M_pwm_value;
     logic M_pwm_pulse;
     
     pwm #(
-        .WIDTH(_MP_WIDTH_1486459384),
-        .TOP(_MP_TOP_1486459384),
-        .DIV(_MP_DIV_1486459384)
+        .WIDTH(_MP_WIDTH_361634271),
+        .TOP(_MP_TOP_361634271),
+        .DIV(_MP_DIV_361634271)
     ) pwm (
         .update(1'h1),
         .clk(clk),
@@ -34,7 +34,36 @@ module motor (
     always @* begin
         in1 = 1'h0;
         in2 = 1'h0;
-        M_pwm_value = motor_speed * 6'h23;
+        
+        case (motor_speed)
+            3'h0: begin
+                M_pwm_value = 1'h0;
+            end
+            3'h1: begin
+                M_pwm_value = 7'h78;
+            end
+            3'h2: begin
+                M_pwm_value = 8'h8c;
+            end
+            3'h3: begin
+                M_pwm_value = 8'ha0;
+            end
+            3'h4: begin
+                M_pwm_value = 8'hb4;
+            end
+            3'h5: begin
+                M_pwm_value = 8'hd2;
+            end
+            3'h6: begin
+                M_pwm_value = 8'he6;
+            end
+            3'h7: begin
+                M_pwm_value = 8'hf0;
+            end
+            default: begin
+                M_pwm_value = 8'hf0;
+            end
+        endcase
         if (motor_direction == 1'h1) begin
             in1 = M_pwm_pulse;
             in2 = 1'h0;
