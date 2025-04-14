@@ -1,0 +1,15 @@
+module led_score_encoder (
+    input score_in[2],
+    output leds[3]
+) {
+    always {
+        case (score_in) {
+            b00: leds = 3b000
+            b01: leds = 3b001
+            b10: leds = 3b011
+            b11: leds = 3b111
+            default:
+                leds = 3b000
+        }
+    }
+}

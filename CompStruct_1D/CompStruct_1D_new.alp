@@ -124,6 +124,12 @@
                     "type": "Component",
                     "path": "Interfaces/uart_tx.luc"
                 }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/led_score_encoder.luc"
+                }
             }
         ],
         "constraintFiles": [
