@@ -35,6 +35,14 @@ PINOUT(V1), STANDARD(LVCMOS33) {
     pin p0l1 A15
     pin p1l0 A17
     pin p1l1 A14
+    
+    // Player score LEDs
+    pin p0_score[0] A27
+    pin p0_score[1] A30
+    pin p0_score[2] A33
+    pin p1_score[0] A28
+    pin p1_score[1] A31
+    pin p1_score[2] A34
 
     PULL(DOWN) {
         // pin io_dip[0][0] B30

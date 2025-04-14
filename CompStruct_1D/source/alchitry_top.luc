@@ -6,8 +6,6 @@ module alchitry_top (
     output usb_tx,          // USB->Serial output
     output io_segment[8],   // 7-segment LEDs on IO Shield
     output io_select[4],    // Digit select on IO Shield
-    // input io_button[5],     // 5 buttons on IO Shield
-    // input io_dip[3][8],      // DIP switches on IO Shield
     
     // Player button inputs
     // 0 - Button 0
@@ -25,12 +23,14 @@ module alchitry_top (
     output p0l0,
     output p0l1,
     output p1l0,
-    output p1l1
+    output p1l1,
+    
+    // Player score LEDs
+    output p0_score[3],
+    output p1_score[3]
 ) {
     sig rst                 // reset signal
-    // const CLOCK_DIVIDER = $is_sim() ? 11 : 17
     const CLK_FREQ = $is_sim() ? 1000 : 10_000_000 // Changed to 100MHz to meet timing constraint
-    // const SEG_REFRESH = $is_sim() ? 2 : 10
     
     .clk(clk) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
@@ -50,15 +50,6 @@ module alchitry_top (
         // edge_detector seg_clk_edge(#RISE(1), #FALL(0), .in(seg_clk.value))
         
         .rst(rst){
-            // dff seg_multiplex[2](#INIT(0))
-            // counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER)) 
-            // counter seg_clk(#SIZE(1), #DIV(SEG_REFRESH))
-            
-            // Directly connect motor speed and direction to them dff upon instantiation
-            // dff motor_speed[3](#INIT(0))
-            // dff motor_direction(#INIT(0))
-            // motor motor(.motor_speed(motor_speed.q), .motor_direction(motor_direction.q))
-            
             game_datapath game_datapath
             
             // Directly connect motor to the datapath
@@ -72,11 +63,11 @@ module alchitry_top (
             // Debugger module
             debugger debugger
         }
-        
-        // RNG modules 
-        // random_number_generator rng_1(#SIZE(1), .slow_clk(slow_clk.value), .refresh(rst))
-        // random_number_generator rng_2000(#SIZE(11), .slow_clk(slow_clk.value), .refresh(rst))
     }
+    
+    // LED score encoder module
+    led_score_encoder p0_led_encoder
+    led_score_encoder p1_led_encoder
     
     always {
         reset_cond.in = ~rst_n  // input raw inverted reset signal
@@ -87,9 +78,6 @@ module alchitry_top (
         io_segment = 8h00
         io_select = 4h0
         usb_tx = usb_rx         // loop serial port
-        
-        // Connecting dffs
-        // seg_multiplex.d = seg_multiplex.q
         
         // =================== DEBUGGING ===================== //
         rx.rx = usb_rx          // connect rx input
@@ -150,56 +138,11 @@ module alchitry_top (
         p0l1 = game_datapath.correct_button_compare[0]
         p1l0 = game_datapath.correct_button_compare[1]
         p1l1 = game_datapath.correct_button_compare[0]
-                
-        // ================= PAST CODE ==================== //
-        // Test motor on io_led
-        // ##### CHANGE THIS CONNECTION TO THE motor driver! #####
-        // motorIN1 = motor.in1
-        // motorIN2 = motor.in2
         
-        // Player Buttons - Motor Actuation
-        // if (io_button_edge.out[0]) {
-        //     motor_speed.d = motor_speed.q + 1
-        //     motor_direction.d = 0
-        // }
-        // if (io_button_edge.out[2]) {
-        //     motor_speed.d = motor_speed.q + 1
-        //     motor_direction.d = 1
-        // }
-        
-        // if (p0_button_edge.out[0]) {
-        //     motor_speed.d = motor_speed.q + 1
-        //     motor_direction.d = 0
-        // }
-        // if (p1_button_edge.out[0]) {
-        //     motor_speed.d = motor_speed.q + 1
-        //     motor_direction.d = 1
-        // }
-        
-        // Button Lights
-        
-        
-        
-        // Invert motor direction when CENTER button is pressed
-        // if (io_button_edge.out[1])
-        //    motor_direction.d = ~motor_direction.q
-        
-        // Increase motor speed 
-        // if (io_button_edge.out[0])
-        // {
-        //    if (motor_speed.q == 7)
-        //        motor_speed.d = motor_speed.q
-        //    else
-        //        motor_speed.d = motor_speed.q + 1
-        // }
-        
-        // Decrease motor speed
-        // if (io_button_edge.out[2])
-        // {
-        //    if (motor_speed.q == 0)
-        //        motor_speed.d = motor_speed.q
-        //    else
-        //        motor_speed.d = motor_speed.q - 1
-        // }
+        // Connect player score LEDs
+        p0_led_encoder.score_in = game_datapath.p0_score[1:0]
+        p1_led_encoder.score_in = game_datapath.p1_score[1:0]
+        p0_score = p0_led_encoder.score_out
+        p1_score = p1_led_encoder.score_out
     }
 }

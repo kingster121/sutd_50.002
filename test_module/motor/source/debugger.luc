@@ -1,0 +1,51 @@
+module debugger (
+    input clk,         // clock
+    input rst,         // reset
+    input new_rx,      // new RX flag
+    input rx_data[8],  // RX data
+    output new_tx,     // new TX flag
+    output tx_data[8], // TX data
+    input tx_busy,      // TX is busy flag
+    
+    // Register
+    input motor_speed[32]
+) {
+    
+    const BIT_1 = "1"
+    const BIT_0 = "0"
+    
+    .clk(clk) {
+        .rst(rst) {
+            dff bit_32_count[32](#INIT(0))
+            dff motor_speed_dff[32](#INIT(0))
+        }
+    }
+    
+    sig send_trigger
+    
+    always {
+        new_tx = 0
+        tx_data = 8hxx
+        
+        send_trigger = new_rx & (rx_data=="h")
+        
+        if (send_trigger) 
+            motor_speed_dff.d = motor_speed
+        
+        if (!tx_busy) {
+            bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+            new_tx = 1                            // send data  
+            
+            if (motor_speed_dff.q[bit_32_count.q] == 1) 
+                tx_data = BIT_1
+            else
+                tx_data = BIT_0
+            
+            // no more letters
+            if (bit_32_count.q == 0) { 
+                bit_32_count.d = 31
+                // state.d = States.SEND_MOTOR_DIRECTION_PREFIX           // change states
+            }
+        }
+    }
+}

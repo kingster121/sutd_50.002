@@ -26,16 +26,41 @@ module alchitry_top (
         .rst(rst) {
             dff motor_speed[3](#INIT(0))
             motor motor(.motor_speed(motor_speed.q))
+            
+            // rx and tx for serial debugging
+            #BAUD(100_000), #CLK_FREQ(CLK_FREQ) {
+                uart_rx rx
+                uart_tx tx
+            }
+            // Debugger module
+            debugger debugger
         }
         
         
         // Button edge detector and conditioner
         edge_detector p0_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
         button_conditioner p0_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
+        
+        
 
     }
 
     always {
+        // DEBUGGER
+        rx.rx = usb_rx          // connect rx input
+        usb_tx = tx.tx          // connect tx output
+        
+        debugger.new_rx = rx.new_data
+        debugger.rx_data = rx.data
+        
+        tx.new_data = debugger.new_tx
+        tx.data = debugger.tx_data
+        debugger.tx_busy = tx.busy
+        
+        debugger.motor_speed = motor_speed.q
+        
+        tx.block = 0            // no flow control, do not block
+        
         reset_cond.in = ~rst_n  // input raw inverted reset signal
         rst = reset_cond.out    // conditioned reset
         

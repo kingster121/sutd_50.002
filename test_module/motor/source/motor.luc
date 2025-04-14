@@ -15,8 +15,6 @@ module motor (
         }
     }
     
-    sig speed
-    
     always {
         in1 = 0
         in2 = 0
@@ -29,7 +27,7 @@ module motor (
             3d4: pwm.value = 180
             3d5: pwm.value = 210
             3d6: pwm.value = 230
-            3d7: pwm.value = 250
+            3d7: pwm.value = 240
             
             default:
             pwm.value = 0
