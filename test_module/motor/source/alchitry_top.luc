@@ -4,36 +4,35 @@ module alchitry_top (
     output led[8],          // 8 user controllable LEDs
     input usb_rx,           // USB->Serial input
     output usb_tx,          // USB->Serial output
-    //output io_led[3][8],    // LEDs on IO Shield
     output io_segment[8],   // 7-segment LEDs on IO Shield
     output io_select[4],    // Digit select on IO Shield
-    //input io_button[5],     // 5 buttons on IO Shield
-    //input io_dip[3][8]      // DIP switches on IO Shield
+    input p0_button[3],
     output motorIN1,
     output motorIN2
 ) {
     sig rst                 // reset signal
-    //const CLK_FREQ = $is_sim() ? 1000 : 100000000
+    const CLK_FREQ = $is_sim() ? 1000 : 10_000_000
     
-    motor motor(.clk(clk), .rst(rst))
+    // const CLOCK_DIVIDER = 15 // 10MHz = 100ns. To get 1ms = 100ns * 2^14
     
     .clk(clk) {
         // The reset conditioner is used to synchronize the reset signal to the FPGA
         // clock. This ensures the entire FPGA comes out of reset at the same time.
         reset_conditioner reset_cond
         
-        // Button edge detector and conditioner
-        //edge_detector io_button_edge[5](#RISE(5x{{1}}), #FALL(5x{{0}}))
-        //button_conditioner io_button_cond[5](#CLK_FREQ(5x{{CLK_FREQ}})) 
+        // counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER), .rst(rst)) 
+        // edge_detector slow_clk_edge(#RISE(1), #FALL(0), .in(slow_clk.value))
         
         .rst(rst) {
-            // The duty cycle is: TOP / value. I think the code in the pwm module should be value/TOP instead
-            // The period is: TOP / (CLK_FREQ / 2^DIV)
-            // pwm pwm(#WIDTH(9), #TOP(381), #DIV(18))
-            
-            // dff value to store the value to pass into pwm.value
-            // dff value[9](#INIT(190))
+            dff motor_speed[3](#INIT(0))
+            motor motor(.motor_speed(motor_speed.q))
         }
+        
+        
+        // Button edge detector and conditioner
+        edge_detector p0_button_edge[3](#RISE(3x{{1}}), #FALL(3x{{0}}))
+        button_conditioner p0_button_cond[3](#CLK_FREQ(3x{{CLK_FREQ}})) 
+
     }
 
     always {
@@ -41,40 +40,20 @@ module alchitry_top (
         rst = reset_cond.out    // conditioned reset
         
         led = 8h00              // turn LEDs off
-        //io_led = 3x{{8h00}}
         io_segment = 0
         io_select = 0
         
         usb_tx = usb_rx         // loop serial port
         
+        p0_button_cond.in = p0_button
+        p0_button_edge.in = p0_button_cond.out
+        
         // MOTOR_SPEED TEST
-        motor.motor_speed = 4
-        motor.motor_direction = 0
+        motor.motor_direction = 1
         motorIN1 = motor.in1
         motorIN2 = motor.in2
-        
-        // Connect button conditioner to edge detector
-        //io_button_cond.in = io_button
-        //io_button_edge.in = io_button_cond.out
-        
-        // Connect dffs out to in
-        // value.d = value.q
-        
-        // Connect pwm value to dff value
-        // pwm.value = value.q
-        
-        // Set value that is used in PWM duty cycle calculation
-        
-        // pwm.update = 1
-        
-        // Condition to increase and decrease the blinking ratee
-        // if (io_button_edge.out[0])
-        //     value.d = value.q + 10
-        // if (io_button_edge.out[2])
-        //     value.d = value.q - 10
-        
-        // Connect counter to servo controller
-        // io_led[0][0] = pwm.pulse
-        
+        if (p0_button_edge.out[0])
+            motor_speed.d = motor_speed.q + 1
+
     }
 }

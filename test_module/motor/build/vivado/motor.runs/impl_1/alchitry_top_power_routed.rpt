@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-| Date             : Sun Apr 13 17:46:48 2025
+| Date             : Mon Apr 14 16:34:17 2025
 | Host             : fedora running 64-bit unknown
 | Command          : report_power -file alchitry_top_power_routed.rpt -pb alchitry_top_power_summary_routed.pb -rpx alchitry_top_power_routed.rpx
 | Design           : alchitry_top
@@ -53,13 +53,13 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
-| Slice Logic    |    <0.001 |       44 |       --- |             --- |
-|   LUT as Logic |    <0.001 |       11 |     20800 |            0.05 |
-|   CARRY4       |    <0.001 |        4 |      8150 |            0.05 |
-|   Register     |    <0.001 |       18 |     41600 |            0.04 |
-|   Others       |     0.000 |        7 |       --- |             --- |
-| Signals        |    <0.001 |       29 |       --- |             --- |
-| I/O            |    <0.001 |       26 |       170 |           15.29 |
+| Slice Logic    |    <0.001 |      104 |       --- |             --- |
+|   LUT as Logic |    <0.001 |       25 |     20800 |            0.12 |
+|   CARRY4       |    <0.001 |        8 |      8150 |            0.10 |
+|   Register     |    <0.001 |       50 |     41600 |            0.12 |
+|   Others       |     0.000 |       14 |       --- |             --- |
+| Signals        |    <0.001 |       70 |       --- |             --- |
+| I/O            |    <0.001 |       27 |       170 |           15.88 |
 | Static Power   |     0.072 |          |           |                 |
 | Total          |     0.072 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-| Date                      : Sun Apr 13 17:46:34 2025
+| Date                      : Mon Apr 14 16:33:52 2025
 | Host                      : fedora running 64-bit unknown
 | Command                   : report_io -file alchitry_top_io_placed.rpt
 | Design                    : alchitry_top
@@ -25,7 +25,7 @@ Table of Contents
 +---------------+
 | Total User IO |
 +---------------+
-|            26 |
+|            29 |
 +---------------+
 
 
@@ -41,7 +41,7 @@ Table of Contents
 | A4         |               | High Range | IO_L3N_T0_DQS_AD5N_35        | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | A5         |               | High Range | IO_L3P_T0_DQS_AD5P_35        | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | A6         |               | High Range | VCCO_35                      | VCCO        |             |      35 |            |      |                     |                      |    3.30 |            |           |          |      |                  |              |                   |              |
-| A7         |               | High Range | IO_L1N_T0_AD4N_35            | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
+| A7         | p0_button[2]  | High Range | IO_L1N_T0_AD4N_35            | INPUT       | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
 | A8         |               | High Range | IO_L2P_T0_AD8P_15            | User IO     |             |      15 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | A9         |               | High Range | IO_L2N_T0_AD8N_15            | User IO     |             |      15 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | A10        |               | High Range | IO_L3N_T0_DQS_AD1N_15        | User IO     |             |      15 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
@@ -72,8 +72,8 @@ Table of Contents
 | C3         |               | High Range | IO_L7P_T1_AD6P_35            | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | C4         |               | High Range | IO_L12N_T1_MRCC_35           | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | C5         |               |            | GND                          | GND         |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
-| C6         |               | High Range | IO_L5N_T0_AD13N_35           | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
-| C7         |               | High Range | IO_L5P_T0_AD13P_35           | User IO     |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
+| C6         | p0_button[1]  | High Range | IO_L5N_T0_AD13N_35           | INPUT       | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
+| C7         | p0_button[0]  | High Range | IO_L5P_T0_AD13P_35           | INPUT       | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      | PULLDOWN  |          |      | NONE             |              |                   |              |
 | C8         |               | High Range | IO_L1P_T0_AD0P_15            | User IO     |             |      15 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | C9         |               | High Range | IO_L1N_T0_AD0N_15            | User IO     |             |      15 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | C10        |               | High Range | VCCO_15                      | VCCO        |             |      15 |            |      |                     |                      |   any** |            |           |          |      |                  |              |                   |              |

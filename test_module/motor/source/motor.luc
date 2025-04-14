@@ -27,6 +27,9 @@ module motor (
             3d2: pwm.value = 130
             3d3: pwm.value = 160
             3d4: pwm.value = 180
+            3d5: pwm.value = 210
+            3d6: pwm.value = 230
+            3d7: pwm.value = 250
             
             default:
             pwm.value = 0

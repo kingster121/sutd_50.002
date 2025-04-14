@@ -12,31 +12,18 @@ module alchitry_top (
         output reg usb_tx,
         output reg [7:0] io_segment,
         output reg [3:0] io_select,
+        input wire [2:0] p0_button,
         output reg motorIN1,
         output reg motorIN2
     );
     logic rst;
-    logic [2:0] M_motor_motor_speed;
-    logic M_motor_motor_direction;
-    logic M_motor_in1;
-    logic M_motor_in2;
-    
-    motor motor (
-        .clk(clk),
-        .rst(rst),
-        .motor_speed(M_motor_motor_speed),
-        .motor_direction(M_motor_motor_direction),
-        .in1(M_motor_in1),
-        .in2(M_motor_in2)
-    );
-    
-    
-    localparam _MP_STAGES_440828766 = 3'h4;
+    localparam CLK_FREQ = 24'h989680;
+    localparam _MP_STAGES_210766926 = 3'h4;
     logic M_reset_cond_in;
     logic M_reset_cond_out;
     
     reset_conditioner #(
-        .STAGES(_MP_STAGES_440828766)
+        .STAGES(_MP_STAGES_210766926)
     ) reset_cond (
         .clk(clk),
         .in(M_reset_cond_in),
@@ -44,18 +31,90 @@ module alchitry_top (
     );
     
     
+    logic [2:0] D_motor_speed_d, D_motor_speed_q = 1'h0;
+    logic M_motor_motor_direction;
+    logic M_motor_in1;
+    logic M_motor_in2;
+    
+    motor motor (
+        .motor_speed(D_motor_speed_q),
+        .clk(clk),
+        .rst(rst),
+        .motor_direction(M_motor_motor_direction),
+        .in1(M_motor_in1),
+        .in2(M_motor_in2)
+    );
+    
+    
+    localparam logic [2:0][0:0] _MP_RISE_7484220 = {{1'h1, 1'h1, 1'h1}};
+    localparam logic [2:0][0:0] _MP_FALL_7484220 = {{1'h0, 1'h0, 1'h0}};
+    logic [2:0] M_p0_button_edge_in;
+    logic [2:0] M_p0_button_edge_out;
+    
+    genvar idx_0_7484220;
+    
+    generate
+        for (idx_0_7484220 = 0; idx_0_7484220 < 3; idx_0_7484220 = idx_0_7484220 + 1) begin: forLoop_idx_0_7484220
+            edge_detector #(
+                .RISE(_MP_RISE_7484220[idx_0_7484220]),
+                .FALL(_MP_FALL_7484220[idx_0_7484220])
+            ) p0_button_edge (
+                .clk(clk),
+                .in(M_p0_button_edge_in[idx_0_7484220]),
+                .out(M_p0_button_edge_out[idx_0_7484220])
+            );
+        end
+    endgenerate
+    
+    
+    localparam logic [2:0][23:0] _MP_CLK_FREQ_626383516 = {{24'h989680, 24'h989680, 24'h989680}};
+    localparam _MP_MIN_DELAY_626383516 = 5'h14;
+    localparam _MP_NUM_SYNC_626383516 = 2'h2;
+    logic [2:0] M_p0_button_cond_in;
+    logic [2:0] M_p0_button_cond_out;
+    
+    genvar idx_0_626383516;
+    
+    generate
+        for (idx_0_626383516 = 0; idx_0_626383516 < 3; idx_0_626383516 = idx_0_626383516 + 1) begin: forLoop_idx_0_626383516
+            button_conditioner #(
+                .CLK_FREQ(_MP_CLK_FREQ_626383516[idx_0_626383516]),
+                .MIN_DELAY(_MP_MIN_DELAY_626383516),
+                .NUM_SYNC(_MP_NUM_SYNC_626383516)
+            ) p0_button_cond (
+                .clk(clk),
+                .in(M_p0_button_cond_in[idx_0_626383516]),
+                .out(M_p0_button_cond_out[idx_0_626383516])
+            );
+        end
+    endgenerate
+    
+    
     always @* begin
+        D_motor_speed_d = D_motor_speed_q;
+        
         M_reset_cond_in = ~rst_n;
         rst = M_reset_cond_out;
         led = 8'h0;
         io_segment = 1'h0;
         io_select = 1'h0;
         usb_tx = usb_rx;
-        M_motor_motor_speed = 3'h4;
-        M_motor_motor_direction = 1'h0;
+        M_p0_button_cond_in = p0_button;
+        M_p0_button_edge_in = M_p0_button_cond_out;
+        M_motor_motor_direction = 1'h1;
         motorIN1 = M_motor_in1;
         motorIN2 = M_motor_in2;
+        if (M_p0_button_edge_out[1'h0]) begin
+            D_motor_speed_d = D_motor_speed_q + 1'h1;
+        end
     end
     
     
+    always @(posedge (clk)) begin
+        if ((rst) == 1'b1) begin
+            D_motor_speed_q <= 1'h0;
+        end else begin
+            D_motor_speed_q <= D_motor_speed_d;
+        end
+    end
 endmodule
