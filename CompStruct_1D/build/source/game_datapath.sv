@@ -30,7 +30,7 @@ module game_datapath (
         output reg [31:0] b,
         output reg [5:0] alufn
     );
-    localparam CLOCK_DIVIDER = 4'he;
+    localparam CLOCK_DIVIDER = 4'hf;
     logic [31:0] input_alu_a;
     logic [31:0] input_alu_b;
     logic [31:0] M_game_alu_a;
@@ -52,17 +52,17 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_323896391 = 1'h1;
-    localparam _MP_DIV_323896391 = 4'he;
-    localparam _MP_TOP_323896391 = 1'h0;
-    localparam _MP_UP_323896391 = 1'h1;
+    localparam _MP_SIZE_1201372879 = 1'h1;
+    localparam _MP_DIV_1201372879 = 4'hf;
+    localparam _MP_TOP_1201372879 = 1'h0;
+    localparam _MP_UP_1201372879 = 1'h1;
     logic [0:0] M_slow_clk_value;
     
     counter #(
-        .SIZE(_MP_SIZE_323896391),
-        .DIV(_MP_DIV_323896391),
-        .TOP(_MP_TOP_323896391),
-        .UP(_MP_UP_323896391)
+        .SIZE(_MP_SIZE_1201372879),
+        .DIV(_MP_DIV_1201372879),
+        .TOP(_MP_TOP_1201372879),
+        .UP(_MP_UP_1201372879)
     ) slow_clk (
         .rst(rst),
         .clk(clk),
@@ -70,13 +70,13 @@ module game_datapath (
     );
     
     
-    localparam _MP_RISE_1842186054 = 1'h1;
-    localparam _MP_FALL_1842186054 = 1'h0;
+    localparam _MP_RISE_574796031 = 1'h1;
+    localparam _MP_FALL_574796031 = 1'h0;
     logic M_slow_clk_edge_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_1842186054),
-        .FALL(_MP_FALL_1842186054)
+        .RISE(_MP_RISE_574796031),
+        .FALL(_MP_FALL_574796031)
     ) slow_clk_edge (
         .in(M_slow_clk_value),
         .clk(clk),
@@ -158,11 +158,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_770740823 = 1'h1;
+    localparam _MP_SIZE_2000863462 = 1'h1;
     logic [0:0] M_rng_1_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_770740823)
+        .SIZE(_MP_SIZE_2000863462)
     ) rng_1 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
@@ -171,11 +171,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_620337762 = 4'hb;
+    localparam _MP_SIZE_1623511539 = 4'hb;
     logic [10:0] M_rng_2000_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_620337762)
+        .SIZE(_MP_SIZE_1623511539)
     ) rng_2000 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),

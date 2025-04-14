@@ -151,7 +151,7 @@ module game_cu (
                     D_game_fsm_d = 6'h5;
                 end
                 6'h5: begin
-                    alufn = 6'h35;
+                    alufn = 6'h37;
                     asel = 3'h4;
                     bsel = 1'h0;
                     regfile_we = 1'h1;
@@ -171,9 +171,9 @@ module game_cu (
                     regfile_ra2 = 3'h7;
                     alu_out_sel = 1'h0;
                     if (regfile_rd2[1'h0]) begin
-                        D_game_fsm_d = 6'h8;
-                    end else begin
                         D_game_fsm_d = 6'h7;
+                    end else begin
+                        D_game_fsm_d = 6'h8;
                     end
                 end
                 6'h8: begin

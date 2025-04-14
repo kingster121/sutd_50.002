@@ -163,7 +163,7 @@ module game_cu (
                     game_fsm.d = GameStates.CHECK_MOTOR_SPEED           
                 
                 GameStates.CHECK_MOTOR_SPEED:
-                    alufn = 6h35 
+                    alufn = 6h37 // CMPLE 
                     asel = d4
                     bsel = d0
                     regfile_we = 1
@@ -183,9 +183,9 @@ module game_cu (
                     regfile_ra2 = d7 // direct
                     alu_out_sel = d0
                     if (regfile_rd2[0])
-                        game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
+                        game_fsm.d = GameStates.FIX_MAX_MOTOR_SPEED
                     else
-                        game_fsm.d = GameStates.FIX_MAX_MOTOR_SPEED   
+                        game_fsm.d = GameStates.INCREASE_MOTOR_SPEED   
                 
                 GameStates.INCREASE_MOTOR_SPEED:
                     alufn = 6h00
