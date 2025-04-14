@@ -1,7 +1,7 @@
 module motor (
     input clk,  // clock
     input rst,  // reset
-    input motor_speed[3], // range from 0 for stop to 7 for max speed
+    input motor_speed[4], // range from 0 to 15. But we onl use from 0 to 8
     input motor_direction, // 0 for going to player 0, 1 for going to player 1
     output in1,
     output in2

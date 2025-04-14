@@ -10,14 +10,12 @@ module alchitry_top (
         output reg [7:0] led,
         input wire usb_rx,
         output reg usb_tx,
-        output reg [2:0][7:0] io_led,
         output reg [7:0] io_segment,
         output reg [3:0] io_select,
-        input wire [4:0] io_button,
-        input wire [2:0][7:0] io_dip
+        output reg motorIN1,
+        output reg motorIN2
     );
     logic rst;
-    localparam CLK_FREQ = 27'h5f5e100;
     logic [2:0] M_motor_motor_speed;
     logic M_motor_motor_direction;
     logic M_motor_in1;
@@ -33,12 +31,12 @@ module alchitry_top (
     );
     
     
-    localparam _MP_STAGES_629758745 = 3'h4;
+    localparam _MP_STAGES_440828766 = 3'h4;
     logic M_reset_cond_in;
     logic M_reset_cond_out;
     
     reset_conditioner #(
-        .STAGES(_MP_STAGES_629758745)
+        .STAGES(_MP_STAGES_440828766)
     ) reset_cond (
         .clk(clk),
         .in(M_reset_cond_in),
@@ -46,62 +44,17 @@ module alchitry_top (
     );
     
     
-    localparam logic [4:0][0:0] _MP_RISE_1732385238 = {{1'h1, 1'h1, 1'h1, 1'h1, 1'h1}};
-    localparam logic [4:0][0:0] _MP_FALL_1732385238 = {{1'h0, 1'h0, 1'h0, 1'h0, 1'h0}};
-    logic [4:0] M_io_button_edge_in;
-    logic [4:0] M_io_button_edge_out;
-    
-    genvar idx_0_1732385238;
-    
-    generate
-        for (idx_0_1732385238 = 0; idx_0_1732385238 < 5; idx_0_1732385238 = idx_0_1732385238 + 1) begin: forLoop_idx_0_1732385238
-            edge_detector #(
-                .RISE(_MP_RISE_1732385238[idx_0_1732385238]),
-                .FALL(_MP_FALL_1732385238[idx_0_1732385238])
-            ) io_button_edge (
-                .clk(clk),
-                .in(M_io_button_edge_in[idx_0_1732385238]),
-                .out(M_io_button_edge_out[idx_0_1732385238])
-            );
-        end
-    endgenerate
-    
-    
-    localparam logic [4:0][26:0] _MP_CLK_FREQ_44731858 = {{27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100, 27'h5f5e100}};
-    localparam _MP_MIN_DELAY_44731858 = 5'h14;
-    localparam _MP_NUM_SYNC_44731858 = 2'h2;
-    logic [4:0] M_io_button_cond_in;
-    logic [4:0] M_io_button_cond_out;
-    
-    genvar idx_0_44731858;
-    
-    generate
-        for (idx_0_44731858 = 0; idx_0_44731858 < 5; idx_0_44731858 = idx_0_44731858 + 1) begin: forLoop_idx_0_44731858
-            button_conditioner #(
-                .CLK_FREQ(_MP_CLK_FREQ_44731858[idx_0_44731858]),
-                .MIN_DELAY(_MP_MIN_DELAY_44731858),
-                .NUM_SYNC(_MP_NUM_SYNC_44731858)
-            ) io_button_cond (
-                .clk(clk),
-                .in(M_io_button_cond_in[idx_0_44731858]),
-                .out(M_io_button_cond_out[idx_0_44731858])
-            );
-        end
-    endgenerate
-    
-    
     always @* begin
         M_reset_cond_in = ~rst_n;
         rst = M_reset_cond_out;
         led = 8'h0;
-        io_led = {{8'h0, 8'h0, 8'h0}};
         io_segment = 1'h0;
         io_select = 1'h0;
         usb_tx = usb_rx;
-        M_motor_motor_speed = 1'h1;
+        M_motor_motor_speed = 3'h4;
         M_motor_motor_direction = 1'h0;
-        M_io_button_cond_in = io_button;
-        M_io_button_edge_in = M_io_button_cond_out;
+        motorIN1 = M_motor_in1;
+        motorIN2 = M_motor_in2;
     end
     
     

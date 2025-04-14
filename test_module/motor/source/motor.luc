@@ -15,13 +15,18 @@ module motor (
         }
     }
     
+    sig speed
+    
     always {
         in1 = 0
         in2 = 0
         
         case (motor_speed) {
-            0: pwm.value = 0
-            1: pwm.value = 35
+            3d0: pwm.value = 0
+            3d1: pwm.value = 100
+            3d2: pwm.value = 130
+            3d3: pwm.value = 160
+            3d4: pwm.value = 180
             
             default:
             pwm.value = 0

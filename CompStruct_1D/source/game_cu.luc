@@ -32,6 +32,9 @@ module game_cu (
         P0B1_UPDATE_MOTOR,
         P1B0_UPDATE_MOTOR,
         P1B1_UPDATE_MOTOR,
+        CHECK_MOTOR_SPEED,
+        BRANCH_MOTOR_SPEED,
+        FIX_MAX_MOTOR_SPEED,
         INCREASE_MOTOR_SPEED,
         
         
@@ -47,11 +50,14 @@ module game_cu (
         P1_WIN,
         P1_HAVENT_WIN,
         GAMEOVER,
+        RESET_P0_SCORE,
+        RESET_P1_SCORE,
         REVERSE_MOTOR,
         WAIT_CENTER_BUTTON_PRESS,
         
         // START/RESET
         START,
+        OFF_BUTTON_LED,
         RESET_COUNTER,
         SET_MAX_COUNTER,
         INCREASE_COUNTER,
@@ -121,7 +127,7 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
+                    game_fsm.d = GameStates.CHECK_MOTOR_SPEED
                 
                 GameStates.P0B1_UPDATE_MOTOR:
                     alufn = 6h38 
@@ -132,7 +138,7 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
+                    game_fsm.d = GameStates.CHECK_MOTOR_SPEED
                 
                 GameStates.P1B0_UPDATE_MOTOR:
                     alufn = 6h39 
@@ -143,7 +149,7 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
+                    game_fsm.d = GameStates.CHECK_MOTOR_SPEED
                 
                 GameStates.P1B1_UPDATE_MOTOR:
                     alufn = 6h39 
@@ -154,9 +160,33 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d5
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.INCREASE_MOTOR_SPEED           
+                    game_fsm.d = GameStates.CHECK_MOTOR_SPEED           
                 
-                // Maybe should have a condition to check if MAX speed has been reached
+                GameStates.CHECK_MOTOR_SPEED:
+                    alufn = 6h35 
+                    asel = d4
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d7 // temp reg
+                    regfile_ra1 = d0
+                    regfile_ra2 = d2
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.BRANCH_MOTOR_SPEED       
+                
+                GameStates.BRANCH_MOTOR_SPEED:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0 // temp reg
+                    regfile_ra1 = d0
+                    regfile_ra2 = d7 // direct
+                    alu_out_sel = d0
+                    if (regfile_rd2[0])
+                        game_fsm.d = GameStates.INCREASE_MOTOR_SPEED
+                    else
+                        game_fsm.d = GameStates.FIX_MAX_MOTOR_SPEED   
+                
                 GameStates.INCREASE_MOTOR_SPEED:
                     alufn = 6h00
                     asel = d1
@@ -166,14 +196,36 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d2
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.SET_CORRECT_BUTTON
+                    game_fsm.d = GameStates.OFF_BUTTON_LED
+                
+                GameStates.FIX_MAX_MOTOR_SPEED:
+                    alufn = 6h1A
+                    asel = d4
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d2 // motor speed
+                    regfile_ra1 = d0
+                    regfile_ra2 = d2
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.OFF_BUTTON_LED
                 
                 GameStates.START:
-                    alufn = 6h00
+                    alufn = 6h1B
                     asel = d0
-                    bsel = d0
-                    regfile_we = 0
-                    regfile_wa = d0
+                    bsel = d4
+                    regfile_we = 1
+                    regfile_wa = d2
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.OFF_BUTTON_LED
+                
+                GameStates.OFF_BUTTON_LED:
+                    alufn = 6h1B // 'B'
+                    asel = d0
+                    bsel = d4
+                    regfile_we = 1
+                    regfile_wa = d5 // correct button compare
                     regfile_ra1 = d0
                     regfile_ra2 = d0
                     alu_out_sel = d0
@@ -341,7 +393,7 @@ module game_cu (
                     alu_out_sel = d0
                     game_fsm.d = GameStates.GAMEOVER
                 
-                 GameStates.P0_HAVENT_WIN:
+                GameStates.P0_HAVENT_WIN:
                     alufn = 6h00
                     asel = d0
                     bsel = d0
@@ -421,6 +473,28 @@ module game_cu (
                     alu_out_sel = d0
                     game_fsm.d = GameStates.REVERSE_MOTOR
                 
+                GameStates.RESET_P0_SCORE:
+                    alufn = 6h1B
+                    asel = d0
+                    bsel = d4
+                    regfile_we = 1
+                    regfile_wa = d3
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.RESET_P1_SCORE
+                
+                GameStates.RESET_P1_SCORE:
+                    alufn = 6h1B
+                    asel = d0
+                    bsel = d4
+                    regfile_we = 1
+                    regfile_wa = d4
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.REVERSE_MOTOR
+                
                 GameStates.REVERSE_MOTOR:
                     alufn = 6h16 // XOR --- 32b01 ^ motor_direction -> Invert last-bit motor_direction
                     asel = d1
@@ -432,7 +506,7 @@ module game_cu (
                     alu_out_sel = d0
                     game_fsm.d = GameStates.START
                 
-                 GameStates.WAIT_CENTER_BUTTON_PRESS:
+                GameStates.WAIT_CENTER_BUTTON_PRESS:
                     alufn = 6h00
                     asel = d0
                     bsel = d0

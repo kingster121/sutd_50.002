@@ -13,7 +13,7 @@ module alchitry_top (
     output motorIN2
 ) {
     sig rst                 // reset signal
-    const CLK_FREQ = $is_sim() ? 1000 : 100000000
+    //const CLK_FREQ = $is_sim() ? 1000 : 100000000
     
     motor motor(.clk(clk), .rst(rst))
     
@@ -48,7 +48,7 @@ module alchitry_top (
         usb_tx = usb_rx         // loop serial port
         
         // MOTOR_SPEED TEST
-        motor.motor_speed = 1
+        motor.motor_speed = 4
         motor.motor_direction = 0
         motorIN1 = motor.in1
         motorIN2 = motor.in2

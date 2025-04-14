@@ -102,7 +102,7 @@ module game_datapath (
         case (game_cu.alu_out_sel){
             b00: game_regfiles.data = game_alu.out
             b01: game_regfiles.data = rng_1.out
-            b10: game_regfiles.data = rng_2000.out
+            b10: game_regfiles.data = rng_2000.out + d1000 // Ensures that the minimum time before next lightup is 1s
             default : 
                 game_regfiles.data = game_alu.out
         }
