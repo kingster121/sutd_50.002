@@ -50,6 +50,11 @@ module game_cu (
         P1_WIN,
         P1_HAVENT_WIN,
         GAMEOVER,
+        RESET_COUNTER_GAMEOVER,
+        INCREASE_COUNTER_GAMEOVER,
+        WAIT_FOR_EDGE_LOW_GAMEOVER,
+        CHECK_COUNTER_GAMEOVER,
+        BRANCH_COUNTER_GAMEOVER,
         RESET_P0_SCORE,
         RESET_P1_SCORE,
         REVERSE_MOTOR,
@@ -472,7 +477,63 @@ module game_cu (
                     regfile_ra1 = d0
                     regfile_ra2 = d0
                     alu_out_sel = d0
-                    game_fsm.d = GameStates.REVERSE_MOTOR
+                    game_fsm.d = GameStates.RESET_COUNTER_GAMEOVER
+                
+                GameStates.RESET_COUNTER_GAMEOVER:
+                    alufn = 6h1B
+                    asel = d0
+                    bsel = d4
+                    regfile_we = 1
+                    regfile_wa = d6
+                    regfile_ra1 = d0
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.INCREASE_COUNTER_GAMEOVER
+                
+                GameStates.INCREASE_COUNTER_GAMEOVER:
+                    alufn = 6h00
+                    asel = d1
+                    bsel = d0
+                    regfile_we = 1
+                    regfile_wa = d6
+                    regfile_ra1 = d0
+                    regfile_ra2 = d6
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.WAIT_FOR_EDGE_LOW_GAMEOVER
+                
+                GameStates.WAIT_FOR_EDGE_LOW_GAMEOVER:
+                    if (~slow_clk)
+                        game_fsm.d = GameStates.CHECK_COUNTER
+                    else
+                        game_fsm.d = GameStates.WAIT_FOR_EDGE_LOW_GAMEOVER
+                
+                GameStates.CHECK_COUNTER_GAMEOVER:
+                    alufn = 6h35
+                    asel = d0
+                    bsel = d5
+                    regfile_we = 1
+                    regfile_wa = d8 // temp1 reg 
+                    regfile_ra1 = d6
+                    regfile_ra2 = d0
+                    alu_out_sel = d0
+                    game_fsm.d = GameStates.BRANCH_COUNTER_GAMEOVER
+                
+                GameStates.BRANCH_COUNTER_GAMEOVER:
+                    alufn = 6h00
+                    asel = d0
+                    bsel = d0
+                    regfile_we = 0
+                    regfile_wa = d0
+                    regfile_ra1 = d0
+                    regfile_ra2 = d8 // Allows for direct read 
+                    alu_out_sel = d0
+                    
+                    if (~regfile_rd2[0])
+                        game_fsm.d = GameStates.RESET_P0_SCORE
+                    else if (slow_clk)
+                        game_fsm.d = GameStates.INCREASE_COUNTER_GAMEOVER
+                    else
+                        game_fsm.d = GameStates.BRANCH_COUNTER_GAMEOVER
                 
                 GameStates.RESET_P0_SCORE:
                     alufn = 6h1B
