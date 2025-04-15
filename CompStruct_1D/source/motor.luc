@@ -22,18 +22,18 @@ module motor (
         // pwm.value = motor_speed * 35 // 54 is from TOP/[number of speed settings] 250/7 = 35
         case (motor_speed) {
             3d0: pwm.value = 0
-            3d1: pwm.value = 120
-            3d2: pwm.value = 140
-            3d3: pwm.value = 160
-            3d4: pwm.value = 180
-            3d5: pwm.value = 210
-            3d6: pwm.value = 230
-            3d7: pwm.value = 240
+            3d1: pwm.value = 100
+            3d2: pwm.value = 120
+            3d3: pwm.value = 140
+            3d4: pwm.value = 160
+            3d5: pwm.value = 170
+            3d6: pwm.value = 180
+            3d7: pwm.value = 190
             // 3d8: pwm.value = 240
             
             default:
                 // for when motor_speed = 8
-                pwm.value = 240
+                pwm.value = 190
         }
         
         // player 1 move
