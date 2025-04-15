@@ -124,9 +124,9 @@ module alchitry_top (
         game_datapath.p0b1 = p0_button_edge.out[1]
         game_datapath.p0wall = p0_button_cond.out[2]
         game_datapath.p1b0 = p1_button_edge.out[0]
-        game_datapath.p1b1 = p1_button_cond.out[1]
-        game_datapath.p1wall = p1_button_edge.out[2]
-        game_datapath.center_button = center_button_edge.out
+        game_datapath.p1b1 = p1_button_edge.out[1]
+        game_datapath.p1wall = p1_button_cond.out[2]
+        game_datapath.center_button = center_button_cond.out
         
         // ================== CONNECTING PHYSICAL OUTPUTS =================== //
         // Connect motor
