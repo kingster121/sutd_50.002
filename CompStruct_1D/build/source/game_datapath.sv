@@ -52,17 +52,17 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_1565541105 = 1'h1;
-    localparam _MP_DIV_1565541105 = 4'hf;
-    localparam _MP_TOP_1565541105 = 1'h0;
-    localparam _MP_UP_1565541105 = 1'h1;
+    localparam _MP_SIZE_2126423522 = 1'h1;
+    localparam _MP_DIV_2126423522 = 4'hf;
+    localparam _MP_TOP_2126423522 = 1'h0;
+    localparam _MP_UP_2126423522 = 1'h1;
     logic [0:0] M_slow_clk_value;
     
     counter #(
-        .SIZE(_MP_SIZE_1565541105),
-        .DIV(_MP_DIV_1565541105),
-        .TOP(_MP_TOP_1565541105),
-        .UP(_MP_UP_1565541105)
+        .SIZE(_MP_SIZE_2126423522),
+        .DIV(_MP_DIV_2126423522),
+        .TOP(_MP_TOP_2126423522),
+        .UP(_MP_UP_2126423522)
     ) slow_clk (
         .rst(rst),
         .clk(clk),
@@ -70,13 +70,13 @@ module game_datapath (
     );
     
     
-    localparam _MP_RISE_239845014 = 1'h1;
-    localparam _MP_FALL_239845014 = 1'h0;
+    localparam _MP_RISE_1397045680 = 1'h1;
+    localparam _MP_FALL_1397045680 = 1'h0;
     logic M_slow_clk_edge_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_239845014),
-        .FALL(_MP_FALL_239845014)
+        .RISE(_MP_RISE_1397045680),
+        .FALL(_MP_FALL_1397045680)
     ) slow_clk_edge (
         .in(M_slow_clk_value),
         .clk(clk),
@@ -158,11 +158,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_1285793005 = 1'h1;
+    localparam _MP_SIZE_1305312452 = 1'h1;
     logic [0:0] M_rng_1_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_1285793005)
+        .SIZE(_MP_SIZE_1305312452)
     ) rng_1 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
@@ -171,11 +171,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_1461228153 = 4'h9;
+    localparam _MP_SIZE_402114398 = 4'h9;
     logic [8:0] M_rng_500_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_1461228153)
+        .SIZE(_MP_SIZE_402114398)
     ) rng_500 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
