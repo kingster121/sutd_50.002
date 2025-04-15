@@ -12,16 +12,16 @@ module motor (
         output reg in1,
         output reg in2
     );
-    localparam _MP_WIDTH_12894052 = 4'ha;
-    localparam _MP_TOP_12894052 = 8'hfa;
-    localparam _MP_DIV_12894052 = 2'h3;
+    localparam _MP_WIDTH_271957964 = 4'ha;
+    localparam _MP_TOP_271957964 = 8'hfa;
+    localparam _MP_DIV_271957964 = 2'h3;
     logic [9:0] M_pwm_value;
     logic M_pwm_pulse;
     
     pwm #(
-        .WIDTH(_MP_WIDTH_12894052),
-        .TOP(_MP_TOP_12894052),
-        .DIV(_MP_DIV_12894052)
+        .WIDTH(_MP_WIDTH_271957964),
+        .TOP(_MP_TOP_271957964),
+        .DIV(_MP_DIV_271957964)
     ) pwm (
         .update(1'h1),
         .clk(clk),
