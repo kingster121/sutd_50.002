@@ -25,7 +25,6 @@ module game_regfiles (
     output wa_out[4],
     output we_out,
     output data_out[32]
-    
 ) {
     .clk(clk){
         .rst(rst){

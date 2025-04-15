@@ -52,17 +52,17 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_558752776 = 1'h1;
-    localparam _MP_DIV_558752776 = 4'hf;
-    localparam _MP_TOP_558752776 = 1'h0;
-    localparam _MP_UP_558752776 = 1'h1;
+    localparam _MP_SIZE_1924963743 = 1'h1;
+    localparam _MP_DIV_1924963743 = 4'hf;
+    localparam _MP_TOP_1924963743 = 1'h0;
+    localparam _MP_UP_1924963743 = 1'h1;
     logic [0:0] M_slow_clk_value;
     
     counter #(
-        .SIZE(_MP_SIZE_558752776),
-        .DIV(_MP_DIV_558752776),
-        .TOP(_MP_TOP_558752776),
-        .UP(_MP_UP_558752776)
+        .SIZE(_MP_SIZE_1924963743),
+        .DIV(_MP_DIV_1924963743),
+        .TOP(_MP_TOP_1924963743),
+        .UP(_MP_UP_1924963743)
     ) slow_clk (
         .rst(rst),
         .clk(clk),
@@ -70,13 +70,13 @@ module game_datapath (
     );
     
     
-    localparam _MP_RISE_276998228 = 1'h1;
-    localparam _MP_FALL_276998228 = 1'h0;
+    localparam _MP_RISE_1622920652 = 1'h1;
+    localparam _MP_FALL_1622920652 = 1'h0;
     logic M_slow_clk_edge_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_276998228),
-        .FALL(_MP_FALL_276998228)
+        .RISE(_MP_RISE_1622920652),
+        .FALL(_MP_FALL_1622920652)
     ) slow_clk_edge (
         .in(M_slow_clk_value),
         .clk(clk),
@@ -158,11 +158,11 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_739425404 = 1'h1;
+    localparam _MP_SIZE_1636668965 = 1'h1;
     logic [0:0] M_rng_1_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_739425404)
+        .SIZE(_MP_SIZE_1636668965)
     ) rng_1 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
@@ -171,16 +171,16 @@ module game_datapath (
     );
     
     
-    localparam _MP_SIZE_2096235682 = 4'hb;
-    logic [10:0] M_rng_2000_out;
+    localparam _MP_SIZE_1186302393 = 4'h9;
+    logic [8:0] M_rng_500_out;
     
     random_number_generator #(
-        .SIZE(_MP_SIZE_2096235682)
-    ) rng_2000 (
+        .SIZE(_MP_SIZE_1186302393)
+    ) rng_500 (
         .slow_clk(M_slow_clk_value),
         .refresh(rst),
         .clk(clk),
-        .out(M_rng_2000_out)
+        .out(M_rng_500_out)
     );
     
     
@@ -240,7 +240,7 @@ module game_datapath (
                 M_game_regfiles_data = M_rng_1_out;
             end
             2'h2: begin
-                M_game_regfiles_data = M_rng_2000_out + 10'h3e8;
+                M_game_regfiles_data = M_rng_500_out;
             end
             default: begin
                 M_game_regfiles_data = M_game_alu_out;
