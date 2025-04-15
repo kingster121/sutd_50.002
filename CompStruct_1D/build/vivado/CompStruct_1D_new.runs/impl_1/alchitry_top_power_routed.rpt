@@ -1,7 +1,11 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
+<<<<<<< HEAD
 | Date             : Wed Apr 16 07:28:43 2025
+=======
+| Date             : Wed Apr 16 00:18:33 2025
+>>>>>>> parent of 002b953 (Working V1.1)
 | Host             : fedora running 64-bit unknown
 | Command          : report_power -file alchitry_top_power_routed.rpt -pb alchitry_top_power_summary_routed.pb -rpx alchitry_top_power_routed.rpx
 | Design           : alchitry_top
@@ -53,6 +57,7 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        3 |       --- |             --- |
+<<<<<<< HEAD
 | Slice Logic    |    <0.001 |     2929 |       --- |             --- |
 |   LUT as Logic |    <0.001 |     1176 |     20800 |            5.65 |
 |   Register     |    <0.001 |     1293 |     41600 |            3.11 |
@@ -60,6 +65,15 @@ Table of Contents
 |   F7/F8 Muxes  |    <0.001 |      136 |     32600 |            0.42 |
 |   Others       |     0.000 |       63 |       --- |             --- |
 | Signals        |    <0.001 |     2463 |       --- |             --- |
+=======
+| Slice Logic    |    <0.001 |     2943 |       --- |             --- |
+|   LUT as Logic |    <0.001 |     1181 |     20800 |            5.68 |
+|   Register     |    <0.001 |     1296 |     41600 |            3.12 |
+|   CARRY4       |    <0.001 |       75 |      8150 |            0.92 |
+|   F7/F8 Muxes  |    <0.001 |      136 |     32600 |            0.42 |
+|   Others       |     0.000 |       69 |       --- |             --- |
+| Signals        |    <0.001 |     2473 |       --- |             --- |
+>>>>>>> parent of 002b953 (Working V1.1)
 | DSPs           |    <0.001 |        3 |        90 |            3.33 |
 | I/O            |    <0.001 |       43 |       170 |           25.29 |
 | Static Power   |     0.072 |          |           |                 |

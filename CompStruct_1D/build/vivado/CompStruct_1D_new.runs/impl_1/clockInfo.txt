@@ -1,6 +1,10 @@
 -------------------------------------
 | Tool Version : Vivado v.2024.2.2
+<<<<<<< HEAD
 | Date         : Wed Apr 16 07:28:22 2025
+=======
+| Date         : Wed Apr 16 00:18:11 2025
+>>>>>>> parent of 002b953 (Working V1.1)
 | Host         : fedora
 | Design       : design_1
 | Device       : xc7a35t-ftg256-1--

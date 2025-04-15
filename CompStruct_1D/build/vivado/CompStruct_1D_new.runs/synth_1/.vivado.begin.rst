@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
+<<<<<<< HEAD
     <Process Command="vivado" Owner="wata" Host="fedora" Pid="272668" HostCore="8" HostMemory="16100792">
+=======
+    <Process Command="vivado" Owner="wata" Host="fedora" Pid="114259" HostCore="8" HostMemory="16100792">
+>>>>>>> parent of 002b953 (Working V1.1)
     </Process>
 </ProcessHandle>
