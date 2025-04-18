@@ -1,0 +1,129 @@
+module game_datapath (
+    input clk,  // clock
+    input rst,  // reset
+    
+    // Inputs
+    input p0b0,
+    input p0b1,
+    input p1b0,
+    input p1b1,
+    input p0wall,
+    input p1wall,
+    input center_button,
+    
+    // Outputs
+    output correct_button[32],
+    output motor_direction[32],
+    output motor_speed[32],
+    output p0_score[32],
+    output p1_score[32],
+    output correct_button_compare[32],
+    output counter[32],
+    output temp[32],
+    output temp1[32],
+    
+    // Debugging regfiles output
+    output wa[4],
+    output we,
+    output data[32],
+    output a[32],
+    output b[32],
+    output alufn[6]
+) {
+    const CLOCK_DIVIDER = 15 // 10MHz = 100ns. To get 1ms = 100ns * 2^14
+    sig input_alu_a[32]
+    sig input_alu_b[32]
+    
+    alu game_alu
+    
+    .clk(clk) {
+        // Slow clock
+        counter slow_clk(#SIZE(1), #DIV(CLOCK_DIVIDER), .rst(rst)) 
+        edge_detector slow_clk_edge(#RISE(1), #FALL(0), .in(slow_clk.value))
+        
+        .rst(rst) {
+            game_cu game_cu(
+                .slow_clk(slow_clk_edge.out),
+                .p0b0(p0b0),
+                .p0b1(p0b1),
+                .p1b0(p1b0),
+                .p1b1(p1b1),
+                .p0wall(p0wall),
+                .p1wall(p1wall),
+                .center_button(center_button)
+            )
+            
+            game_regfiles game_regfiles(
+                .we(game_cu.regfile_we), 
+                .wa(game_cu.regfile_wa), 
+                .ra1(game_cu.regfile_ra1), 
+                .ra2(game_cu.regfile_ra2)
+            )
+            
+            
+        }
+        
+        random_number_generator rng_1(#SIZE(1), .slow_clk(slow_clk.value), .refresh(rst))
+        random_number_generator rng_500(#SIZE(9), .slow_clk(slow_clk.value), .refresh(rst))
+    }
+    
+    always {
+        // bootstrap rd2 output to CU for convenient branching conditions
+        game_cu.regfile_rd2 = game_regfiles.rd2
+        
+        //asel mux
+        case (game_cu.asel) {
+            d0: input_alu_a = game_regfiles.rd1
+            d1: input_alu_a = 32b0001
+            d2: input_alu_a = 32b0010
+            d3: input_alu_a =32b0100
+            d4: input_alu_a =32b1000
+            default : //b10 unused
+                input_alu_a = 0
+        }
+        
+        // bsel mux
+        case (game_cu.bsel) {
+            d0: input_alu_b = game_regfiles.rd2
+            d1: input_alu_b = 32b1010
+            d2: input_alu_b = 32b0101
+            d3: input_alu_b = 32d3
+            d4: input_alu_b = 32d0
+            default: //necessary to init
+                input_alu_b = 0
+        }
+        
+        // alu
+        game_alu.a = input_alu_a
+        game_alu.b = input_alu_b
+        game_alu.alufn = game_cu.alufn
+        
+        // wdsel mux
+        case (game_cu.alu_out_sel){
+            b00: game_regfiles.data = game_alu.out
+            b01: game_regfiles.data = rng_1.out
+            b10: game_regfiles.data = rng_500.out // Ensures that the minimum time before next lightup is 1s
+            default : 
+                game_regfiles.data = game_alu.out
+        }
+        
+        // Connect regfile registers to output
+        correct_button = game_regfiles.correct_button_out
+        motor_direction = game_regfiles.motor_direction_out
+        motor_speed = game_regfiles.motor_speed_out
+        p0_score = game_regfiles.p0_score_out
+        p1_score = game_regfiles.p1_score_out
+        correct_button_compare = game_regfiles.correct_button_compare_out
+        counter = game_regfiles.counter_out
+        temp = game_regfiles.temp_out
+        temp1 = game_regfiles.temp1_out
+        
+        // Debugging game_regfiles outputs
+        wa = game_regfiles.wa_out
+        we = game_regfiles.we_out
+        data = game_regfiles.data_out
+        a = input_alu_a
+        b = input_alu_b
+        alufn = game_cu.alufn
+    }
+}

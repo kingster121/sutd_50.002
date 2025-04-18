@@ -17,6 +17,7 @@ module debugger (
     input counter[32],
     input temp[32],
     input temp1[32],
+    input flag_0[32],
     
     // Debugging for regfiles output
     input wa[4],
@@ -48,7 +49,9 @@ module debugger (
         SEND_TEMP,
         SEND_TEMP1_PREFIX,
         SEND_TEMP1,
-            
+        SEND_FLAG_0_PREFIX,
+        SEND_FLAG_0,
+                
         // Debugging for regfiles output
         SEND_WA_PREFIX,
         SEND_WA,
@@ -73,6 +76,7 @@ module debugger (
     const TEXT_COUNTER = $reverse("\nCounter: ")
     const TEXT_TEMP = $reverse("\nTemp: ")
     const TEXT_TEMP1 = $reverse("\nTemp1: ")
+    const TEXT_FLAG_0 = $reverse("\nFlag 0: ")
     
     const TEXT_WA = $reverse("\n\nWA: ")
     const TEXT_WE = $reverse("\nWE: ")
@@ -100,6 +104,7 @@ module debugger (
             dff counter_count[$clog2($width(TEXT_COUNTER, 0))]
             dff temp_count[$clog2($width(TEXT_TEMP, 0))]
             dff temp1_count[$clog2($width(TEXT_TEMP1, 0))]
+            dff flag_0_count[$clog2($width(TEXT_FLAG_0, 0))]
             
             dff wa_count[$clog2($width(TEXT_WA, 0))]
             dff we_count[$clog2($width(TEXT_WE, 0))]
@@ -118,6 +123,7 @@ module debugger (
             dff counter_dff[32](#INIT(0))
             dff temp_dff[32](#INIT(0))
             dff temp1_dff[32](#INIT(0))
+            dff flag_0_dff[32](#INIT(0))
             
             dff wa_dff[4](#INIT(0))
             dff we_dff(#INIT(0))
@@ -151,6 +157,7 @@ module debugger (
                     counter_count.d = 0
                     temp_count.d = 0
                     temp1_count.d = 0
+                    flag_0_count.d = 0
                     
                     wa_count.d = 0
                     we_count.d = 0
@@ -171,6 +178,7 @@ module debugger (
                 counter_dff.d = counter
                 temp_dff.d = temp
                 temp1_dff.d = temp1
+                flag_0_dff.d = flag_0
                 
                 wa_dff.d = wa
                 we_dff.d = we
@@ -404,6 +412,32 @@ module debugger (
                     new_tx = 1                            // send data  
                     
                     if (temp1_dff.q[bit_32_count.q] == 1) 
+                        tx_data = BIT_1
+                    else
+                        tx_data = BIT_0
+                    
+                    // no more letters
+                    if (bit_32_count.q == 0) { 
+                        bit_32_count.d = 31
+                        state.d = States.SEND_FLAG_0_PREFIX        // change states
+                    }
+                }
+            
+            States.SEND_FLAG_0_PREFIX:
+                if (!tx_busy) {
+                    flag_0_count.d = flag_0_count.q + 1   // move to the next letter
+                    new_tx = 1                            // send data
+                    tx_data = TEXT_FLAG_0[flag_0_count.q] // send letter from PROMPT_TEXT
+                    if (flag_0_count.q == $width(TEXT_TEMP1, 0) - 1) // no more letters
+                        state.d = States.SEND_FLAG_0          // change states
+                }
+            
+            States.SEND_FLAG_0:
+                if (!tx_busy) {
+                    bit_32_count.d = bit_32_count.q - 1   // move to the next letter
+                    new_tx = 1                            // send data  
+                    
+                    if (flag_0_dff.q[bit_32_count.q] == 1) 
                         tx_data = BIT_1
                     else
                         tx_data = BIT_0

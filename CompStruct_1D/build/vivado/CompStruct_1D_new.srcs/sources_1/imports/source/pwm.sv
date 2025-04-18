@@ -15,31 +15,17 @@ module pwm #(
         input wire update,
         output reg pulse
     );
-<<<<<<< HEAD
-    localparam _MP_SIZE_1100000838 = WIDTH;
-    localparam _MP_DIV_1100000838 = DIV;
-    localparam _MP_TOP_1100000838 = TOP;
-    localparam _MP_UP_1100000838 = 1'h1;
-    logic [(_MP_SIZE_1100000838)-1:0] M_ctr_value;
+    localparam _MP_SIZE_1173665340 = WIDTH;
+    localparam _MP_DIV_1173665340 = DIV;
+    localparam _MP_TOP_1173665340 = TOP;
+    localparam _MP_UP_1173665340 = 1'h1;
+    logic [(_MP_SIZE_1173665340)-1:0] M_ctr_value;
     
     counter #(
-        .SIZE(_MP_SIZE_1100000838),
-        .DIV(_MP_DIV_1100000838),
-        .TOP(_MP_TOP_1100000838),
-        .UP(_MP_UP_1100000838)
-=======
-    localparam _MP_SIZE_1538575499 = WIDTH;
-    localparam _MP_DIV_1538575499 = DIV;
-    localparam _MP_TOP_1538575499 = TOP;
-    localparam _MP_UP_1538575499 = 1'h1;
-    logic [(_MP_SIZE_1538575499)-1:0] M_ctr_value;
-    
-    counter #(
-        .SIZE(_MP_SIZE_1538575499),
-        .DIV(_MP_DIV_1538575499),
-        .TOP(_MP_TOP_1538575499),
-        .UP(_MP_UP_1538575499)
->>>>>>> parent of 002b953 (Working V1.1)
+        .SIZE(_MP_SIZE_1173665340),
+        .DIV(_MP_DIV_1173665340),
+        .TOP(_MP_TOP_1173665340),
+        .UP(_MP_UP_1173665340)
     ) ctr (
         .clk(clk),
         .rst(rst),

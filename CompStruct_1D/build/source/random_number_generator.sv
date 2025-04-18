@@ -13,21 +13,13 @@ module random_number_generator #(
         output reg [(SIZE)-1:0] out
     );
     logic [31:0] D_seed_d, D_seed_q = 1'h0;
-<<<<<<< HEAD
-    localparam _MP_SEED_920208205 = 33'h19430f418;
-=======
-    localparam _MP_SEED_1480561936 = 33'h19430f418;
->>>>>>> parent of 002b953 (Working V1.1)
+    localparam _MP_SEED_1797680372 = 33'h19430f418;
     logic M_pn_gen_rst;
     logic M_pn_gen_next;
     logic [31:0] M_pn_gen_num;
     
     pn_gen #(
-<<<<<<< HEAD
-        .SEED(_MP_SEED_920208205)
-=======
-        .SEED(_MP_SEED_1480561936)
->>>>>>> parent of 002b953 (Working V1.1)
+        .SEED(_MP_SEED_1797680372)
     ) pn_gen (
         .clk(clk),
         .seed(D_seed_q),
@@ -37,23 +29,13 @@ module random_number_generator #(
     );
     
     
-<<<<<<< HEAD
-    localparam _MP_RISE_396673804 = 1'h1;
-    localparam _MP_FALL_396673804 = 1'h1;
+    localparam _MP_RISE_881922752 = 1'h1;
+    localparam _MP_FALL_881922752 = 1'h1;
     logic M_edge_detector_out;
     
     edge_detector #(
-        .RISE(_MP_RISE_396673804),
-        .FALL(_MP_FALL_396673804)
-=======
-    localparam _MP_RISE_937038813 = 1'h1;
-    localparam _MP_FALL_937038813 = 1'h1;
-    logic M_edge_detector_out;
-    
-    edge_detector #(
-        .RISE(_MP_RISE_937038813),
-        .FALL(_MP_FALL_937038813)
->>>>>>> parent of 002b953 (Working V1.1)
+        .RISE(_MP_RISE_881922752),
+        .FALL(_MP_FALL_881922752)
     ) edge_detector (
         .clk(clk),
         .in(slow_clk),

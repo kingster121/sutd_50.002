@@ -1,19 +1,11 @@
 Design Route Status
                                                :      # nets :
    ------------------------------------------- : ----------- :
-<<<<<<< HEAD
-   # of logical nets.......................... :        3241 :
-       # of nets not needing routing.......... :         774 :
-           # of internally routed nets........ :         774 :
-       # of routable nets..................... :        2467 :
-           # of fully routed nets............. :        2467 :
-=======
-   # of logical nets.......................... :        3249 :
-       # of nets not needing routing.......... :         772 :
-           # of internally routed nets........ :         772 :
-       # of routable nets..................... :        2477 :
-           # of fully routed nets............. :        2477 :
->>>>>>> parent of 002b953 (Working V1.1)
+   # of logical nets.......................... :        3257 :
+       # of nets not needing routing.......... :         645 :
+           # of internally routed nets........ :         645 :
+       # of routable nets..................... :        2612 :
+           # of fully routed nets............. :        2612 :
        # of nets with routing errors.......... :           0 :
    ------------------------------------------- : ----------- :
 

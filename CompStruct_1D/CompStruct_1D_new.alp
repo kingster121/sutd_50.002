@@ -68,12 +68,6 @@
             {
                 "file": {
                     "type": "DiskFile",
-                    "path": "source/game_cu.luc"
-                }
-            },
-            {
-                "file": {
-                    "type": "DiskFile",
                     "path": "source/alu.luc"
                 }
             },
@@ -111,6 +105,12 @@
                 "file": {
                     "type": "DiskFile",
                     "path": "source/led_score_encoder.luc"
+                }
+            },
+            {
+                "file": {
+                    "type": "DiskFile",
+                    "path": "source/game_cu.luc"
                 }
             }
         ],

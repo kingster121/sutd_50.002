@@ -1,11 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2.2 (lin64) Build 6060944 Thu Mar 06 19:10:09 MST 2025
-<<<<<<< HEAD
-| Date         : Wed Apr 16 07:28:42 2025
-=======
-| Date         : Wed Apr 16 00:18:33 2025
->>>>>>> parent of 002b953 (Working V1.1)
+| Date         : Wed Apr 16 13:13:08 2025
 | Host         : fedora running 64-bit unknown
 | Command      : report_methodology -file alchitry_top_methodology_drc_routed.rpt -pb alchitry_top_methodology_drc_routed.pb -rpx alchitry_top_methodology_drc_routed.rpx
 | Design       : alchitry_top
@@ -27,12 +23,12 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max checks: <unlimited>
-             Checks found: 25
+             Checks found: 27
 +-----------+----------+-------------------------------+--------+
 | Rule      | Severity | Description                   | Checks |
 +-----------+----------+-------------------------------+--------+
 | SYNTH-10  | Warning  | Wide multiplier               | 3      |
-| TIMING-18 | Warning  | Missing input or output delay | 22     |
+| TIMING-18 | Warning  | Missing input or output delay | 24     |
 +-----------+----------+-------------------------------+--------+
 
 2. REPORT DETAILS
@@ -109,55 +105,65 @@ Related violations: <none>
 
 TIMING-18#12 Warning
 Missing input or output delay  
-An output delay is missing on p0_score[0] relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p0_flag relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#13 Warning
 Missing input or output delay  
-An output delay is missing on p0_score[1] relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p0_score[0] relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#14 Warning
 Missing input or output delay  
-An output delay is missing on p0_score[2] relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p0_score[1] relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#15 Warning
 Missing input or output delay  
-An output delay is missing on p0l0 relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p0_score[2] relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#16 Warning
 Missing input or output delay  
-An output delay is missing on p0l1 relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p0l0 relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#17 Warning
 Missing input or output delay  
-An output delay is missing on p1_score[0] relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p0l1 relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#18 Warning
 Missing input or output delay  
-An output delay is missing on p1_score[1] relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p1_flag relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#19 Warning
 Missing input or output delay  
-An output delay is missing on p1_score[2] relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p1_score[0] relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#20 Warning
 Missing input or output delay  
-An output delay is missing on p1l0 relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p1_score[1] relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#21 Warning
 Missing input or output delay  
-An output delay is missing on p1l1 relative to the rising and/or falling clock edge(s) of clk_0.
+An output delay is missing on p1_score[2] relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>
 
 TIMING-18#22 Warning
+Missing input or output delay  
+An output delay is missing on p1l0 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#23 Warning
+Missing input or output delay  
+An output delay is missing on p1l1 relative to the rising and/or falling clock edge(s) of clk_0.
+Related violations: <none>
+
+TIMING-18#24 Warning
 Missing input or output delay  
 An output delay is missing on usb_tx relative to the rising and/or falling clock edge(s) of clk_0.
 Related violations: <none>

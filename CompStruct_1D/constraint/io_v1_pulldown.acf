@@ -43,6 +43,9 @@ PINOUT(V1), STANDARD(LVCMOS33) {
     pin p1_score[0] A28
     pin p1_score[1] A31
     pin p1_score[2] A34
+    
+    pin p0_flag A42
+    pin p1_flag A43
 
     PULL(DOWN) {
         // pin io_dip[0][0] B30
@@ -92,17 +95,17 @@ PINOUT(V1), STANDARD(LVCMOS33) {
         // pin reset_button B39
     }
     
-    pin io_select[0] A9
-    pin io_select[1] A8
-    pin io_select[2] A42
-    pin io_select[3] A43
+    // pin io_select[0] A9
+    // pin io_select[1] A8
+    // pin io_select[2] A42
+    // pin io_select[3] A43
     
-    pin io_segment[0] A5
-    pin io_segment[1] A6
-    pin io_segment[2] A48
-    pin io_segment[3] A46
-    pin io_segment[4] A45
-    pin io_segment[5] A3
-    pin io_segment[6] A2
-    pin io_segment[7] A49
+    // pin io_segment[0] A5
+    // pin io_segment[1] A6
+    // pin io_segment[2] A48
+    // pin io_segment[3] A46
+    // pin io_segment[4] A45
+    // pin io_segment[5] A3
+    // pin io_segment[6] A2
+    // pin io_segment[7] A49
 }

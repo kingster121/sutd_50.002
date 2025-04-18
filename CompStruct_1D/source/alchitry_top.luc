@@ -4,8 +4,7 @@ module alchitry_top (
     output led[8],          // 8 user controllable LEDs
     input usb_rx,           // USB->Serial input
     output usb_tx,          // USB->Serial output
-    output io_segment[8],   // 7-segment LEDs on IO Shield
-    output io_select[4],    // Digit select on IO Shield
+    // output io_select[4],    // Digit select on IO Shield
     
     // Player button inputs
     // 0 - Button 0
@@ -27,9 +26,17 @@ module alchitry_top (
     
     // Player score LEDs
     output p0_score[3],
-    output p1_score[3]
+    output p1_score[3],
+    
+    // Flag motors
+    output p0_flag,
+    output p1_flag
 ) {
     sig rst                 // reset signal
+    sig p0_score_sig[3]
+    sig p1_score_sig[3]
+    sig flag_0
+    sig flag_1
     const CLK_FREQ = $is_sim() ? 1000 : 10_000_000 // Changed to 100MHz to meet timing constraint
     
     .clk(clk) {
@@ -75,13 +82,15 @@ module alchitry_top (
         
         // Default outputs
         led = 8h00              // turn LEDs off
-        io_segment = 8h00
-        io_select = 4h0
+        // io_select = 4h0
         usb_tx = usb_rx         // loop serial port
         
         // =================== DEBUGGING ===================== //
         rx.rx = usb_rx          // connect rx input
         usb_tx = tx.tx          // connect tx output
+        
+        // Drive signal for flag_0
+        flag_0 = p0_led_encoder.score_out[2]
         
         debugger.new_rx = rx.new_data
         debugger.rx_data = rx.data
@@ -95,6 +104,7 @@ module alchitry_top (
         debugger.counter = game_datapath.counter
         debugger.temp = game_datapath.temp
         debugger.temp1 = game_datapath.temp1
+        debugger.flag_0 = flag_0
         
         // Debugging inputs to regfile
         debugger.wa =game_datapath.wa
@@ -122,11 +132,11 @@ module alchitry_top (
         // Connect the HIGH edge detector to the datapath
         game_datapath.p0b0 = p0_button_edge.out[0]
         game_datapath.p0b1 = p0_button_edge.out[1]
-        game_datapath.p0wall = p0_button_cond.out[2]
+        game_datapath.p0wall = p0_button_edge.out[2]
         game_datapath.p1b0 = p1_button_edge.out[0]
-        game_datapath.p1b1 = p1_button_cond.out[1]
+        game_datapath.p1b1 = p1_button_edge.out[1]
         game_datapath.p1wall = p1_button_edge.out[2]
-        game_datapath.center_button = center_button_edge.out
+        game_datapath.center_button = center_button_cond.out
         
         // ================== CONNECTING PHYSICAL OUTPUTS =================== //
         // Connect motor
@@ -144,5 +154,21 @@ module alchitry_top (
         p1_led_encoder.score_in = game_datapath.p1_score[1:0]
         p0_score = p0_led_encoder.score_out
         p1_score = p1_led_encoder.score_out
+        
+        //Connect the flag motors to the game
+        p0_score_sig = p0_led_encoder.score_out
+        p1_score_sig = p1_led_encoder.score_out
+        
+        
+        
+        if (p0_led_encoder.score_out[2])
+            p0_flag = 0
+        else
+            p0_flag = 1
+        
+        if (p1_led_encoder.score_out[2])
+            p1_flag = 0
+        else
+            p1_flag = 1
     }
 }

@@ -73,6 +73,12 @@ set_property IOSTANDARD LVCMOS33 [get_ports {p1_score[1]}]
 set_property PACKAGE_PIN H3 [get_ports {p1_score[2]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p1_score[2]}]
 
+set_property PACKAGE_PIN N9 [get_ports {p0_flag}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p0_flag}]
+
+set_property PACKAGE_PIN P9 [get_ports {p1_flag}]
+set_property IOSTANDARD LVCMOS33 [get_ports {p1_flag}]
+
 set_property PACKAGE_PIN C7 [get_ports {p0_button[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {p0_button[0]}]
 set_property PULLDOWN true [get_ports {p0_button[0]}]
@@ -100,40 +106,4 @@ set_property PULLDOWN true [get_ports {p1_button[2]}]
 set_property PACKAGE_PIN B6 [get_ports {center_button}]
 set_property IOSTANDARD LVCMOS33 [get_ports {center_button}]
 set_property PULLDOWN true [get_ports {center_button}]
-
-set_property PACKAGE_PIN P8 [get_ports {io_select[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_select[0]}]
-
-set_property PACKAGE_PIN R8 [get_ports {io_select[1]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_select[1]}]
-
-set_property PACKAGE_PIN N9 [get_ports {io_select[2]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_select[2]}]
-
-set_property PACKAGE_PIN P9 [get_ports {io_select[3]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_select[3]}]
-
-set_property PACKAGE_PIN T5 [get_ports {io_segment[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[0]}]
-
-set_property PACKAGE_PIN R5 [get_ports {io_segment[1]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[1]}]
-
-set_property PACKAGE_PIN T9 [get_ports {io_segment[2]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[2]}]
-
-set_property PACKAGE_PIN R6 [get_ports {io_segment[3]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[3]}]
-
-set_property PACKAGE_PIN R7 [get_ports {io_segment[4]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[4]}]
-
-set_property PACKAGE_PIN T7 [get_ports {io_segment[5]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[5]}]
-
-set_property PACKAGE_PIN T8 [get_ports {io_segment[6]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[6]}]
-
-set_property PACKAGE_PIN T10 [get_ports {io_segment[7]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {io_segment[7]}]
 
